@@ -104,10 +104,13 @@ nav.bottom button.active{background:#C9A86A;color:#000;font-weight:900}
 <div id="tab-music" class="tab">
 <div class="topbar"><div><h2 class="gold">TLF MUSIC - 83 - PERFECT SQUARE</h2><span id="count-music" class="gold" style="font-size:11px"></span></div><div style="display:flex;gap:6px"><button class="badge gold" onclick="exportTab('MUSIC')">EXPORT MUSIC</button><button class="badge" onclick="document.getElementById('importFile-music').click()">IMPORT</button></div></div>
 <input type="file" id="importFile-music" accept=".json" style="display:none" onchange="importAll(this)"/>
+<div id="music-grid-view">
 <div style="margin-bottom:8px;font-size:11px;opacity:.6">TLF 30up — <span id="count-tlf"></span></div><div class="grid-30" id="grid-tlf"></div>
 <div class="divider"></div><div style="margin-bottom:8px;font-size:11px;opacity:.6">Firm Divas 18up — <span id="count-divas"></span></div><div class="grid-30" id="grid-divas"></div>
 <div class="divider"></div><div style="margin-bottom:8px;font-size:11px;opacity:.6">Assoc 35up — <span id="count-assoc"></span></div><div class="grid-30" id="grid-assoc"></div>
 <div class="divider"></div><h3 class="gold" style="margin:12px 0;font-size:14px">TRACK LISTS - 8 LOGO BOXES</h3><div class="grid-8" id="grid-music-logos"></div>
+</div>
+<div id="music-list-view" style="display:none"></div>
 <p style="font-size:9px;opacity:.4;margin-top:12px">Storage: <span id="storageSize"></span></p>
 </div>
 
@@ -115,8 +118,10 @@ nav.bottom button.active{background:#C9A86A;color:#000;font-weight:900}
 <div id="tab-videos" class="tab">
 <div class="topbar"><h2 class="gold">TLF VIDEOS - 8 CATEGORIES</h2><div style="display:flex;gap:6px"><button class="badge gold" onclick="exportTab('VIDEOS')">EXPORT VIDEOS</button><button class="badge" onclick="document.getElementById('importFile-vid').click()">IMPORT</button></div></div>
 <input type="file" id="importFile-vid" accept=".json" style="display:none" onchange="importAll(this)"/>
-<div class="video-wrap"><iframe id="yt-videos" src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe></div>
+<div id="video-grid-view">
 <div class="grid-8" id="grid-videos-logos"></div>
+</div>
+<div id="video-list-view" style="display:none"></div>
 </div>
 
 <!-- MOVIES -->
@@ -166,91 +171,350 @@ nav.bottom button.active{background:#C9A86A;color:#000;font-weight:900}
 
 </div>
 
-<div id="artistModal"><div class="modal-box"><div class="topbar"><h3 id="modalTitle" class="gold">Artist</h3><button class="badge" onclick="closeModal()">Close</button></div><div id="mainPreview" style="aspect-ratio:1/1;background:#111;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:12px">+</div><div class="edit-box"><label>Name</label><input id="artistName"/></div><button class="btn-gold" onclick="saveArtist()">Save</button></div></div>
+<div id="artistModal"><div class="modal-box">
+<div class="topbar"><h3 id="modalTitle" class="gold">Artist</h3><button class="badge" onclick="closeModal()">✕ Close</button></div>
+<div id="mainPreview" style="aspect-ratio:1/1;background:#111;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;overflow:hidden;font-size:28px;color:#C9A86A">+</div>
+<input type="file" id="artistImageInput" accept="image/*" style="display:none" onchange="handleArtistImage(this)"/>
+<div id="adminArtistControls" style="display:none;margin-bottom:12px">
+  <button class="btn-outline" style="width:100%;margin-bottom:8px" onclick="document.getElementById('artistImageInput').click()">📷 Upload / Change Image</button>
+</div>
+<div class="edit-box"><label>Name</label><input id="artistName" placeholder="Artist name"/></div>
+<div class="edit-box"><label>Bio / Description</label><textarea id="artistBio" rows="4" placeholder="Artist bio or description"></textarea></div>
+<div class="edit-box"><label>Status</label><input id="artistStatus" placeholder="e.g. Active, Featured, New"/></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+  <button class="btn-gold" id="adminSaveArtist" style="display:none;flex:1" onclick="saveArtist()">💾 Save</button>
+  <button class="btn-outline" id="adminDeleteArtist" style="display:none;color:#ff6b6b;border-color:#ff6b6b" onclick="deleteArtist()">🗑 Delete</button>
+</div>
+</div></div>
 
 <script>
-let db={}; let current=null;
+let db={}, current=null, isAdmin=false;
+/* HTML-escape user-supplied strings before inserting into innerHTML */
+function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+
+/* ── DB ── */
 function loadDB(){ try{ db=JSON.parse(localStorage.getItem('tlf_master_db')||'{}'); }catch(e){ db={}; } fillAll(); loadHome(); loadMore(); loadYT(); if(!db['YT-movies']){ db['YT-movies']='https://youtu.be/ZTdc3W2ZdMw?is=n_MasjrRKAnyiDwW'; saveDB(); } }
 function saveDB(){ localStorage.setItem('tlf_master_db', JSON.stringify(db)); updateSize(); }
 function updateSize(){ try{ const s=new Blob([JSON.stringify(db)]).size; document.querySelectorAll('[id^=storageSize]').forEach(el=>el.textContent=(s/1024).toFixed(1)+' KB'); }catch(e){} }
-function enterApp(){ document.getElementById('landing').style.display='none'; document.getElementById('app').style.display='flex'; const isAdmin=true; if(isAdmin){ document.getElementById('admin-more-edit').style.display='block'; document.querySelectorAll('[id^=edit-]').forEach(el=>el.style.display='block'); } fillAll(); }
-function showLanding(){ document.getElementById('app').style.display='none'; document.getElementById('landing').style.display='flex'; }
-function openTab(name){ document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); document.getElementById('tab-'+name).classList.add('active'); document.querySelectorAll('nav.bottom button').forEach(b=>b.classList.remove('active')); document.getElementById('btn-'+name).classList.add('active'); }
-function fillAll(){
- const gt=document.getElementById('grid-tlf'); if(gt){ gt.innerHTML=''; for(let i=1;i<=30;i++) gt.appendChild(makeTile('TLF',i)); }
- const gd=document.getElementById('grid-divas'); if(gd){ gd.innerHTML=''; for(let i=1;i<=18;i++) gd.appendChild(makeTile('DIVAS',i)); }
- const ga=document.getElementById('grid-assoc'); if(ga){ ga.innerHTML=''; for(let i=1;i<=35;i++) ga.appendChild(makeTile('ASSOC',i)); }
- const gml=document.getElementById('grid-music-logos'); if(gml){ gml.innerHTML=''; for(let i=1;i<=8;i++) gml.appendChild(makeLogo('MUSIC-LOGO',i)); }
- const gvl=document.getElementById('grid-videos-logos'); if(gvl){ gvl.innerHTML=''; for(let i=1;i<=8;i++) gvl.appendChild(makeLogo('VIDEO-LOGO',i)); }
- const gm=document.getElementById('grid-movies'); if(gm){ gm.innerHTML=''; for(let i=1;i<=10;i++) gm.appendChild(makeMovie(i)); }
- const gb=document.getElementById('book-grid-real'); if(gb){ gb.innerHTML=''; for(let i=1;i<=18;i++){ const key='BOOK-'+String(i).padStart(2,'0'); const data=db[key]; const b=document.createElement('div'); b.className='book'; if(data && data.image){ b.innerHTML='<img src="'+data.image+'" loading="lazy"/>'; b.onclick=()=>{ if(data.link) window.open(data.link,'_blank'); }; } else { b.textContent='#'+String(i).padStart(2,'0'); } gb.appendChild(b); } }
- try{ document.getElementById('count-tlf').textContent=Object.keys(db).filter(k=>k.startsWith('TLF-')).length+'/30'; document.getElementById('count-divas').textContent=Object.keys(db).filter(k=>k.startsWith('DIVAS-')).length+'/18'; document.getElementById('count-assoc').textContent=Object.keys(db).filter(k=>k.startsWith('ASSOC-')).length+'/35'; document.getElementById('count-music').textContent=(Object.keys(db).filter(k=>k.startsWith('TLF-')||k.startsWith('DIVAS-')||k.startsWith('ASSOC-')).length)+'/83'; }catch(e){}
- updateSize();
+
+/* ── APP ENTRY ── */
+function enterApp(){
+  document.getElementById('landing').style.display='none';
+  document.getElementById('app').style.display='flex';
+  isAdmin=true;
+  document.getElementById('admin-more-edit').style.display='block';
+  document.querySelectorAll('[id^=edit-]').forEach(el=>el.style.display='block');
+  fillAll();
 }
-function makeTile(prefix,i){ const key=prefix+'-'+String(i).padStart(2,'0'); const d=db[key]; const div=document.createElement('div'); div.className='box'; if(d && d.image){ div.innerHTML='<img src="'+d.image+'" loading="lazy"/><span class="num-badge">'+String(i).padStart(2,'0')+'</span>'; } else { div.innerHTML='<span style="font-size:10px;color:#C9A86A">'+prefix+' '+String(i).padStart(2,'0')+'</span><span class="num-badge">'+String(i).padStart(2,'0')+'</span>'; } div.onclick=()=>openArtist(prefix,i); return div; }
-function makeLogo(prefix,i){ const div=document.createElement('div'); div.className='logo-box'; div.innerHTML='<span style="font-size:10px;color:#C9A86A">'+prefix+' '+i+'</span>'; div.onclick=()=>openArtist(prefix,i); return div; }
+function showLanding(){ document.getElementById('app').style.display='none'; document.getElementById('landing').style.display='flex'; }
+function openTab(name){
+  // reset any category list views when switching tabs
+  showMusicGrid(); showVideoGrid();
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  document.querySelectorAll('nav.bottom button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('btn-'+name).classList.add('active');
+}
+
+/* ── GRIDS ── */
+function fillAll(){
+  const gt=document.getElementById('grid-tlf'); if(gt){ gt.innerHTML=''; for(let i=1;i<=30;i++) gt.appendChild(makeTile('TLF',i)); }
+  const gd=document.getElementById('grid-divas'); if(gd){ gd.innerHTML=''; for(let i=1;i<=18;i++) gd.appendChild(makeTile('DIVAS',i)); }
+  const ga=document.getElementById('grid-assoc'); if(ga){ ga.innerHTML=''; for(let i=1;i<=35;i++) ga.appendChild(makeTile('ASSOC',i)); }
+  const gml=document.getElementById('grid-music-logos'); if(gml){ gml.innerHTML=''; for(let i=1;i<=8;i++) gml.appendChild(makeLogo('MUSIC-LOGO',i,'music')); }
+  const gvl=document.getElementById('grid-videos-logos'); if(gvl){ gvl.innerHTML=''; for(let i=1;i<=8;i++) gvl.appendChild(makeLogo('VIDEO-LOGO',i,'video')); }
+  const gm=document.getElementById('grid-movies'); if(gm){ gm.innerHTML=''; for(let i=1;i<=10;i++) gm.appendChild(makeMovie(i)); }
+  const gb=document.getElementById('book-grid-real'); if(gb){ gb.innerHTML=''; for(let i=1;i<=18;i++){ const key='BOOK-'+String(i).padStart(2,'0'); const data=db[key]; const b=document.createElement('div'); b.className='book'; if(data&&data.image){ b.innerHTML='<img src="'+data.image+'" loading="lazy"/>'; b.onclick=()=>{ if(data.link) window.open(data.link,'_blank'); }; } else { b.textContent='#'+String(i).padStart(2,'0'); } gb.appendChild(b); } }
+  try{ document.getElementById('count-tlf').textContent=Object.keys(db).filter(k=>k.startsWith('TLF-')).length+'/30'; document.getElementById('count-divas').textContent=Object.keys(db).filter(k=>k.startsWith('DIVAS-')).length+'/18'; document.getElementById('count-assoc').textContent=Object.keys(db).filter(k=>k.startsWith('ASSOC-')).length+'/35'; document.getElementById('count-music').textContent=(Object.keys(db).filter(k=>k.startsWith('TLF-')||k.startsWith('DIVAS-')||k.startsWith('ASSOC-')).length)+'/83'; }catch(e){}
+  updateSize();
+}
+
+/* artist tile */
+function makeTile(prefix,i){
+  const key=prefix+'-'+String(i).padStart(2,'0'); const d=db[key];
+  const div=document.createElement('div'); div.className='box';
+  if(d&&d.image){ div.innerHTML='<img src="'+d.image+'" loading="lazy"/><span class="num-badge">'+String(i).padStart(2,'0')+'</span>'; }
+  else { div.innerHTML='<span style="font-size:10px;color:#C9A86A;text-align:center;padding:4px">'+prefix+'<br>'+String(i).padStart(2,'0')+'</span><span class="num-badge">'+String(i).padStart(2,'0')+'</span>'; }
+  div.onclick=()=>openArtist(prefix,i); return div;
+}
+
+/* category logo tile */
+function makeLogo(prefix,i,type){
+  const key=prefix+'-'+String(i).padStart(2,'0'); const d=db[key];
+  const div=document.createElement('div'); div.className='logo-box';
+  if(d&&d.image){ div.innerHTML='<img src="'+d.image+'" loading="lazy"/>'; }
+  else { div.innerHTML='<span style="font-size:10px;color:#C9A86A;text-align:center;padding:4px">'+esc(d&&d.name?d.name:prefix+' '+i)+'</span>'; }
+  div.onclick=()=>openCategory(key,type); return div;
+}
+
 function makeMovie(i){ const div=document.createElement('div'); div.className='movie'; div.innerHTML='<span style="font-size:10px;color:#C9A86A;padding:12px">MOVIE '+String(i).padStart(2,'0')+'</span>'; return div; }
-function openArtist(p,i){ current=p+'-'+String(i).padStart(2,'0'); const d=db[current]||{name:''}; document.getElementById('modalTitle').textContent=current; document.getElementById('artistName').value=d.name||''; document.getElementById('mainPreview').innerHTML=d.image?'<img src="'+d.image+'" style="width:100%;height:100%;object-fit:cover;border-radius:12px">':'+'; document.getElementById('artistModal').classList.add('active'); }
-function closeModal(){ document.getElementById('artistModal').classList.remove('active'); current=null; }
-function saveArtist(){ if(!current)return; if(!db[current]) db[current]={}; db[current].name=document.getElementById('artistName').value; saveDB(); fillAll(); closeModal(); }
+
+/* ── ARTIST MODAL ── */
+function openArtist(p,i){
+  current=p+'-'+String(i).padStart(2,'0');
+  const d=db[current]||{};
+  document.getElementById('modalTitle').textContent=current;
+  document.getElementById('artistName').value=d.name||'';
+  document.getElementById('artistBio').value=d.bio||'';
+  document.getElementById('artistStatus').value=d.status||'';
+  const prev=document.getElementById('mainPreview');
+  prev.innerHTML=d.image?'<img src="'+d.image+'" style="width:100%;height:100%;object-fit:cover;border-radius:12px">':'<span style="font-size:28px">+</span>';
+  document.getElementById('adminArtistControls').style.display=isAdmin?'block':'none';
+  document.getElementById('adminSaveArtist').style.display=isAdmin?'flex':'none';
+  document.getElementById('adminDeleteArtist').style.display=isAdmin?'inline-flex':'none';
+  // make fields read-only for non-admin
+  ['artistName','artistBio','artistStatus'].forEach(id=>{ document.getElementById(id).readOnly=!isAdmin; });
+  document.getElementById('artistModal').classList.add('active');
+}
+function closeModal(){ document.getElementById('artistModal').classList.remove('active'); current=null; document.getElementById('artistImageInput').value=''; }
+function handleArtistImage(input){
+  const file=input.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const b64=e.target.result;
+    document.getElementById('mainPreview').innerHTML='<img src="'+b64+'" style="width:100%;height:100%;object-fit:cover;border-radius:12px">';
+    if(!db[current]) db[current]={};
+    db[current].image=b64;
+  };
+  reader.readAsDataURL(file);
+}
+function saveArtist(){
+  if(!current) return;
+  if(!db[current]) db[current]={};
+  db[current].name=document.getElementById('artistName').value;
+  db[current].bio=document.getElementById('artistBio').value;
+  db[current].status=document.getElementById('artistStatus').value;
+  saveDB(); fillAll(); closeModal();
+}
+function deleteArtist(){
+  if(!current) return;
+  if(!confirm('Delete '+current+'? This cannot be undone.')) return;
+  delete db[current]; saveDB(); fillAll(); closeModal();
+}
+
+/* ── CATEGORY / LIST VIEW ── */
+function openCategory(key, type){
+  if(type==='music') openMusicCategory(key);
+  else openVideoCategory(key);
+}
+
+/* --- Music category list --- */
+function showMusicGrid(){ const g=document.getElementById('music-grid-view'),l=document.getElementById('music-list-view'); if(g) g.style.display=''; if(l) l.style.display='none'; }
+function openMusicCategory(key){
+  const d=db[key]||{name:key,tracks:[]};
+  const g=document.getElementById('music-grid-view'); const l=document.getElementById('music-list-view');
+  if(g) g.style.display='none'; if(!l) return; l.style.display='';
+  renderMusicList(key);
+}
+function renderMusicList(key){
+  const l=document.getElementById('music-list-view'); if(!l) return;
+  const d=db[key]||{name:key,tracks:[]};
+  const tracks=d.tracks||[];
+  const eKey=esc(key);
+  let html='<div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap">'
+    +'<button class="btn-outline" onclick="showMusicGrid()">← Back</button>'
+    +'<h3 class="gold" style="flex:1">'+esc(d.name||key)+'</h3>';
+  if(isAdmin) html+='<button class="btn-outline" style="font-size:10px" onclick="openCategoryImageUpload(\''+eKey+'\',\'music\')">📷 Change Image</button>';
+  html+='</div>';
+  if(isAdmin) html+='<input type="file" id="catImg-'+eKey+'" accept="image/*" style="display:none" onchange="handleCategoryImage(this,\''+eKey+'\',\'music\')">';
+  if(d.image) html+='<div style="width:100%;max-width:200px;aspect-ratio:1/1;border-radius:12px;overflow:hidden;margin-bottom:12px"><img src="'+esc(d.image)+'" style="width:100%;height:100%;object-fit:cover"/></div>';
+  html+='<div class="edit-box" style="margin-bottom:8px"><label>Category Name</label><input id="catName-'+eKey+'" value="'+esc(d.name||'')+'" '+(isAdmin?'':'readonly')+' style="background:#000;border:1px solid #444;color:#fff;padding:8px;border-radius:8px;width:100%;font-size:13px"/></div>';
+  if(isAdmin) html+='<button class="btn-gold" style="margin-bottom:16px;font-size:11px" onclick="saveCategoryName(\''+eKey+'\',\'music\')">💾 Save Name</button>';
+  html+='<h4 class="gold" style="margin-bottom:10px;font-size:13px">TRACKS ('+tracks.length+')</h4>';
+  tracks.forEach((t,idx)=>{
+    html+='<div style="background:#111;border:1px solid #333;border-radius:10px;padding:10px;margin-bottom:8px">'
+      +'<div style="display:flex;justify-content:space-between;align-items:start;gap:8px">'
+      +'<div style="flex:1">'
+      +'<div style="font-size:13px;font-weight:700;color:#fff">'+esc(t.name||'Untitled')+'</div>'
+      +'<div style="font-size:11px;color:#C9A86A;margin-top:2px">'+esc(t.artist||'')+(t.duration?' · '+esc(t.duration):'')+'</div>'
+      +'</div>';
+    if(isAdmin) html+='<div style="display:flex;gap:6px">'
+      +'<button class="badge" onclick="editTrack(\''+eKey+'\','+idx+')" style="font-size:9px">Edit</button>'
+      +'<button class="badge" onclick="deleteTrack(\''+eKey+'\','+idx+')" style="font-size:9px;color:#ff6b6b;border-color:#ff6b6b">Del</button>'
+      +'</div>';
+    html+='</div></div>';
+  });
+  if(isAdmin) html+='<button class="btn-gold" style="width:100%;margin-top:8px" onclick="addTrack(\''+eKey+'\')">+ Add Track</button>';
+  l.innerHTML=html;
+}
+function openCategoryImageUpload(key,type){
+  const inp=document.getElementById('catImg-'+key); if(inp) inp.click();
+}
+function handleCategoryImage(input,key,type){
+  const file=input.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    if(!db[key]) db[key]={};
+    db[key].image=e.target.result;
+    saveDB(); fillAll();
+    if(type==='music') renderMusicList(key);
+    else renderVideoList(key);
+  };
+  reader.readAsDataURL(file);
+}
+function saveCategoryName(key,type){
+  const inp=document.getElementById('catName-'+key); if(!inp) return;
+  if(!db[key]) db[key]={};
+  db[key].name=inp.value;
+  saveDB(); fillAll();
+  if(type==='music') renderMusicList(key);
+  else renderVideoList(key);
+}
+function addTrack(key){
+  const name=prompt('Track name:'); if(!name) return;
+  const artist=prompt('Artist:','');
+  const duration=prompt('Duration (e.g. 3:45):','');
+  if(!db[key]) db[key]={tracks:[]};
+  if(!db[key].tracks) db[key].tracks=[];
+  db[key].tracks.push({name,artist,duration});
+  saveDB(); renderMusicList(key);
+}
+function editTrack(key,idx){
+  const t=(db[key]&&db[key].tracks&&db[key].tracks[idx])||{};
+  const name=prompt('Track name:',t.name||''); if(name===null) return;
+  const artist=prompt('Artist:',t.artist||'');
+  const duration=prompt('Duration:',t.duration||'');
+  db[key].tracks[idx]={name,artist,duration};
+  saveDB(); renderMusicList(key);
+}
+function deleteTrack(key,idx){
+  if(!confirm('Delete track?')) return;
+  db[key].tracks.splice(idx,1);
+  saveDB(); renderMusicList(key);
+}
+
+/* --- Video category list --- */
+function showVideoGrid(){ const g=document.getElementById('video-grid-view'),l=document.getElementById('video-list-view'); if(g) g.style.display=''; if(l) l.style.display='none'; }
+function openVideoCategory(key){
+  const g=document.getElementById('video-grid-view'); const l=document.getElementById('video-list-view');
+  if(g) g.style.display='none'; if(!l) return; l.style.display='';
+  renderVideoList(key);
+}
+function renderVideoList(key){
+  const l=document.getElementById('video-list-view'); if(!l) return;
+  const d=db[key]||{name:key,videos:[]};
+  const videos=d.videos||[];
+  const eKey=esc(key);
+  let html='<div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap">'
+    +'<button class="btn-outline" onclick="showVideoGrid()">← Back</button>'
+    +'<h3 class="gold" style="flex:1">'+esc(d.name||key)+'</h3>';
+  if(isAdmin) html+='<button class="btn-outline" style="font-size:10px" onclick="openCategoryImageUpload(\''+eKey+'\',\'video\')">📷 Change Image</button>';
+  html+='</div>';
+  if(isAdmin) html+='<input type="file" id="catImg-'+eKey+'" accept="image/*" style="display:none" onchange="handleCategoryImage(this,\''+eKey+'\',\'video\')">';
+  if(d.image) html+='<div style="width:100%;max-width:200px;aspect-ratio:1/1;border-radius:12px;overflow:hidden;margin-bottom:12px"><img src="'+esc(d.image)+'" style="width:100%;height:100%;object-fit:cover"/></div>';
+  html+='<div class="edit-box" style="margin-bottom:8px"><label>Category Name</label><input id="catName-'+eKey+'" value="'+esc(d.name||'')+'" '+(isAdmin?'':'readonly')+' style="background:#000;border:1px solid #444;color:#fff;padding:8px;border-radius:8px;width:100%;font-size:13px"/></div>';
+  if(isAdmin) html+='<button class="btn-gold" style="margin-bottom:16px;font-size:11px" onclick="saveCategoryName(\''+eKey+'\',\'video\')">💾 Save Name</button>';
+  html+='<h4 class="gold" style="margin-bottom:10px;font-size:13px">VIDEOS ('+videos.length+')</h4>';
+  videos.forEach((v,idx)=>{
+    html+='<div style="background:#111;border:1px solid #333;border-radius:10px;padding:10px;margin-bottom:8px">';
+    const embedSrc=ytEmbed(v.youtubeUrl||'');
+    if(embedSrc){ html+='<div class="video-wrap" style="margin-bottom:8px"><iframe src="'+esc(embedSrc)+'" allowfullscreen></iframe></div>'; }
+    html+='<div style="display:flex;justify-content:space-between;align-items:start;gap:8px">'
+      +'<div style="flex:1">'
+      +'<div style="font-size:13px;font-weight:700;color:#fff">'+esc(v.title||'Untitled')+'</div>'
+      +(v.description?'<div style="font-size:11px;opacity:.7;margin-top:4px">'+esc(v.description)+'</div>':'')
+      +'</div>';
+    if(isAdmin) html+='<div style="display:flex;gap:6px">'
+      +'<button class="badge" onclick="editVideo(\''+eKey+'\','+idx+')" style="font-size:9px">Edit</button>'
+      +'<button class="badge" onclick="deleteVideo(\''+eKey+'\','+idx+')" style="font-size:9px;color:#ff6b6b;border-color:#ff6b6b">Del</button>'
+      +'</div>';
+    html+='</div></div>';
+  });
+  if(isAdmin) html+='<button class="btn-gold" style="width:100%;margin-top:8px" onclick="addVideo(\''+eKey+'\')">+ Add Video</button>';
+  l.innerHTML=html;
+}
+function ytEmbed(url){
+  try{ let id=''; if(url.includes('youtu.be/')){ id=url.split('youtu.be/')[1].split('?')[0]; } else if(url.includes('v=')){ id=url.split('v=')[1].split('&')[0]; } else if(/^[A-Za-z0-9_-]{11}$/.test(url)){ id=url; } if(id&&/^[A-Za-z0-9_-]+$/.test(id)) return 'https://www.youtube.com/embed/'+id; }catch(e){} return '';
+}
+function addVideo(key){
+  const title=prompt('Video title:'); if(!title) return;
+  const youtubeUrl=prompt('YouTube URL or video ID:','');
+  const description=prompt('Description (optional):','');
+  if(!db[key]) db[key]={videos:[]};
+  if(!db[key].videos) db[key].videos=[];
+  db[key].videos.push({title,youtubeUrl,description});
+  saveDB(); renderVideoList(key);
+}
+function editVideo(key,idx){
+  const v=(db[key]&&db[key].videos&&db[key].videos[idx])||{};
+  const title=prompt('Video title:',v.title||''); if(title===null) return;
+  const youtubeUrl=prompt('YouTube URL or video ID:',v.youtubeUrl||'');
+  const description=prompt('Description:',v.description||'');
+  db[key].videos[idx]={title,youtubeUrl,description};
+  saveDB(); renderVideoList(key);
+}
+function deleteVideo(key,idx){
+  if(!confirm('Delete video?')) return;
+  db[key].videos.splice(idx,1);
+  saveDB(); renderVideoList(key);
+}
+
+/* ── YOUTUBE ── */
 function updateYT(type, url){ try{ let id=''; if(url.includes('youtu.be/')){ id=url.split('youtu.be/')[1].split('?')[0]; } else if(url.includes('v=')){ id=url.split('v=')[1].split('&')[0]; } else if(url.length==11){ id=url; } if(id){ const el=document.getElementById('yt-'+type); if(el) el.src='https://www.youtube.com/embed/'+id; } }catch(e){} }
 function saveYT(type){ const input=document.getElementById('yt-'+type+'-input'); if(!input) return; const url=input.value; updateYT(type, url); db['YT-'+type]=url; saveDB(); alert('Saved YouTube player '+type); }
-function loadYT(){ ['videos','movies'].forEach(t=>{ if(db['YT-'+t]){ updateYT(t, db['YT-'+t]); const inp=document.getElementById('yt-'+t+'-input'); if(inp) inp.value=db['YT-'+t]; } }); }
+function loadYT(){ ['movies'].forEach(t=>{ if(db['YT-'+t]){ updateYT(t, db['YT-'+t]); const inp=document.getElementById('yt-'+t+'-input'); if(inp) inp.value=db['YT-'+t]; } }); }
+
+/* ── HOME ── */
 function saveHome(){ db['HOME-ABOUT']=document.getElementById('home-about').value; db['HOME-VISION']=document.getElementById('home-vision').value; db['HOME-MISSION']=document.getElementById('home-mission').value; saveDB(); alert('Saved Home - export HOME JSON'); }
 function loadHome(){ const a=document.getElementById('home-about'); if(a) a.value=db['HOME-ABOUT']||'One Family, One Love - TLF Publishing Group LLC'; const v=document.getElementById('home-vision'); if(v) v.value=db['HOME-VISION']||'Empowering artists worldwide'; const m=document.getElementById('home-mission'); if(m) m.value=db['HOME-MISSION']||'Build legacy catalogs'; }
+
+/* ── MORE ── */
 function saveMore(){
- db['MORE-ABOUT_US']=document.getElementById('input-about').value;
- db['MORE-CAREERS']=document.getElementById('input-careers').value;
- db['MORE-TERMS']=document.getElementById('input-terms').value;
- db['MORE-CONDITIONS']=document.getElementById('input-conditions').value;
- db['MORE-PRIVACY']=document.getElementById('input-privacy').value;
- db['MORE-POLICY']=document.getElementById('input-policy').value;
- saveDB(); loadMore(); alert('Saved More - export MORE JSON for official lock');
+  db['MORE-ABOUT_US']=document.getElementById('input-about').value;
+  db['MORE-CAREERS']=document.getElementById('input-careers').value;
+  db['MORE-TERMS']=document.getElementById('input-terms').value;
+  db['MORE-CONDITIONS']=document.getElementById('input-conditions').value;
+  db['MORE-PRIVACY']=document.getElementById('input-privacy').value;
+  db['MORE-POLICY']=document.getElementById('input-policy').value;
+  saveDB(); loadMore(); alert('Saved More - export MORE JSON for official lock');
 }
 function loadMore(){
- const defaults={
-  ABOUT_US: "TLF Publishing Group LLC - One Family, One Love. Founded in 2010, TLF Publishing Group LLC is an independent publishing, music, and film collective dedicated to empowering creators to own their legacy. We publish books, music, videos, and movies that inspire, educate, and elevate the culture.",
-  CAREERS: "Join the Firm. We're always looking for writers, editors, producers, designers, marketers, and visionaries who believe in One Family, One Love. Email careers@tlfpublishing.com with your portfolio.",
-  TERMS: "By accessing TLF Publishing Group LLC digital properties, you agree to use content for personal, non-commercial use only. All books, music, videos, and films are protected by copyright. Unauthorized reproduction is prohibited.",
-  CONDITIONS: "All sales final. Digital content delivered as-is. User accounts may be suspended for violation of community guidelines. We reserve the right to update these conditions at any time.",
-  PRIVACY: "We respect your privacy. We collect only what we need to operate the app: email for sign-in, preferences for personalization. We never sell your data. LocalStorage is used for offline JSON restoration. You can request deletion at privacy@tlfpublishing.com.",
-  POLICY: "TLF Publishing Group LLC is committed to safe, respectful, and empowering content. Hate, harassment, and exploitation are prohibited. All submissions are reviewed. Policy violations may result in removal and account termination."
- };
- document.getElementById('text-about').textContent=db['MORE-ABOUT_US']||defaults.ABOUT_US;
- document.getElementById('text-careers').textContent=db['MORE-CAREERS']||defaults.CAREERS;
- document.getElementById('text-terms').textContent=db['MORE-TERMS']||defaults.TERMS;
- document.getElementById('text-conditions').textContent=db['MORE-CONDITIONS']||defaults.CONDITIONS;
- document.getElementById('text-privacy').textContent=db['MORE-PRIVACY']||defaults.PRIVACY;
- document.getElementById('text-policy').textContent=db['MORE-POLICY']||defaults.POLICY;
- document.getElementById('input-about').value=db['MORE-ABOUT_US']||defaults.ABOUT_US;
- document.getElementById('input-careers').value=db['MORE-CAREERS']||defaults.CAREERS;
- document.getElementById('input-terms').value=db['MORE-TERMS']||defaults.TERMS;
- document.getElementById('input-conditions').value=db['MORE-CONDITIONS']||defaults.CONDITIONS;
- document.getElementById('input-privacy').value=db['MORE-PRIVACY']||defaults.PRIVACY;
- document.getElementById('input-policy').value=db['MORE-POLICY']||defaults.POLICY;
+  const defaults={
+    ABOUT_US:"TLF Publishing Group LLC - One Family, One Love. Founded in 2010, TLF Publishing Group LLC is an independent publishing, music, and film collective dedicated to empowering creators to own their legacy. We publish books, music, videos, and movies that inspire, educate, and elevate the culture.",
+    CAREERS:"Join the Firm. We're always looking for writers, editors, producers, designers, marketers, and visionaries who believe in One Family, One Love. Email careers@tlfpublishing.com with your portfolio.",
+    TERMS:"By accessing TLF Publishing Group LLC digital properties, you agree to use content for personal, non-commercial use only. All books, music, videos, and films are protected by copyright. Unauthorized reproduction is prohibited.",
+    CONDITIONS:"All sales final. Digital content delivered as-is. User accounts may be suspended for violation of community guidelines. We reserve the right to update these conditions at any time.",
+    PRIVACY:"We respect your privacy. We collect only what we need to operate the app: email for sign-in, preferences for personalization. We never sell your data. LocalStorage is used for offline JSON restoration. You can request deletion at privacy@tlfpublishing.com.",
+    POLICY:"TLF Publishing Group LLC is committed to safe, respectful, and empowering content. Hate, harassment, and exploitation are prohibited. All submissions are reviewed. Policy violations may result in removal and account termination."
+  };
+  document.getElementById('text-about').textContent=db['MORE-ABOUT_US']||defaults.ABOUT_US;
+  document.getElementById('text-careers').textContent=db['MORE-CAREERS']||defaults.CAREERS;
+  document.getElementById('text-terms').textContent=db['MORE-TERMS']||defaults.TERMS;
+  document.getElementById('text-conditions').textContent=db['MORE-CONDITIONS']||defaults.CONDITIONS;
+  document.getElementById('text-privacy').textContent=db['MORE-PRIVACY']||defaults.PRIVACY;
+  document.getElementById('text-policy').textContent=db['MORE-POLICY']||defaults.POLICY;
+  document.getElementById('input-about').value=db['MORE-ABOUT_US']||defaults.ABOUT_US;
+  document.getElementById('input-careers').value=db['MORE-CAREERS']||defaults.CAREERS;
+  document.getElementById('input-terms').value=db['MORE-TERMS']||defaults.TERMS;
+  document.getElementById('input-conditions').value=db['MORE-CONDITIONS']||defaults.CONDITIONS;
+  document.getElementById('input-privacy').value=db['MORE-PRIVACY']||defaults.PRIVACY;
+  document.getElementById('input-policy').value=db['MORE-POLICY']||defaults.POLICY;
 }
+
+/* ── EXPORT / IMPORT ── */
 function exportTab(tab){
- let filtered={};
- if(tab==='HOME'){ filtered={'HOME-ABOUT':db['HOME-ABOUT'],'HOME-VISION':db['HOME-VISION'],'HOME-MISSION':db['HOME-MISSION']}; }
- else if(tab==='BOOKS'){ Object.keys(db).forEach(k=>{ if(k.startsWith('BOOK-')) filtered[k]=db[k]; }); }
- else if(tab==='MUSIC'){ Object.keys(db).forEach(k=>{ if(k.startsWith('TLF-')||k.startsWith('DIVAS-')||k.startsWith('ASSOC-')||k.startsWith('MUSIC-LOGO-')) filtered[k]=db[k]; }); }
- else if(tab==='VIDEOS'){ Object.keys(db).forEach(k=>{ if(k.startsWith('VIDEO-')) filtered[k]=db[k]; }); if(db['YT-videos']) filtered['YT-videos']=db['YT-videos']; }
- else if(tab==='MOVIES'){ Object.keys(db).forEach(k=>{ if(k.startsWith('MOVIE-')) filtered[k]=db[k]; }); }
- else if(tab==='MORE'){ filtered={'ABOUT_US':{'title':'About Us','content':db['MORE-ABOUT_US']||document.getElementById('input-about').value},'CAREERS':{'title':'Careers','content':db['MORE-CAREERS']||document.getElementById('input-careers').value},'TERMS':{'title':'Terms','content':db['MORE-TERMS']||document.getElementById('input-terms').value},'CONDITIONS':{'title':'Conditions','content':db['MORE-CONDITIONS']||document.getElementById('input-conditions').value},'PRIVACY':{'title':'Privacy','content':db['MORE-PRIVACY']||document.getElementById('input-privacy').value},'POLICY':{'title':'Policy','content':db['MORE-POLICY']||document.getElementById('input-policy').value},'FOOTER':{'logo':'icon-512.png','text':'TLF logo © 2026 TLF PUBLISHING GROUP LLC All Rights Reserved','year':2026}}; }
- else { filtered=db; }
- const blob=new Blob([JSON.stringify(filtered,null,2)],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='TLF-'+tab+'-TAB-LOCKED-'+new Date().toISOString().slice(0,10)+'.json'; a.click(); URL.revokeObjectURL(url);
+  let filtered={};
+  if(tab==='HOME'){ filtered={'HOME-ABOUT':db['HOME-ABOUT'],'HOME-VISION':db['HOME-VISION'],'HOME-MISSION':db['HOME-MISSION']}; }
+  else if(tab==='BOOKS'){ Object.keys(db).forEach(k=>{ if(k.startsWith('BOOK-')) filtered[k]=db[k]; }); }
+  else if(tab==='MUSIC'){ Object.keys(db).forEach(k=>{ if(k.startsWith('TLF-')||k.startsWith('DIVAS-')||k.startsWith('ASSOC-')||k.startsWith('MUSIC-LOGO-')) filtered[k]=db[k]; }); }
+  else if(tab==='VIDEOS'){ Object.keys(db).forEach(k=>{ if(k.startsWith('VIDEO-LOGO-')||k.startsWith('VIDEO-')) filtered[k]=db[k]; }); }
+  else if(tab==='MOVIES'){ Object.keys(db).forEach(k=>{ if(k.startsWith('MOVIE-')) filtered[k]=db[k]; }); }
+  else if(tab==='MORE'){ filtered={'ABOUT_US':{'title':'About Us','content':db['MORE-ABOUT_US']||document.getElementById('input-about').value},'CAREERS':{'title':'Careers','content':db['MORE-CAREERS']||document.getElementById('input-careers').value},'TERMS':{'title':'Terms','content':db['MORE-TERMS']||document.getElementById('input-terms').value},'CONDITIONS':{'title':'Conditions','content':db['MORE-CONDITIONS']||document.getElementById('input-conditions').value},'PRIVACY':{'title':'Privacy','content':db['MORE-PRIVACY']||document.getElementById('input-privacy').value},'POLICY':{'title':'Policy','content':db['MORE-POLICY']||document.getElementById('input-policy').value},'FOOTER':{'logo':'icon-512.png','text':'TLF logo © 2026 TLF PUBLISHING GROUP LLC All Rights Reserved','year':2026}}; }
+  else { filtered=db; }
+  const blob=new Blob([JSON.stringify(filtered,null,2)],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='TLF-'+tab+'-TAB-LOCKED-'+new Date().toISOString().slice(0,10)+'.json'; a.click(); URL.revokeObjectURL(url);
 }
 function importAll(input){
- const file=input.files[0]; if(!file) return; const reader=new FileReader();
- reader.onload=e=>{ try{ const imported=JSON.parse(e.target.result); if(confirm('Merge '+Object.keys(imported).length+' items? If JSON tampered, pages get out of whack')){ // handle MORE new format
-  if(imported.ABOUT_US && imported.ABOUT_US.content){ db['MORE-ABOUT_US']=imported.ABOUT_US.content; }
-  if(imported.CAREERS && imported.CAREERS.content){ db['MORE-CAREERS']=imported.CAREERS.content; }
-  if(imported.TERMS && imported.TERMS.content){ db['MORE-TERMS']=imported.TERMS.content; }
-  if(imported.CONDITIONS && imported.CONDITIONS.content){ db['MORE-CONDITIONS']=imported.CONDITIONS.content; }
-  if(imported.PRIVACY && imported.PRIVACY.content){ db['MORE-PRIVACY']=imported.PRIVACY.content; }
-  if(imported.POLICY && imported.POLICY.content){ db['MORE-POLICY']=imported.POLICY.content; }
-  db={...db,...imported}; saveDB(); fillAll(); loadHome(); loadMore(); alert('Imported - '+Object.keys(imported).length+' items'); } }catch(err){ alert('Invalid JSON'); } }; reader.readAsText(file); input.value='';
+  const file=input.files[0]; if(!file) return; const reader=new FileReader();
+  reader.onload=e=>{ try{ const imported=JSON.parse(e.target.result); if(confirm('Merge '+Object.keys(imported).length+' items? If JSON tampered, pages get out of whack')){
+    if(imported.ABOUT_US&&imported.ABOUT_US.content){ db['MORE-ABOUT_US']=imported.ABOUT_US.content; }
+    if(imported.CAREERS&&imported.CAREERS.content){ db['MORE-CAREERS']=imported.CAREERS.content; }
+    if(imported.TERMS&&imported.TERMS.content){ db['MORE-TERMS']=imported.TERMS.content; }
+    if(imported.CONDITIONS&&imported.CONDITIONS.content){ db['MORE-CONDITIONS']=imported.CONDITIONS.content; }
+    if(imported.PRIVACY&&imported.PRIVACY.content){ db['MORE-PRIVACY']=imported.PRIVACY.content; }
+    if(imported.POLICY&&imported.POLICY.content){ db['MORE-POLICY']=imported.POLICY.content; }
+    db={...db,...imported}; saveDB(); fillAll(); loadHome(); loadMore(); alert('Imported - '+Object.keys(imported).length+' items'); } }catch(err){ alert('Invalid JSON'); } }; reader.readAsText(file); input.value='';
 }
+
 document.getElementById('adminBtn').addEventListener('click', enterApp);
 document.getElementById('signupBtn').addEventListener('click', enterApp);
 document.getElementById('loginBtn').addEventListener('click', enterApp);
