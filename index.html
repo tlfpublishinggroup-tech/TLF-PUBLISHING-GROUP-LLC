@@ -83,7 +83,7 @@ nav.bottom button.active{background:#C9A86A;color:#000;font-weight:900}
 
 <!-- HOME -->
 <div id="tab-home" class="tab active">
-<div class="topbar"><h2 class="gold">TLF HOME - MASTER LOCKED</h2><div style="display:flex;gap:6px"><button class="badge gold" onclick="exportTab('HOME')">EXPORT HOME</button><button class="badge" onclick="document.getElementById('importFile-home').click()">IMPORT</button></div></div>
+<div class="topbar"><h2 class="gold">TLF HOME - MASTER LOCKED</h2><div style="display:flex;gap:6px"><button class="badge gold" onclick="exportTab('HOME')">EXPORT HOME</button><label for="importFile-home" class="badge" style="cursor:pointer">IMPORT</label></div></div>
 <input type="file" id="importFile-home" accept=".json" style="display:none" onchange="importAll(this)"/>
 <div class="edit-box"><label>About</label><textarea id="home-about" rows="3"></textarea></div>
 <div class="edit-box"><label>Vision</label><input id="home-vision"/></div>
@@ -94,7 +94,7 @@ nav.bottom button.active{background:#C9A86A;color:#000;font-weight:900}
 
 <!-- BOOKS -->
 <div id="tab-books" class="tab">
-<div class="topbar"><div><h2 class="gold">TLF BOOKS - 18 - COVER ONLY TAP->AMAZON</h2></div><div style="display:flex;gap:6px"><button class="badge gold" onclick="exportTab('BOOKS')">EXPORT BOOKS</button><button class="badge" onclick="document.getElementById('importFile-books').click()">IMPORT</button></div></div>
+<div class="topbar"><div><h2 class="gold">TLF BOOKS - 18 - COVER ONLY TAP->AMAZON</h2></div><div style="display:flex;gap:6px"><button class="badge gold" onclick="exportTab('BOOKS')">EXPORT BOOKS</button><label for="importFile-books" class="badge" style="cursor:pointer">IMPORT</label></div></div>
 <input type="file" id="importFile-books" accept=".json" style="display:none" onchange="importAll(this)"/>
 <div class="book-grid" id="book-grid-real"></div>
 <p style="font-size:9px;opacity:.4;margin-top:12px">Storage: <span id="storageSize-books"></span></p>
@@ -102,7 +102,7 @@ nav.bottom button.active{background:#C9A86A;color:#000;font-weight:900}
 
 <!-- MUSIC -->
 <div id="tab-music" class="tab">
-<div class="topbar"><div><h2 class="gold">TLF MUSIC - 83 - PERFECT SQUARE</h2><span id="count-music" class="gold" style="font-size:11px"></span></div><div style="display:flex;gap:6px"><button class="badge gold" onclick="exportTab('MUSIC')">EXPORT MUSIC</button><button class="badge" onclick="document.getElementById('importFile-music').click()">IMPORT</button></div></div>
+<div class="topbar"><div><h2 class="gold">TLF MUSIC - 83 - PERFECT SQUARE</h2><span id="count-music" class="gold" style="font-size:11px"></span></div><div style="display:flex;gap:6px"><button class="badge gold" onclick="exportTab('MUSIC')">EXPORT MUSIC</button><label for="importFile-music" class="badge" style="cursor:pointer">IMPORT</label></div></div>
 <input type="file" id="importFile-music" accept=".json" style="display:none" onchange="importAll(this)"/>
 <div style="margin-bottom:8px;font-size:11px;opacity:.6">TLF 30up — <span id="count-tlf"></span></div><div class="grid-30" id="grid-tlf"></div>
 <div class="divider"></div><div style="margin-bottom:8px;font-size:11px;opacity:.6">Firm Divas 18up — <span id="count-divas"></span></div><div class="grid-30" id="grid-divas"></div>
@@ -113,7 +113,7 @@ nav.bottom button.active{background:#C9A86A;color:#000;font-weight:900}
 
 <!-- VIDEOS -->
 <div id="tab-videos" class="tab">
-<div class="topbar"><h2 class="gold">TLF VIDEOS - 8 CATEGORIES</h2><div style="display:flex;gap:6px"><button class="badge gold" onclick="exportTab('VIDEOS')">EXPORT VIDEOS</button><button class="badge" onclick="document.getElementById('importFile-vid').click()">IMPORT</button></div></div>
+<div class="topbar"><h2 class="gold">TLF VIDEOS - 8 CATEGORIES</h2><div style="display:flex;gap:6px"><button class="badge gold" onclick="exportTab('VIDEOS')">EXPORT VIDEOS</button><label for="importFile-vid" class="badge" style="cursor:pointer">IMPORT</label></div></div>
 <input type="file" id="importFile-vid" accept=".json" style="display:none" onchange="importAll(this)"/>
 <div class="video-wrap"><iframe id="yt-videos" src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe></div>
 <div class="grid-8" id="grid-videos-logos"></div>
@@ -121,7 +121,7 @@ nav.bottom button.active{background:#C9A86A;color:#000;font-weight:900}
 
 <!-- MOVIES -->
 <div id="tab-movies" class="tab">
-<div class="topbar"><h2 class="gold">TLF MOVIES - 10 POSTERS</h2><div style="display:flex;gap:6px"><button class="badge gold" onclick="exportTab('MOVIES')">EXPORT MOVIES</button><button class="badge" onclick="document.getElementById('importFile-mov').click()">IMPORT</button></div></div>
+<div class="topbar"><h2 class="gold">TLF MOVIES - 10 POSTERS</h2><div style="display:flex;gap:6px"><button class="badge gold" onclick="exportTab('MOVIES')">EXPORT MOVIES</button><label for="importFile-mov" class="badge" style="cursor:pointer">IMPORT</label></div></div>
 <input type="file" id="importFile-mov" accept=".json" style="display:none" onchange="importAll(this)"/>
 <div class="video-wrap"><iframe id="yt-movies" src="https://www.youtube.com/embed/ZTdc3W2ZdMw" allowfullscreen></iframe></div>
 <div class="edit-box"><label>YouTube Player - Movies - editable</label><input id="yt-movies-input" placeholder="Paste YouTube link" value="https://youtu.be/ZTdc3W2ZdMw?is=n_MasjrRKAnyiDwW" oninput="updateYT('movies', this.value)"/><button class="btn-gold" onclick="saveYT('movies')">SAVE PLAYER</button></div>
@@ -130,7 +130,7 @@ nav.bottom button.active{background:#C9A86A;color:#000;font-weight:900}
 
 <!-- MORE - 6 BOXES + FOOTER -->
 <div id="tab-more" class="tab">
-<div class="topbar"><h2 class="gold">MORE - INFO - LOCKED</h2><div style="display:flex;gap:6px"><button class="badge gold" onclick="exportTab('MORE')">EXPORT MORE</button><button class="badge" onclick="document.getElementById('importFile-more').click()">IMPORT</button></div></div>
+<div class="topbar"><h2 class="gold">MORE - INFO - LOCKED</h2><div style="display:flex;gap:6px"><button class="badge gold" onclick="exportTab('MORE')">EXPORT MORE</button><label for="importFile-more" class="badge" style="cursor:pointer">IMPORT</label></div></div>
 <input type="file" id="importFile-more" accept=".json" style="display:none" onchange="importAll(this)"/>
 
 <div id="more-container">
