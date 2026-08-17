@@ -189,6 +189,8 @@ nav.bottom button.active{background:#C9A86A;color:#000;font-weight:900}
 
 <script>
 let db={}, current=null, isAdmin=false;
+/* HTML-escape user-supplied strings before inserting into innerHTML */
+function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 
 /* ── DB ── */
 function loadDB(){ try{ db=JSON.parse(localStorage.getItem('tlf_master_db')||'{}'); }catch(e){ db={}; } fillAll(); loadHome(); loadMore(); loadYT(); if(!db['YT-movies']){ db['YT-movies']='https://youtu.be/ZTdc3W2ZdMw?is=n_MasjrRKAnyiDwW'; saveDB(); } }
@@ -241,7 +243,7 @@ function makeLogo(prefix,i,type){
   const key=prefix+'-'+String(i).padStart(2,'0'); const d=db[key];
   const div=document.createElement('div'); div.className='logo-box';
   if(d&&d.image){ div.innerHTML='<img src="'+d.image+'" loading="lazy"/>'; }
-  else { div.innerHTML='<span style="font-size:10px;color:#C9A86A;text-align:center;padding:4px">'+(d&&d.name?d.name:prefix+' '+i)+'</span>'; }
+  else { div.innerHTML='<span style="font-size:10px;color:#C9A86A;text-align:center;padding:4px">'+esc(d&&d.name?d.name:prefix+' '+i)+'</span>'; }
   div.onclick=()=>openCategory(key,type); return div;
 }
 
@@ -308,30 +310,31 @@ function renderMusicList(key){
   const l=document.getElementById('music-list-view'); if(!l) return;
   const d=db[key]||{name:key,tracks:[]};
   const tracks=d.tracks||[];
+  const eKey=esc(key);
   let html='<div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap">'
     +'<button class="btn-outline" onclick="showMusicGrid()">← Back</button>'
-    +'<h3 class="gold" style="flex:1">'+(d.name||key)+'</h3>';
-  if(isAdmin) html+='<button class="btn-outline" style="font-size:10px" onclick="openCategoryImageUpload(\''+key+'\',\'music\')">📷 Change Image</button>';
+    +'<h3 class="gold" style="flex:1">'+esc(d.name||key)+'</h3>';
+  if(isAdmin) html+='<button class="btn-outline" style="font-size:10px" onclick="openCategoryImageUpload(\''+eKey+'\',\'music\')">📷 Change Image</button>';
   html+='</div>';
-  if(isAdmin) html+='<input type="file" id="catImg-'+key+'" accept="image/*" style="display:none" onchange="handleCategoryImage(this,\''+key+'\',\'music\')">';
-  if(d.image) html+='<div style="width:100%;max-width:200px;aspect-ratio:1/1;border-radius:12px;overflow:hidden;margin-bottom:12px"><img src="'+d.image+'" style="width:100%;height:100%;object-fit:cover"/></div>';
-  html+='<div class="edit-box" style="margin-bottom:8px"><label>Category Name</label><input id="catName-'+key+'" value="'+(d.name||'').replace(/"/g,'&quot;')+'" '+(isAdmin?'':'readonly')+' style="background:#000;border:1px solid #444;color:#fff;padding:8px;border-radius:8px;width:100%;font-size:13px"/></div>';
-  if(isAdmin) html+='<button class="btn-gold" style="margin-bottom:16px;font-size:11px" onclick="saveCategoryName(\''+key+'\',\'music\')">💾 Save Name</button>';
+  if(isAdmin) html+='<input type="file" id="catImg-'+eKey+'" accept="image/*" style="display:none" onchange="handleCategoryImage(this,\''+eKey+'\',\'music\')">';
+  if(d.image) html+='<div style="width:100%;max-width:200px;aspect-ratio:1/1;border-radius:12px;overflow:hidden;margin-bottom:12px"><img src="'+esc(d.image)+'" style="width:100%;height:100%;object-fit:cover"/></div>';
+  html+='<div class="edit-box" style="margin-bottom:8px"><label>Category Name</label><input id="catName-'+eKey+'" value="'+esc(d.name||'')+'" '+(isAdmin?'':'readonly')+' style="background:#000;border:1px solid #444;color:#fff;padding:8px;border-radius:8px;width:100%;font-size:13px"/></div>';
+  if(isAdmin) html+='<button class="btn-gold" style="margin-bottom:16px;font-size:11px" onclick="saveCategoryName(\''+eKey+'\',\'music\')">💾 Save Name</button>';
   html+='<h4 class="gold" style="margin-bottom:10px;font-size:13px">TRACKS ('+tracks.length+')</h4>';
   tracks.forEach((t,idx)=>{
     html+='<div style="background:#111;border:1px solid #333;border-radius:10px;padding:10px;margin-bottom:8px">'
       +'<div style="display:flex;justify-content:space-between;align-items:start;gap:8px">'
       +'<div style="flex:1">'
-      +'<div style="font-size:13px;font-weight:700;color:#fff">'+(t.name||'Untitled')+'</div>'
-      +'<div style="font-size:11px;color:#C9A86A;margin-top:2px">'+(t.artist||'')+(t.duration?' · '+t.duration:'')+'</div>'
+      +'<div style="font-size:13px;font-weight:700;color:#fff">'+esc(t.name||'Untitled')+'</div>'
+      +'<div style="font-size:11px;color:#C9A86A;margin-top:2px">'+esc(t.artist||'')+(t.duration?' · '+esc(t.duration):'')+'</div>'
       +'</div>';
     if(isAdmin) html+='<div style="display:flex;gap:6px">'
-      +'<button class="badge" onclick="editTrack(\''+key+'\','+idx+')" style="font-size:9px">Edit</button>'
-      +'<button class="badge" onclick="deleteTrack(\''+key+'\','+idx+')" style="font-size:9px;color:#ff6b6b;border-color:#ff6b6b">Del</button>'
+      +'<button class="badge" onclick="editTrack(\''+eKey+'\','+idx+')" style="font-size:9px">Edit</button>'
+      +'<button class="badge" onclick="deleteTrack(\''+eKey+'\','+idx+')" style="font-size:9px;color:#ff6b6b;border-color:#ff6b6b">Del</button>'
       +'</div>';
     html+='</div></div>';
   });
-  if(isAdmin) html+='<button class="btn-gold" style="width:100%;margin-top:8px" onclick="addTrack(\''+key+'\')">+ Add Track</button>';
+  if(isAdmin) html+='<button class="btn-gold" style="width:100%;margin-top:8px" onclick="addTrack(\''+eKey+'\')">+ Add Track</button>';
   l.innerHTML=html;
 }
 function openCategoryImageUpload(key,type){
@@ -391,35 +394,37 @@ function renderVideoList(key){
   const l=document.getElementById('video-list-view'); if(!l) return;
   const d=db[key]||{name:key,videos:[]};
   const videos=d.videos||[];
+  const eKey=esc(key);
   let html='<div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap">'
     +'<button class="btn-outline" onclick="showVideoGrid()">← Back</button>'
-    +'<h3 class="gold" style="flex:1">'+(d.name||key)+'</h3>';
-  if(isAdmin) html+='<button class="btn-outline" style="font-size:10px" onclick="openCategoryImageUpload(\''+key+'\',\'video\')">📷 Change Image</button>';
+    +'<h3 class="gold" style="flex:1">'+esc(d.name||key)+'</h3>';
+  if(isAdmin) html+='<button class="btn-outline" style="font-size:10px" onclick="openCategoryImageUpload(\''+eKey+'\',\'video\')">📷 Change Image</button>';
   html+='</div>';
-  if(isAdmin) html+='<input type="file" id="catImg-'+key+'" accept="image/*" style="display:none" onchange="handleCategoryImage(this,\''+key+'\',\'video\')">';
-  if(d.image) html+='<div style="width:100%;max-width:200px;aspect-ratio:1/1;border-radius:12px;overflow:hidden;margin-bottom:12px"><img src="'+d.image+'" style="width:100%;height:100%;object-fit:cover"/></div>';
-  html+='<div class="edit-box" style="margin-bottom:8px"><label>Category Name</label><input id="catName-'+key+'" value="'+(d.name||'').replace(/"/g,'&quot;')+'" '+(isAdmin?'':'readonly')+' style="background:#000;border:1px solid #444;color:#fff;padding:8px;border-radius:8px;width:100%;font-size:13px"/></div>';
-  if(isAdmin) html+='<button class="btn-gold" style="margin-bottom:16px;font-size:11px" onclick="saveCategoryName(\''+key+'\',\'video\')">💾 Save Name</button>';
+  if(isAdmin) html+='<input type="file" id="catImg-'+eKey+'" accept="image/*" style="display:none" onchange="handleCategoryImage(this,\''+eKey+'\',\'video\')">';
+  if(d.image) html+='<div style="width:100%;max-width:200px;aspect-ratio:1/1;border-radius:12px;overflow:hidden;margin-bottom:12px"><img src="'+esc(d.image)+'" style="width:100%;height:100%;object-fit:cover"/></div>';
+  html+='<div class="edit-box" style="margin-bottom:8px"><label>Category Name</label><input id="catName-'+eKey+'" value="'+esc(d.name||'')+'" '+(isAdmin?'':'readonly')+' style="background:#000;border:1px solid #444;color:#fff;padding:8px;border-radius:8px;width:100%;font-size:13px"/></div>';
+  if(isAdmin) html+='<button class="btn-gold" style="margin-bottom:16px;font-size:11px" onclick="saveCategoryName(\''+eKey+'\',\'video\')">💾 Save Name</button>';
   html+='<h4 class="gold" style="margin-bottom:10px;font-size:13px">VIDEOS ('+videos.length+')</h4>';
   videos.forEach((v,idx)=>{
     html+='<div style="background:#111;border:1px solid #333;border-radius:10px;padding:10px;margin-bottom:8px">';
-    if(v.youtubeUrl){ html+='<div class="video-wrap" style="margin-bottom:8px"><iframe src="'+ytEmbed(v.youtubeUrl)+'" allowfullscreen></iframe></div>'; }
+    const embedSrc=ytEmbed(v.youtubeUrl||'');
+    if(embedSrc){ html+='<div class="video-wrap" style="margin-bottom:8px"><iframe src="'+esc(embedSrc)+'" allowfullscreen></iframe></div>'; }
     html+='<div style="display:flex;justify-content:space-between;align-items:start;gap:8px">'
       +'<div style="flex:1">'
-      +'<div style="font-size:13px;font-weight:700;color:#fff">'+(v.title||'Untitled')+'</div>'
-      +(v.description?'<div style="font-size:11px;opacity:.7;margin-top:4px">'+v.description+'</div>':'')
+      +'<div style="font-size:13px;font-weight:700;color:#fff">'+esc(v.title||'Untitled')+'</div>'
+      +(v.description?'<div style="font-size:11px;opacity:.7;margin-top:4px">'+esc(v.description)+'</div>':'')
       +'</div>';
     if(isAdmin) html+='<div style="display:flex;gap:6px">'
-      +'<button class="badge" onclick="editVideo(\''+key+'\','+idx+')" style="font-size:9px">Edit</button>'
-      +'<button class="badge" onclick="deleteVideo(\''+key+'\','+idx+')" style="font-size:9px;color:#ff6b6b;border-color:#ff6b6b">Del</button>'
+      +'<button class="badge" onclick="editVideo(\''+eKey+'\','+idx+')" style="font-size:9px">Edit</button>'
+      +'<button class="badge" onclick="deleteVideo(\''+eKey+'\','+idx+')" style="font-size:9px;color:#ff6b6b;border-color:#ff6b6b">Del</button>'
       +'</div>';
     html+='</div></div>';
   });
-  if(isAdmin) html+='<button class="btn-gold" style="width:100%;margin-top:8px" onclick="addVideo(\''+key+'\')">+ Add Video</button>';
+  if(isAdmin) html+='<button class="btn-gold" style="width:100%;margin-top:8px" onclick="addVideo(\''+eKey+'\')">+ Add Video</button>';
   l.innerHTML=html;
 }
 function ytEmbed(url){
-  try{ let id=''; if(url.includes('youtu.be/')){ id=url.split('youtu.be/')[1].split('?')[0]; } else if(url.includes('v=')){ id=url.split('v=')[1].split('&')[0]; } else if(/^[A-Za-z0-9_-]{11}$/.test(url)){ id=url; } return id?'https://www.youtube.com/embed/'+id:url; }catch(e){ return url; }
+  try{ let id=''; if(url.includes('youtu.be/')){ id=url.split('youtu.be/')[1].split('?')[0]; } else if(url.includes('v=')){ id=url.split('v=')[1].split('&')[0]; } else if(/^[A-Za-z0-9_-]{11}$/.test(url)){ id=url; } if(id&&/^[A-Za-z0-9_-]+$/.test(id)) return 'https://www.youtube.com/embed/'+id; }catch(e){} return '';
 }
 function addVideo(key){
   const title=prompt('Video title:'); if(!title) return;
