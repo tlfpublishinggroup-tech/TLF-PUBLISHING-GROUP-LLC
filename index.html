@@ -556,7 +556,7 @@ async function downloadBackupJson(blob,filename){
     try{
       const file=new File([blob],filename,{type:'application/json'});
       if(navigator.canShare({files:[file]})){ await navigator.share({title:filename,text:'TLF JSON backup',files:[file]}); return 'share'; }
-    }catch(e){ if(!(e&&e.name==='AbortError')) throw e; }
+    }catch(e){ if(e&&e.name==='AbortError') return 'cancelled'; throw e; }
   }
   if(isIOSSafari()){
     const dataUrl=await new Promise((resolve,reject)=>{
@@ -580,13 +580,13 @@ async function downloadBackupJson(blob,filename){
     a.click();
     setTimeout(()=>{ try{ document.body.removeChild(a); }catch(e){} },200);
   };
-  try{ clickLink(url); return 'download'; }
+  try{ clickLink(url); setTimeout(()=>URL.revokeObjectURL(url),1200); return 'download'; }
   catch(err){
     const popup=window.open(url,'_blank');
-    if(popup) return 'open';
+    if(popup){ setTimeout(()=>URL.revokeObjectURL(url),15000); return 'open'; }
+    setTimeout(()=>URL.revokeObjectURL(url),1200);
     throw new Error('Browser blocked the file download. Please allow pop-ups/downloads and export again.');
   }
-  finally{ setTimeout(()=>URL.revokeObjectURL(url),15000); }
 }
 function normalizeImportedData(imported){
   const normalized={...imported};
@@ -604,6 +604,7 @@ async function exportTab(){
     const blob=new Blob([json],{type:'application/json'});
     const filename='TLF-ALL-TABS-BACKUP-'+new Date().toISOString().slice(0,10)+'.json';
     const mode=await downloadBackupJson(blob,filename);
+    if(mode==='cancelled'){ showStatus('Export cancelled. Unsaved local edits are still present.','info'); return; }
     clearUnsaved();
     if(mode==='share') showStatus('Export ready in iPhone share sheet: '+filename+' ('+keyCount+' items).','success');
     else showStatus('Export complete: '+keyCount+' items saved to '+filename+'.','success');
