@@ -581,7 +581,7 @@ async function downloadBackupJson(blob,filename){
     setTimeout(()=>{ try{ document.body.removeChild(a); }catch(e){} },200);
   };
   try{ clickLink(url); return 'download'; }catch(err){ window.open(url,'_blank'); return 'open'; }
-  finally{ setTimeout(()=>URL.revokeObjectURL(url),2000); }
+  finally{ setTimeout(()=>URL.revokeObjectURL(url),15000); }
 }
 function normalizeImportedData(imported){
   const normalized={...imported};
