@@ -197,7 +197,7 @@ let db={}, current=null, isAdmin=false;
 function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 
 /* ── DB ── */
-function loadDB(){ try{ db=JSON.parse(localStorage.getItem('tlf_master_db')||'{}'); }catch(e){ db={}; } if(!db['YT-movies']){ db['YT-movies']='https://youtu.be/ZTdc3W2ZdMw?is=n_MasjrRKAnyiDwW'; saveDB(); } if(!db['YT-videos']){ db['YT-videos']='https://youtu.be/8N0r7cdKEnk?is=JDf2Ym_SyrBSMceq'; saveDB(); } fillAll(); loadHome(); loadMore(); loadYT(); }
+function loadDB(){ try{ db=JSON.parse(localStorage.getItem('tlf_master_db')||'{}'); }catch(e){ db={}; } let seededYT=false; if(!db['YT-movies']){ db['YT-movies']='https://youtu.be/ZTdc3W2ZdMw?is=n_MasjrRKAnyiDwW'; seededYT=true; } if(!db['YT-videos']){ db['YT-videos']='https://youtu.be/8N0r7cdKEnk?is=JDf2Ym_SyrBSMceq'; seededYT=true; } if(seededYT) saveDB(); fillAll(); loadHome(); loadMore(); loadYT(); }
 function saveDB(){ try{ localStorage.setItem('tlf_master_db', JSON.stringify(db)); }catch(e){ if(e.name==='QuotaExceededError'||e.code===22){ alert('Storage full! Some images may not have been saved. Try exporting and removing large images.'); } } updateSize(); }
 function updateSize(){ try{ const s=new Blob([JSON.stringify(db)]).size; document.querySelectorAll('[id^=storageSize]').forEach(el=>el.textContent=(s/1024).toFixed(1)+' KB'); }catch(e){} }
 
