@@ -580,7 +580,12 @@ async function downloadBackupJson(blob,filename){
     a.click();
     setTimeout(()=>{ try{ document.body.removeChild(a); }catch(e){} },200);
   };
-  try{ clickLink(url); return 'download'; }catch(err){ window.open(url,'_blank'); return 'open'; }
+  try{ clickLink(url); return 'download'; }
+  catch(err){
+    const popup=window.open(url,'_blank');
+    if(popup) return 'open';
+    throw new Error('Browser blocked the file download. Please allow pop-ups/downloads and export again.');
+  }
   finally{ setTimeout(()=>URL.revokeObjectURL(url),15000); }
 }
 function normalizeImportedData(imported){
