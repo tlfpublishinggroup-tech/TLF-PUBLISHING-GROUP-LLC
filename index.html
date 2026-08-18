@@ -195,7 +195,16 @@ let db={}, current=null, isAdmin=false;
 function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 
 /* ── DB ── */
-function loadDB(){ try{ db=JSON.parse(localStorage.getItem('tlf_master_db')||'{}'); }catch(e){ db={}; } fillAll(); loadHome(); loadMore(); loadYT(); if(!db['YT-movies']){ db['YT-movies']='https://youtu.be/ZTdc3W2ZdMw?is=n_MasjrRKAnyiDwW'; saveDB(); } }
+async function loadDB(){
+  const base={};
+  await Promise.all(['home','books','music','videos','movies','more'].map(async f=>{
+    try{ const r=await fetch('data/'+f+'.json'); if(r.ok){ const j=await r.json(); Object.assign(base,j); } else { console.warn('TLF data: could not load data/'+f+'.json ('+r.status+')'); } }catch(e){ console.warn('TLF data: fetch error for data/'+f+'.json',e); }
+  }));
+  let stored={};
+  try{ stored=JSON.parse(localStorage.getItem('tlf_master_db')||'{}'); }catch(e){}
+  db={...base,...stored};
+  fillAll(); loadHome(); loadMore(); loadYT();
+}
 function saveDB(){ try{ localStorage.setItem('tlf_master_db', JSON.stringify(db)); }catch(e){ if(e.name==='QuotaExceededError'||e.code===22){ alert('Storage full! Some images may not have been saved. Try exporting and removing large images.'); } } updateSize(); }
 function updateSize(){ try{ const s=new Blob([JSON.stringify(db)]).size; document.querySelectorAll('[id^=storageSize]').forEach(el=>el.textContent=(s/1024).toFixed(1)+' KB'); }catch(e){} }
 
