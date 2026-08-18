@@ -556,7 +556,7 @@ async function downloadBackupJson(blob,filename){
     try{
       const file=new File([blob],filename,{type:'application/json'});
       if(navigator.canShare({files:[file]})){ await navigator.share({title:filename,text:'TLF JSON backup',files:[file]}); return 'share'; }
-    }catch(e){ if(e&&e.name==='AbortError') return 'cancelled'; throw e; }
+    }catch(e){ if(e&&e.name==='AbortError') return 'cancelled'; }
   }
   if(isIOSSafari()){
     const dataUrl=await new Promise((resolve,reject)=>{
@@ -593,6 +593,7 @@ function normalizeImportedData(imported){
   Object.keys(MORE_IMPORT_MAP).forEach(k=>{
     if(imported[k]&&typeof imported[k]==='object'&&typeof imported[k].content==='string') normalized[MORE_IMPORT_MAP[k]]=imported[k].content;
     else if(typeof imported[k]==='string') normalized[MORE_IMPORT_MAP[k]]=imported[k];
+    delete normalized[k];
   });
   return normalized;
 }
