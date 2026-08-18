@@ -119,6 +119,8 @@ nav.bottom button.active{background:#C9A86A;color:#000;font-weight:900}
 <div class="topbar"><h2 class="gold">TLF VIDEOS - 8 CATEGORIES</h2><div style="display:flex;gap:6px"><button class="badge gold" onclick="exportTab('VIDEOS')">EXPORT VIDEOS</button><button class="badge" onclick="document.getElementById('importFile-vid').click()">IMPORT</button></div></div>
 <input type="file" id="importFile-vid" accept=".json" style="display:none" onchange="importAll(this)"/>
 <div id="video-grid-view">
+<div class="video-wrap"><iframe id="yt-videos" src="https://www.youtube.com/embed/8N0r7cdKEnk" allowfullscreen></iframe></div>
+<div class="edit-box" id="videos-player-admin" style="display:none"><label>YouTube Player - Videos - editable</label><input id="yt-videos-input" placeholder="Paste YouTube link" value="https://youtu.be/8N0r7cdKEnk?is=JDf2Ym_SyrBSMceq" oninput="updateYT('videos', this.value)"/><button class="btn-gold" style="margin-top:8px" onclick="saveYT('videos')">Save Videos Player</button></div>
 <div class="grid-8" id="grid-videos-logos"></div>
 </div>
 <div id="video-list-view" style="display:none"></div>
@@ -129,7 +131,7 @@ nav.bottom button.active{background:#C9A86A;color:#000;font-weight:900}
 <div class="topbar"><h2 class="gold">TLF MOVIES - 10 POSTERS</h2><div style="display:flex;gap:6px"><button class="badge gold" onclick="exportTab('MOVIES')">EXPORT MOVIES</button><button class="badge" onclick="document.getElementById('importFile-mov').click()">IMPORT</button></div></div>
 <input type="file" id="importFile-mov" accept=".json" style="display:none" onchange="importAll(this)"/>
 <div class="video-wrap"><iframe id="yt-movies" src="https://www.youtube.com/embed/ZTdc3W2ZdMw" allowfullscreen></iframe></div>
-<div class="edit-box"><label>YouTube Player - Movies - editable</label><input id="yt-movies-input" placeholder="Paste YouTube link" value="https://youtu.be/ZTdc3W2ZdMw?is=n_MasjrRKAnyiDwW" oninput="updateYT('movies', this.value)"/><button class="btn-gold" onclick="saveYT('movies')">SAVE PLAYER</button></div>
+<div class="edit-box" id="movies-player-admin" style="display:none"><label>YouTube Player - Movies - editable</label><input id="yt-movies-input" placeholder="Paste YouTube link" value="https://youtu.be/ZTdc3W2ZdMw?is=n_MasjrRKAnyiDwW" oninput="updateYT('movies', this.value)"/><button class="btn-gold" onclick="saveYT('movies')">SAVE PLAYER</button></div>
 <div class="movie-grid" id="grid-movies"></div>
 </div>
 
@@ -195,7 +197,7 @@ let db={}, current=null, isAdmin=false;
 function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 
 /* ── DB ── */
-function loadDB(){ try{ db=JSON.parse(localStorage.getItem('tlf_master_db')||'{}'); }catch(e){ db={}; } fillAll(); loadHome(); loadMore(); loadYT(); if(!db['YT-movies']){ db['YT-movies']='https://youtu.be/ZTdc3W2ZdMw?is=n_MasjrRKAnyiDwW'; saveDB(); } }
+function loadDB(){ try{ db=JSON.parse(localStorage.getItem('tlf_master_db')||'{}'); }catch(e){ db={}; } if(!db['YT-movies']){ db['YT-movies']='https://youtu.be/ZTdc3W2ZdMw?is=n_MasjrRKAnyiDwW'; saveDB(); } if(!db['YT-videos']){ db['YT-videos']='https://youtu.be/8N0r7cdKEnk?is=JDf2Ym_SyrBSMceq'; saveDB(); } fillAll(); loadHome(); loadMore(); loadYT(); }
 function saveDB(){ try{ localStorage.setItem('tlf_master_db', JSON.stringify(db)); }catch(e){ if(e.name==='QuotaExceededError'||e.code===22){ alert('Storage full! Some images may not have been saved. Try exporting and removing large images.'); } } updateSize(); }
 function updateSize(){ try{ const s=new Blob([JSON.stringify(db)]).size; document.querySelectorAll('[id^=storageSize]').forEach(el=>el.textContent=(s/1024).toFixed(1)+' KB'); }catch(e){} }
 
@@ -206,6 +208,8 @@ function enterApp(){
   document.getElementById('app').style.display='flex';
   isAdmin=true;
   document.getElementById('admin-more-edit').style.display='block';
+  const videosPlayerAdmin=document.getElementById('videos-player-admin'); if(videosPlayerAdmin) videosPlayerAdmin.style.display='block';
+  const moviesPlayerAdmin=document.getElementById('movies-player-admin'); if(moviesPlayerAdmin) moviesPlayerAdmin.style.display='block';
   document.querySelectorAll('[id^=edit-]').forEach(el=>el.style.display='block');
   fillAll();
 }
@@ -462,7 +466,7 @@ function deleteVideo(key,idx){
 
 function updateYT(type, url){ try{ let id=''; if(url.includes('youtu.be/')){ id=url.split('youtu.be/')[1].split('?')[0]; } else if(url.includes('v=')){ id=url.split('v=')[1].split('&')[0]; } else if(url.length==11){ id=url; } if(id){ const el=document.getElementById('yt-'+type); if(el) el.src='https://www.youtube.com/embed/'+id; } }catch(e){} }
 function saveYT(type){ const input=document.getElementById('yt-'+type+'-input'); if(!input) return; const url=input.value; updateYT(type, url); db['YT-'+type]=url; saveDB(); alert('Saved YouTube player '+type); }
-function loadYT(){ ['movies'].forEach(t=>{ if(db['YT-'+t]){ updateYT(t, db['YT-'+t]); const inp=document.getElementById('yt-'+t+'-input'); if(inp) inp.value=db['YT-'+t]; } }); }
+function loadYT(){ ['movies','videos'].forEach(t=>{ if(db['YT-'+t]){ updateYT(t, db['YT-'+t]); const inp=document.getElementById('yt-'+t+'-input'); if(inp) inp.value=db['YT-'+t]; } }); }
 
 /* ── HOME ── */
 function saveHome(){ db['HOME-ABOUT']=document.getElementById('home-about').value; db['HOME-VISION']=document.getElementById('home-vision').value; db['HOME-MISSION']=document.getElementById('home-mission').value; saveDB(); alert('Saved Home - export HOME JSON'); }
