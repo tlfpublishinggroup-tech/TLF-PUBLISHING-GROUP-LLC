@@ -67,6 +67,9 @@ nav.bottom button.active{background:#C9A86A;color:#000;font-weight:900}
 .footer-more{margin-top:24px;padding:24px 16px;border-top:1px solid rgba(201,168,106,.3);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px}
 .footer-more img{width:64px;height:64px;object-fit:contain}
 .footer-more span{font-size:11px;opacity:.7;letter-spacing:.04em}
+#unsaved-banner{display:none;position:sticky;top:57px;z-index:9998;background:#7a4f00;color:#ffe8a0;font-size:11px;font-weight:700;text-align:center;padding:6px 12px;letter-spacing:.06em;border-bottom:1px solid #C9A86A}
+#unsaved-banner.visible{display:block}
+.persist-note{font-size:10px;color:#888;margin:8px 0 4px;padding:6px 10px;border-left:2px solid rgba(201,168,106,.4);line-height:1.5}
 </style></head><body>
 <div id="landing">
 <div style="position:absolute;top:12px;right:12px"><button id="adminBtn" style="background:none;border:none;color:#C9A86A;font-size:14px;cursor:pointer">Admin →</button></div>
@@ -80,6 +83,7 @@ nav.bottom button.active{background:#C9A86A;color:#000;font-weight:900}
 
 <div id="app">
 <header><div><span class="gold" style="font-weight:800;border:1px solid #C9A86A;padding:4px 8px;border-radius:4px;margin-right:8px">T</span> <span class="gold" style="font-weight:700;letter-spacing:.12em;font-size:12px">TLF PUBLISHING GROUP LLC</span></div><button onclick="showLanding()" style="background:none;border:1px solid #333;color:#aaa;padding:6px 12px;border-radius:999px;font-size:11px;cursor:pointer">Exit</button></header>
+<div id="unsaved-banner">⚠ UNSAVED LOCAL EDITS — Use EXPORT to save a file; changes are lost on refresh without export.</div>
 
 <!-- HOME -->
 <div id="tab-home" class="tab active">
@@ -96,6 +100,7 @@ nav.bottom button.active{background:#C9A86A;color:#000;font-weight:900}
 <div id="tab-books" class="tab">
 <div class="topbar"><div><h2 class="gold">TLF BOOKS - 18 - COVER ONLY TAP->AMAZON</h2></div><div style="display:flex;gap:6px"><button class="badge gold" onclick="exportTab('BOOKS')">EXPORT BOOKS</button><button class="badge" onclick="document.getElementById('importFile-books').click()">IMPORT</button></div></div>
 <input type="file" id="importFile-books" accept=".json" style="display:none" onchange="importAll(this)"/>
+<p class="persist-note">📌 Edits are stored locally in this browser. Use EXPORT to save a JSON file. On reload, the app loads from the repo's <code>/data/books.json</code> baseline — import your exported file to restore local edits.</p>
 <div class="book-grid" id="book-grid-real"></div>
 <p style="font-size:9px;opacity:.4;margin-top:12px">Storage: <span id="storageSize-books"></span></p>
 </div>
@@ -181,8 +186,8 @@ nav.bottom button.active{background:#C9A86A;color:#000;font-weight:900}
   <button class="btn-gold" style="flex:1" onclick="document.getElementById('artistImageInput').click()">📷 Upload / Change Image</button>
   <button class="btn-outline" style="flex:1" onclick="clearArtistImage()">✕ Remove Image</button>
 </div>
-<div class="edit-box"><label>Name</label><input id="artistName" placeholder="Artist name"/></div>
-<div class="edit-box"><label>Bio / Description</label><textarea id="artistBio" rows="4" placeholder="Artist bio or description"></textarea></div>
+<div class="edit-box"><label>Title</label><input id="artistName" placeholder="Title"/></div>
+<div class="edit-box"><label>Synopsis</label><textarea id="artistBio" rows="4" placeholder="Synopsis"></textarea></div>
 <div class="edit-box"><label>Status</label><input id="artistStatus" placeholder="e.g. Active, Featured, New"/></div>
 <div class="edit-box"><label>Link (Amazon / YouTube / URL)</label><input id="artistLink" placeholder="https://..."/></div>
 <div style="display:flex;gap:8px;flex-wrap:wrap">
@@ -208,10 +213,14 @@ async function loadDB(){
   let seededYT=false;
   if(!db['YT-movies']){ db['YT-movies']='https://youtu.be/ZTdc3W2ZdMw?is=n_MasjrRKAnyiDwW'; seededYT=true; }
   if(!db['YT-videos']){ db['YT-videos']='https://youtu.be/8N0r7cdKEnk?is=JDf2Ym_SyrBSMceq'; seededYT=true; }
-  if(seededYT) saveDB();
+  if(seededYT) try{ localStorage.setItem('tlf_master_db', JSON.stringify(db)); }catch(e){}
+  if(Object.keys(stored).length>0) markUnsaved();
   fillAll(); loadHome(); loadMore(); loadYT();
 }
-function saveDB(){ try{ localStorage.setItem('tlf_master_db', JSON.stringify(db)); }catch(e){ if(e.name==='QuotaExceededError'||e.code===22){ alert('Storage full! Some images may not have been saved. Try exporting and removing large images.'); } } updateSize(); }
+let hasUnsaved=false;
+function markUnsaved(){ hasUnsaved=true; const b=document.getElementById('unsaved-banner'); if(b) b.classList.add('visible'); }
+function clearUnsaved(){ hasUnsaved=false; const b=document.getElementById('unsaved-banner'); if(b) b.classList.remove('visible'); }
+function saveDB(){ try{ localStorage.setItem('tlf_master_db', JSON.stringify(db)); markUnsaved(); }catch(e){ if(e.name==='QuotaExceededError'||e.code===22){ alert('Storage full! Some images may not have been saved. Try exporting and removing large images.'); } } updateSize(); }
 function updateSize(){ try{ const s=new Blob([JSON.stringify(db)]).size; document.querySelectorAll('[id^=storageSize]').forEach(el=>el.textContent=(s/1024).toFixed(1)+' KB'); }catch(e){} }
 
 
@@ -267,13 +276,13 @@ function makeLogo(prefix,i,type){
   div.onclick=()=>openCategory(key,type); return div;
 }
 
-function makeMovie(i){ const key='MOVIE-'+String(i).padStart(2,'0'); const d=db[key]; const div=document.createElement('div'); div.className='movie'; const badge=document.createElement('span'); badge.className='num-badge'; badge.textContent=d&&d.name?d.name:String(i).padStart(2,'0'); if(d&&d.image){ div.innerHTML='<img src="'+d.image+'" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block"/>'; } else { div.innerHTML='<span style="font-size:10px;color:#C9A86A;padding:12px">MOVIE '+String(i).padStart(2,'0')+'</span>'; } div.appendChild(badge); div.onclick=()=>openArtist('MOVIE',i); return div; }
+function makeMovie(i){ const key='MOVIE-'+String(i).padStart(2,'0'); const d=db[key]; const div=document.createElement('div'); div.className='movie'; const badge=document.createElement('span'); badge.className='num-badge'; badge.textContent=String(i).padStart(2,'0'); if(d&&d.image){ div.innerHTML='<img src="'+d.image+'" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block"/>'; } else { div.innerHTML='<span style="font-size:10px;color:#C9A86A;padding:12px">MOVIE '+String(i).padStart(2,'0')+'</span>'; } div.appendChild(badge); div.onclick=()=>openArtist('MOVIE',i); return div; }
 
 /* ── ARTIST MODAL ── */
 function openArtist(p,i){
   current=p+'-'+String(i).padStart(2,'0');
   const d=db[current]||{};
-  document.getElementById('modalTitle').textContent=current;
+  document.getElementById('modalTitle').textContent=d.name||current;
   document.getElementById('artistName').value=d.name||'';
   document.getElementById('artistBio').value=d.bio||'';
   document.getElementById('artistStatus').value=d.status||'';
@@ -524,22 +533,44 @@ function exportTab(tab){
   if(tab==='HOME'){ filtered={'HOME-ABOUT':db['HOME-ABOUT'],'HOME-VISION':db['HOME-VISION'],'HOME-MISSION':db['HOME-MISSION']}; }
   else if(tab==='BOOKS'){ Object.keys(db).forEach(k=>{ if(k.startsWith('BOOK-')) filtered[k]=db[k]; }); }
   else if(tab==='MUSIC'){ Object.keys(db).forEach(k=>{ if(k.startsWith('TLF-')||k.startsWith('DIVAS-')||k.startsWith('ASSOC-')||k.startsWith('MUSIC-LOGO-')) filtered[k]=db[k]; }); }
-  else if(tab==='VIDEOS'){ Object.keys(db).forEach(k=>{ if(k.startsWith('VIDEO-LOGO-')||k.startsWith('VIDEO-')) filtered[k]=db[k]; }); }
-  else if(tab==='MOVIES'){ Object.keys(db).forEach(k=>{ if(k.startsWith('MOVIE-')) filtered[k]=db[k]; }); }
+  else if(tab==='VIDEOS'){ Object.keys(db).forEach(k=>{ if(k.startsWith('VIDEO-LOGO-')||k.startsWith('VIDEO-')) filtered[k]=db[k]; }); if(db['YT-videos']) filtered['YT-videos']=db['YT-videos']; }
+  else if(tab==='MOVIES'){ Object.keys(db).forEach(k=>{ if(k.startsWith('MOVIE-')) filtered[k]=db[k]; }); if(db['YT-movies']) filtered['YT-movies']=db['YT-movies']; }
   else if(tab==='MORE'){ filtered={'ABOUT_US':{'title':'About Us','content':db['MORE-ABOUT_US']||document.getElementById('input-about').value},'CAREERS':{'title':'Careers','content':db['MORE-CAREERS']||document.getElementById('input-careers').value},'TERMS':{'title':'Terms','content':db['MORE-TERMS']||document.getElementById('input-terms').value},'CONDITIONS':{'title':'Conditions','content':db['MORE-CONDITIONS']||document.getElementById('input-conditions').value},'PRIVACY':{'title':'Privacy','content':db['MORE-PRIVACY']||document.getElementById('input-privacy').value},'POLICY':{'title':'Policy','content':db['MORE-POLICY']||document.getElementById('input-policy').value},'FOOTER':{'logo':'icon-512.png','text':'TLF logo © 2026 TLF PUBLISHING GROUP LLC All Rights Reserved','year':2026}}; }
   else { filtered=db; }
-  const blob=new Blob([JSON.stringify(filtered,null,2)],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='TLF-'+tab+'-TAB-LOCKED-'+new Date().toISOString().slice(0,10)+'.json'; a.click(); URL.revokeObjectURL(url);
+  try{
+    const json=JSON.stringify(filtered,null,2);
+    const blob=new Blob([json],{type:'application/json'});
+    const filename='TLF-'+tab+'-TAB-LOCKED-'+new Date().toISOString().slice(0,10)+'.json';
+    if(navigator.msSaveBlob){ navigator.msSaveBlob(blob,filename); clearUnsaved(); return; }
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url; a.download=filename; a.style.display='none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(()=>{ document.body.removeChild(a); URL.revokeObjectURL(url); },200);
+    clearUnsaved();
+  }catch(err){ alert('Export failed: '+err.message+'\nTry reducing image sizes or exporting from a desktop browser.'); }
 }
 function importAll(input){
   const file=input.files[0]; if(!file) return; const reader=new FileReader();
-  reader.onload=e=>{ try{ const imported=JSON.parse(e.target.result); if(confirm('Merge '+Object.keys(imported).length+' items? If JSON tampered, pages get out of whack')){
-    if(imported.ABOUT_US&&imported.ABOUT_US.content){ db['MORE-ABOUT_US']=imported.ABOUT_US.content; }
-    if(imported.CAREERS&&imported.CAREERS.content){ db['MORE-CAREERS']=imported.CAREERS.content; }
-    if(imported.TERMS&&imported.TERMS.content){ db['MORE-TERMS']=imported.TERMS.content; }
-    if(imported.CONDITIONS&&imported.CONDITIONS.content){ db['MORE-CONDITIONS']=imported.CONDITIONS.content; }
-    if(imported.PRIVACY&&imported.PRIVACY.content){ db['MORE-PRIVACY']=imported.PRIVACY.content; }
-    if(imported.POLICY&&imported.POLICY.content){ db['MORE-POLICY']=imported.POLICY.content; }
-    db={...db,...imported}; saveDB(); fillAll(); loadHome(); loadMore(); alert('Imported - '+Object.keys(imported).length+' items'); } }catch(err){ alert('Invalid JSON'); } }; reader.readAsText(file); input.value='';
+  reader.onload=e=>{
+    try{
+      const imported=JSON.parse(e.target.result);
+      if(!imported||typeof imported!=='object'||Array.isArray(imported)){ alert('Import failed: file does not contain a valid JSON object.\nPlease use a file previously exported from this app.'); input.value=''; return; }
+      if(confirm('Merge '+Object.keys(imported).length+' items? If JSON tampered, pages get out of whack')){
+        if(imported.ABOUT_US&&imported.ABOUT_US.content){ db['MORE-ABOUT_US']=imported.ABOUT_US.content; }
+        if(imported.CAREERS&&imported.CAREERS.content){ db['MORE-CAREERS']=imported.CAREERS.content; }
+        if(imported.TERMS&&imported.TERMS.content){ db['MORE-TERMS']=imported.TERMS.content; }
+        if(imported.CONDITIONS&&imported.CONDITIONS.content){ db['MORE-CONDITIONS']=imported.CONDITIONS.content; }
+        if(imported.PRIVACY&&imported.PRIVACY.content){ db['MORE-PRIVACY']=imported.PRIVACY.content; }
+        if(imported.POLICY&&imported.POLICY.content){ db['MORE-POLICY']=imported.POLICY.content; }
+        db={...db,...imported}; saveDB(); fillAll(); loadHome(); loadMore(); clearUnsaved(); alert('Imported — '+Object.keys(imported).length+' items restored successfully.');
+      }
+    }catch(err){ alert('Import failed: the selected file could not be parsed.\nError: '+err.message+'\nMake sure you are selecting an exported JSON file from this app.'); }
+    input.value='';
+  };
+  reader.onerror=()=>{ alert('Import failed: could not read the file. Please try again.'); input.value=''; };
+  reader.readAsText(file);
 }
 
 document.getElementById('adminBtn').addEventListener('click', enterApp);
