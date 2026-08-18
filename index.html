@@ -600,8 +600,8 @@ async function exportTab(){
     const filename='TLF-ALL-TABS-BACKUP-'+new Date().toISOString().slice(0,10)+'.json';
     const mode=await downloadBackupJson(blob,filename);
     clearUnsaved();
-    showStatus('Export complete: '+keyCount+' items saved to '+filename+'.','success');
-    if(mode==='share') showStatus('Export ready in iPhone share sheet: '+filename+'.','success');
+    if(mode==='share') showStatus('Export ready in iPhone share sheet: '+filename+' ('+keyCount+' items).','success');
+    else showStatus('Export complete: '+keyCount+' items saved to '+filename+'.','success');
   }catch(err){
     showStatus('Export failed: '+err.message,'error');
     alert('Export failed: '+err.message+'\nTry reducing image sizes or exporting again.');
