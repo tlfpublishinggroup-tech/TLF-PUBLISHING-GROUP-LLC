@@ -1,0 +1,685 @@
+<!doctype html>
+<html lang="en"><head><style>
+@font-face {
+  font-family: "Optimistic";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Optimistic Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+}
+:where(html) {
+  font-family: "Optimistic", system-ui, sans-serif;
+}
+:where(code, pre, kbd, samp) {
+  font-family: "Optimistic Mono", ui-monospace, monospace;
+}
+
+.track-row{background:#111;border:1px solid #333;border-radius:12px;padding:10px;margin-bottom:10px}
+.track-main{display:flex;align-items:center;gap:10px}
+.track-cover{width:72px;height:72px;aspect-ratio:1/1;flex:0 0 72px;border-radius:10px;border:1px solid rgba(201,168,106,.55);background:#090909;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative}
+.track-cover img{width:100%;height:100%;object-fit:cover;display:block}
+.track-cover-placeholder{width:100%;height:100%;display:flex;flex-direction:column;gap:3px;align-items:center;justify-content:center;text-align:center;color:#C9A86A;font-size:18px}
+.track-cover-placeholder small{font-size:8px;letter-spacing:.08em;opacity:.7}
+.track-cover.admin-cover{cursor:pointer}
+.track-number{position:absolute;right:4px;bottom:4px;background:rgba(0,0,0,.82);border:1px solid #C9A86A;color:#C9A86A;border-radius:999px;font-size:8px;padding:2px 5px}
+.track-copy{flex:1;min-width:0}
+.track-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.track-cover-admin{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+
+</style><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>TLF PUBLISHING GROUP LLC - PERFECT BUILD - 9 MASTERS + MORE</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#C9A86A">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{background:#000;color:#fff;font-family:Inter,system-ui,sans-serif}
+.gold{color:#C9A86A}.gold-border{border:1px solid #C9A86A}
+.btn-gold{background:#C9A86A;color:#000;padding:10px 18px;border-radius:999px;font-weight:800;border:none;cursor:pointer;font-size:11px}
+.btn-outline{border:1px solid #C9A86A;color:#C9A86A;background:transparent;padding:10px 18px;border-radius:999px;cursor:pointer;font-size:10px}
+#landing{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;background:#000}
+#app{display:none;min-height:100vh;flex-direction:column;background:#000}
+header{position:sticky;top:0;z-index:50;background:#000;border-bottom:1px solid rgba(201,168,106,.3);padding:14px 16px;display:flex;justify-content:space-between;align-items:center}
+nav.bottom{position:fixed;bottom:0;left:0;right:0;background:#0a0a0a;border-top:1px solid rgba(201,168,106,.4);display:flex;gap:4px;overflow-x:auto;padding:8px;padding-bottom:calc(12px + env(safe-area-inset-bottom));z-index:9999;height:68px;align-items:center}
+nav.bottom button{white-space:nowrap;padding:10px 14px;border-radius:999px;background:#000;border:1px solid #C9A86A;color:#C9A86A;cursor:pointer;font-size:11px;flex:1;min-width:62px}
+nav.bottom button.active{background:#C9A86A;color:#000;font-weight:900}
+.tab{display:none;padding:16px 16px 120px}.tab.active{display:block}
+.grid-30{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.grid-8{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.box{aspect-ratio:1/1;background:#000;border:1px solid #C9A86A;border-radius:16px;display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;overflow:hidden}
+.box img{width:100%;height:100%;object-fit:cover;display:block}
+.num-badge{position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,.8);border:1px solid rgba(201,168,106,.4);color:#C9A86A;padding:2px 6px;border-radius:999px;font-size:9px;z-index:2}
+.divider{height:1px;background:linear-gradient(90deg,transparent,#C9A86A,transparent);margin:18px 0}
+.book-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.book{aspect-ratio:2/3;background:#000;border:1px solid #C9A86A;border-radius:16px;overflow:hidden;cursor:pointer;position:relative;display:flex;align-items:center;justify-content:center}
+.book img{width:100%;height:100%;object-fit:cover;display:block}
+.video-wrap{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;border:1px solid rgba(201,168,106,.4);background:#111;margin-bottom:12px}
+.video-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
+.logo-box{aspect-ratio:1/1;background:#000;border:1px solid #C9A86A;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;position:relative}
+.logo-box img{width:100%;height:100%;object-fit:cover;display:block}
+.movie-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.movie{aspect-ratio:16/9;background:#000;border:1px solid #C9A86A;border-radius:12px;overflow:hidden;cursor:pointer;position:relative}
+.movie img{width:100%;height:100%;object-fit:cover;display:block}
+#artistModal{position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.94);display:none;overflow-y:auto;padding:16px}
+#artistModal.active{display:block}
+.modal-box{background:#0a0a0a;border:1px solid #C9A86A;border-radius:16px;max-width:520px;margin:20px auto;padding:16px}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px;flex-wrap:wrap}
+.badge{font-size:10px;border:1px solid #C9A86A;padding:6px 12px;border-radius:999px;color:#C9A86A;background:transparent;cursor:pointer}
+.badge.gold{background:#C9A86A;color:#000;border-color:#C9A86A;font-weight:800}
+.edit-box{background:#111;border:1px solid #333;border-radius:10px;padding:12px;margin-bottom:12px}
+.edit-box label{font-size:10px;color:#C9A86A;letter-spacing:.08em;text-transform:uppercase;font-weight:700;display:block;margin-bottom:6px}
+.edit-box input,.edit-box textarea{background:#000;border:1px solid #444;color:#fff;padding:10px;border-radius:8px;width:100%;font-size:13px;margin-bottom:8px}
+.more-box{background:#0a0a0a;border:1px solid #C9A86A;border-radius:16px;padding:16px;margin-bottom:12px}
+.more-box h3{color:#C9A86A;font-size:13px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+.more-box p{font-size:13px;line-height:1.5;opacity:.85}
+.footer-more{margin-top:24px;padding:24px 16px;border-top:1px solid rgba(201,168,106,.3);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px}
+.footer-more img{width:64px;height:64px;object-fit:contain}
+.footer-more span{font-size:11px;opacity:.7;letter-spacing:.04em}
+#unsaved-banner{display:none;position:sticky;top:57px;z-index:9998;background:#7a4f00;color:#ffe8a0;font-size:11px;font-weight:700;text-align:center;padding:6px 12px;letter-spacing:.06em;border-bottom:1px solid #C9A86A}
+#unsaved-banner.visible{display:block}
+#status-banner{display:none;position:sticky;top:87px;z-index:9997;font-size:11px;font-weight:700;text-align:center;padding:6px 12px;letter-spacing:.04em;border-bottom:1px solid #C9A86A}
+#status-banner.visible{display:block}
+#status-banner.success{background:#0f3a1f;color:#9af0b6}
+#status-banner.error{background:#4a1111;color:#ffb3b3}
+#status-banner.info{background:#0f2f4a;color:#b5dcff}
+.persist-note{font-size:10px;color:#888;margin:8px 0 4px;padding:6px 10px;border-left:2px solid rgba(201,168,106,.4);line-height:1.5}
+</style></head><body>
+<input type="file" id="trackCoverInput" accept="image/*" style="position:fixed;left:-9999px;top:-9999px;width:1px;height:1px;opacity:0" onchange="handleTrackCoverInput(this)" aria-hidden="true" tabindex="-1">
+<div id="landing">
+<div style="position:absolute;top:12px;right:12px"><button id="adminBtn" style="background:none;border:none;color:#C9A86A;font-size:14px;cursor:pointer">Admin →</button></div>
+<h1 class="gold" style="letter-spacing:.22em;font-size:32px;font-weight:900;line-height:1.1;text-align:center">TLF<br>PUBLISHING<br>GROUP LLC</h1>
+<p style="opacity:.9;margin:16px 0 28px;font-size:18px">One Family, One Love</p>
+<div style="border:1px solid rgba(201,168,106,.4);border-radius:20px;padding:22px;max-width:360px;width:100%;background:#0a0a0a">
+<button class="btn-gold" style="width:100%;margin-bottom:10px" id="signupBtn">Sign Up - Enter App</button>
+<button class="btn-outline" style="width:100%" id="loginBtn">Log In - Enter App</button>
+</div>
+</div>
+
+<div id="app">
+<header><div><span class="gold" style="font-weight:800;border:1px solid #C9A86A;padding:4px 8px;border-radius:4px;margin-right:8px">T</span> <span class="gold" style="font-weight:700;letter-spacing:.12em;font-size:12px">TLF PUBLISHING GROUP LLC</span></div><button onclick="showLanding()" style="background:none;border:1px solid #333;color:#aaa;padding:6px 12px;border-radius:999px;font-size:11px;cursor:pointer">Exit</button></header>
+<div id="unsaved-banner">⚠ UNSAVED LOCAL EDITS — Use EXPORT to save a file; changes are lost on refresh without export.</div>
+<div id="status-banner"></div>
+
+<!-- HOME -->
+<div id="tab-home" class="tab active">
+<div class="topbar"><h2 class="gold">TLF HOME - MASTER LOCKED</h2><div style="display:flex;gap:6px"><button class="badge gold" onclick="exportTab('HOME')">EXPORT HOME</button><label for="importFile-home" class="badge" style="cursor:pointer">IMPORT</label></div></div>
+<input type="file" id="importFile-home" accept=".json" style="display:none" onchange="importAll(this)"/>
+<div class="edit-box"><label>About</label><textarea id="home-about" rows="3"></textarea></div>
+<div class="edit-box"><label>Vision</label><input id="home-vision"/></div>
+<div class="edit-box"><label>Mission</label><input id="home-mission"/></div>
+<button class="btn-gold" onclick="saveHome()">SAVE HOME - LOCKED</button>
+<p style="font-size:9px;opacity:.4;margin-top:12px">Storage: <span id="storageSize-home"></span></p>
+</div>
+
+<!-- BOOKS -->
+<div id="tab-books" class="tab">
+<div class="topbar"><div><h2 class="gold">TLF BOOKS - 18 - COVER ONLY TAP->AMAZON</h2></div><div style="display:flex;gap:6px"><button class="badge gold" onclick="exportTab('BOOKS')">EXPORT BOOKS</button><label for="importFile-books" class="badge" style="cursor:pointer">IMPORT</label></div></div>
+<input type="file" id="importFile-books" accept=".json" style="display:none" onchange="importAll(this)"/>
+<p class="persist-note">📌 Edits are stored locally in this browser. Use EXPORT to save a JSON file. On reload, the app loads from the repo's <code>/data/books.json</code> baseline — import your exported file to restore local edits.</p>
+<div class="book-grid" id="book-grid-real"></div>
+<p style="font-size:9px;opacity:.4;margin-top:12px">Storage: <span id="storageSize-books"></span></p>
+</div>
+
+<!-- MUSIC -->
+<div id="tab-music" class="tab">
+<div class="topbar"><div><h2 class="gold">TLF MUSIC - 83 - 8 CATEGORIES</h2><span id="count-music" class="gold" style="font-size:11px"></span></div><div style="display:flex;gap:6px"><button class="badge gold" onclick="exportTab('MUSIC')">EXPORT MUSIC</button><label for="importFile-music" class="badge" style="cursor:pointer">IMPORT</label></div></div>
+<input type="file" id="importFile-music" accept=".json" style="display:none" onchange="importAll(this)"/>
+<div id="music-grid-view">
+<div style="margin-bottom:8px;font-size:11px;opacity:.6">TLF 30up — <span id="count-tlf"></span></div><div class="grid-30" id="grid-tlf"></div>
+<div class="divider"></div><div style="margin-bottom:8px;font-size:11px;opacity:.6">Firm Divas 18up — <span id="count-divas"></span></div><div class="grid-30" id="grid-divas"></div>
+<div class="divider"></div><div style="margin-bottom:8px;font-size:11px;opacity:.6">Assoc 35up — <span id="count-assoc"></span></div><div class="grid-30" id="grid-assoc"></div>
+<div class="divider"></div><h3 class="gold" style="margin:12px 0;font-size:14px">TRACK LISTS - 8 LOGO BOXES</h3><div class="grid-8" id="grid-music-logos"></div><p style="font-size:10px;opacity:.55;margin-top:10px;text-align:center">Tap a category to open its locked track list. Every track has its own 1:1 cover-art position plus Play, Stream Video, MP3 and MOV controls.</p>
+</div>
+<div id="music-list-view" style="display:none"></div>
+<p style="font-size:9px;opacity:.4;margin-top:12px">Storage: <span id="storageSize"></span></p>
+</div>
+
+<!-- MOVIES -->
+<div id="tab-movies" class="tab">
+<div class="topbar"><h2 class="gold">TLF MOVIES - 10 POSTERS</h2><div style="display:flex;gap:6px"><button class="badge gold" onclick="exportTab('MOVIES')">EXPORT MOVIES</button><label for="importFile-mov" class="badge" style="cursor:pointer">IMPORT</label></div></div>
+<input type="file" id="importFile-mov" accept=".json" style="display:none" onchange="importAll(this)"/>
+<div class="video-wrap"><iframe id="yt-movies" src="https://www.youtube.com/embed/ZTdc3W2ZdMw" allowfullscreen></iframe></div>
+<div class="edit-box" id="movies-player-admin" style="display:none"><label>YouTube Player - Movies - editable</label><input id="yt-movies-input" placeholder="Paste YouTube link" value="https://youtu.be/ZTdc3W2ZdMw?is=n_MasjrRKAnyiDwW" oninput="updateYT('movies', this.value)"/><button class="btn-gold" onclick="saveYT('movies')">SAVE PLAYER</button></div>
+<div class="movie-grid" id="grid-movies"></div>
+</div>
+
+<!-- MORE - 6 BOXES + FOOTER -->
+<div id="tab-more" class="tab">
+<div class="topbar"><h2 class="gold">MORE - INFO - LOCKED</h2><div style="display:flex;gap:6px"><button class="badge gold" onclick="exportTab('MORE')">EXPORT MORE</button><label for="importFile-more" class="badge" style="cursor:pointer">IMPORT</label></div></div>
+<input type="file" id="importFile-more" accept=".json" style="display:none" onchange="importAll(this)"/>
+
+<div id="more-container">
+<div class="more-box" id="box-about"><h3>About Us</h3><p id="text-about"></p><div class="edit-box" style="margin-top:12px;display:none" id="edit-about-wrap"><textarea id="input-about" rows="4"></textarea></div></div>
+<div class="more-box" id="box-careers"><h3>Careers</h3><p id="text-careers"></p><div class="edit-box" style="margin-top:12px;display:none" id="edit-careers-wrap"><textarea id="input-careers" rows="4"></textarea></div></div>
+<div class="more-box" id="box-terms"><h3>Terms</h3><p id="text-terms"></p><div class="edit-box" style="margin-top:12px;display:none" id="edit-terms-wrap"><textarea id="input-terms" rows="4"></textarea></div></div>
+<div class="more-box" id="box-conditions"><h3>Conditions</h3><p id="text-conditions"></p><div class="edit-box" style="margin-top:12px;display:none" id="edit-conditions-wrap"><textarea id="input-conditions" rows="4"></textarea></div></div>
+<div class="more-box" id="box-privacy"><h3>Privacy</h3><p id="text-privacy"></p><div class="edit-box" style="margin-top:12px;display:none" id="edit-privacy-wrap"><textarea id="input-privacy" rows="4"></textarea></div></div>
+<div class="more-box" id="box-policy"><h3>Policy</h3><p id="text-policy"></p><div class="edit-box" style="margin-top:12px;display:none" id="edit-policy-wrap"><textarea id="input-policy" rows="4"></textarea></div></div>
+</div>
+
+<div id="admin-more-edit" style="display:none;margin-top:12px">
+<button class="btn-gold" onclick="saveMore()">SAVE MORE - LOCKED</button>
+<p style="font-size:9px;opacity:.4;margin-top:8px">Admin edit mode - changes save to localStorage and export to more.json</p>
+</div>
+
+<div class="footer-more">
+<img src="icon-512.png" alt="TLF Logo" onerror="this.style.display='none'"/>
+<span>TLF logo © 2026 TLF PUBLISHING GROUP LLC All Rights Reserved</span>
+</div>
+
+<p style="font-size:9px;opacity:.4;margin-top:12px;text-align:center">Storage: <span id="storageSize-more"></span></p>
+</div>
+
+<nav class="bottom">
+<button onclick="openTab('home')" id="btn-home" class="active">Home</button>
+<button onclick="openTab('books')" id="btn-books">Books</button>
+<button onclick="openTab('music')" id="btn-music">Music</button>
+<button onclick="openTab('movies')" id="btn-movies">Movies</button>
+<button onclick="openTab('more')" id="btn-more">More</button>
+</nav>
+
+</div>
+
+<div id="artistModal"><div class="modal-box">
+<div class="topbar"><h3 id="modalTitle" class="gold">Artist</h3><button class="badge" onclick="closeModal()">✕ Close</button></div>
+<div id="mainPreview" style="aspect-ratio:1/1;background:#111;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;overflow:hidden;font-size:28px;color:#C9A86A;cursor:pointer" onclick="if(isAdmin)document.getElementById('artistImageInput').click()">+</div>
+<input type="file" id="artistImageInput" accept="image/*" style="display:none" onchange="handleArtistImage(this)"/>
+<div id="adminArtistControls" style="display:none;margin-bottom:12px;gap:8px;flex-wrap:wrap">
+  <button class="btn-gold" style="flex:1" onclick="document.getElementById('artistImageInput').click()">📷 Upload / Change Image</button>
+  <button class="btn-outline" style="flex:1" onclick="clearArtistImage()">✕ Remove Image</button>
+</div>
+<div class="edit-box"><label>Title</label><input id="artistName" placeholder="Title"/></div>
+<div class="edit-box"><label>Synopsis</label><textarea id="artistBio" rows="4" placeholder="Synopsis"></textarea></div>
+<div class="edit-box"><label>Status</label><input id="artistStatus" placeholder="e.g. Active, Featured, New"/></div>
+<div class="edit-box"><label>Link (Amazon / YouTube / URL)</label><input id="artistLink" placeholder="https://..."/></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+  <button class="btn-gold" id="adminSaveArtist" style="display:none;flex:1" onclick="saveArtist()">💾 Save</button>
+  <button class="btn-outline" id="adminDeleteArtist" style="display:none;color:#ff6b6b;border-color:#ff6b6b" onclick="deleteArtist()">🗑 Delete</button>
+</div>
+</div></div>
+
+<script>
+let db={}, current=null, isAdmin=false;
+const MORE_IMPORT_MAP={ABOUT_US:'MORE-ABOUT_US',CAREERS:'MORE-CAREERS',TERMS:'MORE-TERMS',CONDITIONS:'MORE-CONDITIONS',PRIVACY:'MORE-PRIVACY',POLICY:'MORE-POLICY'};
+const LOCKED_MUSIC_CATALOG={"MUSIC-LOGO-01":{"name":"36 CHAMBERS OF DEATH","locked":true,"tracks":[{"name":"A HATER'S NIGHTMARE","trackNo":"001","locked":true},{"name":"ARE YOU SERIOUS","trackNo":"002","locked":true},{"name":"BACK TO THE GRASS ROOTS","trackNo":"003","locked":true},{"name":"CHAOS","trackNo":"004","locked":true},{"name":"COME GET SOME 1","trackNo":"005","locked":true},{"name":"COME GET SOME 2","trackNo":"006","locked":true},{"name":"COOKIN’ UP BEEF","trackNo":"007","locked":true},{"name":"DEAD MEN WALKING","trackNo":"008","locked":true},{"name":"DON'T FUCK WITH ME","trackNo":"009","locked":true},{"name":"GOTDAMN KNOWIT ALLS","trackNo":"010","locked":true},{"name":"I AIN’T A KILLER","trackNo":"011","locked":true},{"name":"I REIGN INDISPUTABLE","trackNo":"012","locked":true},{"name":"I'LL TAKE YOU THERE","trackNo":"013","locked":true},{"name":"I’M DEEPER THAN YOU CATS","trackNo":"014","locked":true},{"name":"LAUGH NOW, CRY LATER","trackNo":"015","locked":true},{"name":"LYRICAL MASSACRE 1","trackNo":"016","locked":true},{"name":"LYRICAL MASSACRE 2","trackNo":"017","locked":true},{"name":"LYRICAL MASSACRE 3","trackNo":"018","locked":true},{"name":"MURDERGRAM","trackNo":"019","locked":true},{"name":"MY BODY COUNT RISING","trackNo":"020","locked":true},{"name":"NEVER YET CONTESTED","trackNo":"021","locked":true},{"name":"ONE STEP AHEAD","trackNo":"022","locked":true},{"name":"READY. AIM.. FIRE...","trackNo":"023","locked":true},{"name":"REST IN PEACE","trackNo":"024","locked":true},{"name":"SIMPLE RICH BITCHES 1","trackNo":"025","locked":true},{"name":"SIMPLE RICH BITCHES 2","trackNo":"026","locked":true},{"name":"SLAUGHTER DA HOUSE","trackNo":"027","locked":true},{"name":"SUPREME RAP GOD","trackNo":"028","locked":true},{"name":"THE GAME OF DEATH","trackNo":"029","locked":true},{"name":"THE OUTBACK CHAMBER","trackNo":"030","locked":true},{"name":"THE PUNISHER’S GAME","trackNo":"031","locked":true},{"name":"THE RABBIT HOLE","trackNo":"032","locked":true},{"name":"THE SNAKE CHAMBER","trackNo":"033","locked":true},{"name":"THESE DUDES IS CLOWNS","trackNo":"034","locked":true},{"name":"WELCOME TO THE DANGER ZONE","trackNo":"035","locked":true},{"name":"WHO WRITES GANGSTA","trackNo":"036","locked":true}]},"MUSIC-LOGO-02":{"name":"FIRM EROTICA","locked":true,"tracks":[{"name":"ANOTHER ROLE PLAY","trackNo":"001","locked":true},{"name":"A CARAMEL TREAT","trackNo":"002","locked":true},{"name":"A MAGICAL MOMENT","trackNo":"003","locked":true},{"name":"A MINUTE MAN PT 1","trackNo":"004","locked":true},{"name":"A MINUTE MAN PT 2","trackNo":"005","locked":true},{"name":"A MINUTE MAN PT 3","trackNo":"006","locked":true},{"name":"A MINUTE MAN PT 4","trackNo":"007","locked":true},{"name":"A ROMANTIC SERENADE","trackNo":"008","locked":true},{"name":"A XXX MOVIE NIGHT","trackNo":"009","locked":true},{"name":"ANIMAL","trackNo":"010","locked":true},{"name":"BACK AGAINST THE WALL","trackNo":"011","locked":true},{"name":"BACK ON MY GRIND","trackNo":"012","locked":true},{"name":"BACK ON TOP","trackNo":"013","locked":true},{"name":"BANG, BANG, SKEET, SKEET","trackNo":"014","locked":true},{"name":"BEAST MODE","trackNo":"015","locked":true},{"name":"BEAT THAT PUSSY","trackNo":"016","locked":true},{"name":"BELIEVE THE HYPE","trackNo":"017","locked":true},{"name":"BEWARE OF THE FIRST DATE","trackNo":"018","locked":true},{"name":"BIG GIRLS DON'T CRY","trackNo":"019","locked":true},{"name":"BOOTY CALL","trackNo":"020","locked":true},{"name":"BROOKLYN (We Go Hard)","trackNo":"021","locked":true},{"name":"BROOKLYN DON DADA","trackNo":"022","locked":true},{"name":"CAN YOU HANDLE ME","trackNo":"023","locked":true},{"name":"CRUSHIN’ ON YOU","trackNo":"024","locked":true},{"name":"CRY ME A RIVER 1","trackNo":"025","locked":true},{"name":"CRY ME A RIVER 2","trackNo":"026","locked":true},{"name":"CRY ME A RIVER 3","trackNo":"027","locked":true},{"name":"DAMN, I WANT HER","trackNo":"028","locked":true},{"name":"DAMN, WHERE SHE AT","trackNo":"029","locked":true},{"name":"DO YOU WANNA PLAY","trackNo":"030","locked":true},{"name":"DOCTOR FEEL GOOD","trackNo":"031","locked":true},{"name":"EROTICA AFTER DARK","trackNo":"032","locked":true},{"name":"FREAKS COME OUT AT NIGHT","trackNo":"033","locked":true},{"name":"FREESTYLE FRIDAY","trackNo":"034","locked":true},{"name":"FROM THE CLUB TO THE HOUSE","trackNo":"035","locked":true},{"name":"GIVE IT TO ME HARD","trackNo":"036","locked":true},{"name":"GIVE IT TO ME","trackNo":"037","locked":true},{"name":"HE LICKED ME AND I LIKED IT","trackNo":"038","locked":true},{"name":"HELLO, MY NAME IS…","trackNo":"039","locked":true},{"name":"HUMP DAY WEDNESDAY","trackNo":"040","locked":true},{"name":"I GOT A STORY TO TELL","trackNo":"041","locked":true},{"name":"I GOT IT BAD","trackNo":"042","locked":true},{"name":"I GOT A SPANKIN’ FOR YOU©","trackNo":"043","locked":true},{"name":"I GUARANTEE MY WARRANTY","trackNo":"044","locked":true},{"name":"I LOVE PUNANI","trackNo":"045","locked":true},{"name":"I LIKE IT LIKE THAT","trackNo":"046","locked":true},{"name":"I'M NOT A PLAYA BUT…","trackNo":"047","locked":true},{"name":"I'M THE SLAVE TO THIS MASTER","trackNo":"048","locked":true},{"name":"IF I HAD THE CHANCE","trackNo":"049","locked":true},{"name":"INTERSTELLAR GALACTIC ANUNNAKI PUNANI","trackNo":"050","locked":true},{"name":"IS SHE TOO BIG","trackNo":"051","locked":true},{"name":"IT AIN’T JUST A BOOTY CALL","trackNo":"052","locked":true},{"name":"IT WAS THE KITTY","trackNo":"053","locked":true},{"name":"IT’S A LOVE THING","trackNo":"054","locked":true},{"name":"IT’S JUST A KISS","trackNo":"055","locked":true},{"name":"IT'S JUST A STORY","trackNo":"056","locked":true},{"name":"IT'S ON THE HOUSE","trackNo":"057","locked":true},{"name":"KING OF THE COUNTY BROOKLYN","trackNo":"058","locked":true},{"name":"KISS ME DOWN LOW","trackNo":"059","locked":true},{"name":"LAP DANCE FOR ME","trackNo":"060","locked":true},{"name":"LATE NIGHTCAP WITH A TIGHT KATT","trackNo":"061","locked":true},{"name":"LESSON ONE","trackNo":"062","locked":true},{"name":"LET DOWN YOUR HAIR","trackNo":"063","locked":true},{"name":"LET ME PLEASE YOU","trackNo":"064","locked":true},{"name":"LET'S GET AWAY","trackNo":"065","locked":true},{"name":"LET'S GET IT ON","trackNo":"066","locked":true},{"name":"LOVE ONLINE","trackNo":"067","locked":true},{"name":"ME SO HORNEY","trackNo":"068","locked":true},{"name":"MÉNAGE A TRIOS","trackNo":"069","locked":true},{"name":"MY BED GAME NASTY","trackNo":"070","locked":true},{"name":"MY LABOR DAY WEEKEND","trackNo":"071","locked":true},{"name":"NATURE CALLS","trackNo":"072","locked":true},{"name":"NICK NACK… BROOKLYN’S BACK","trackNo":"073","locked":true},{"name":"NOT A LOVE SONG","trackNo":"074","locked":true},{"name":"OUR LAST ENCOUNTER","trackNo":"075","locked":true},{"name":"PARTY TIME","trackNo":"076","locked":true},{"name":"PAY YOUR BILL","trackNo":"077","locked":true},{"name":"PENTHOUSE PIMPIN’","trackNo":"078","locked":true},{"name":"PERFECT TIMING","trackNo":"079","locked":true},{"name":"PIMPIN’ PIMPIN’","trackNo":"080","locked":true},{"name":"POETICAL FOREPLAY","trackNo":"081","locked":true},{"name":"PUNANI","trackNo":"082","locked":true},{"name":"PUTTIN’ IN WORK","trackNo":"083","locked":true},{"name":"ROCKIN’ YOUR BOAT","trackNo":"084","locked":true},{"name":"SAY WHEN","trackNo":"085","locked":true},{"name":"SEX 7 DAYS A WEEK","trackNo":"086","locked":true},{"name":"SHE ASKED FOR IT","trackNo":"087","locked":true},{"name":"SHE CAME ON A VISIT","trackNo":"088","locked":true},{"name":"SHOWERS AFTER HOURS","trackNo":"089","locked":true},{"name":"SHUT UP AND EAT","trackNo":"090","locked":true},{"name":"STRETCH IT OUT","trackNo":"091","locked":true},{"name":"SWEETEST EXPOSURE, SEXUAL HANGOVER","trackNo":"092","locked":true},{"name":"TAKE THE NIGHT","trackNo":"093","locked":true},{"name":"TALKING LIKE SEX","trackNo":"094","locked":true},{"name":"TEACHER, TEACHER","trackNo":"095","locked":true},{"name":"THE BEAST/THE GENTLEMAN","trackNo":"096","locked":true},{"name":"THE BREAK IS OVER","trackNo":"097","locked":true},{"name":"THE DATING GAME","trackNo":"098","locked":true},{"name":"THE HOT SPOT","trackNo":"099","locked":true},{"name":"THE FREAKS COME OUT","trackNo":"100","locked":true},{"name":"THE MACK THEY CALL JIGGLO","trackNo":"101","locked":true},{"name":"THE WORLD IS YOURS","trackNo":"102","locked":true},{"name":"THE X-CHICK CALLED","trackNo":"103","locked":true},{"name":"THEY GOT THIS POET LIKE","trackNo":"104","locked":true},{"name":"THIS AIN'T FOR EVERYBODY","trackNo":"105","locked":true},{"name":"THIS IS TO YOU","trackNo":"106","locked":true},{"name":"THIS SIDE OF ME ON YOU","trackNo":"107","locked":true},{"name":"THUG LOVE","trackNo":"108","locked":true},{"name":"THUG PASSION 1","trackNo":"109","locked":true},{"name":"THUG PASSION 2","trackNo":"110","locked":true},{"name":"TO EACH HIS OWN","trackNo":"111","locked":true},{"name":"UNDER CONSTRUCTION","trackNo":"112","locked":true},{"name":"UNDER THE INFLUENCE","trackNo":"113","locked":true},{"name":"WELCOME TO MY HOUSE","trackNo":"114","locked":true},{"name":"WET HOTNESS","trackNo":"115","locked":true},{"name":"WHAT DO YOU LOVE","trackNo":"116","locked":true},{"name":"WHAT'S YOUR POSITION","trackNo":"117","locked":true},{"name":"WHEN IT RAINS, IT POURS","trackNo":"118","locked":true},{"name":"WHEN WE MET BOO","trackNo":"119","locked":true},{"name":"WHO’S NEXT","trackNo":"120","locked":true},{"name":"WHO'S THAT GIRL","trackNo":"121","locked":true},{"name":"WHO’S YOUR DADDIE GIRL","trackNo":"122","locked":true},{"name":"WISHFUL THINKING 1","trackNo":"123","locked":true},{"name":"WISHFUL THINKING 2","trackNo":"124","locked":true},{"name":"WISHFUL THINKING 3","trackNo":"125","locked":true},{"name":"YOU AIN'T WET YET","trackNo":"126","locked":true},{"name":"YOU CAN'T HANG","trackNo":"127","locked":true},{"name":"YOU GONE NEED A SNICKER","trackNo":"128","locked":true},{"name":"YOU KNOW YOU LOVE IT","trackNo":"129","locked":true},{"name":"YOU'RE MINE TONIGHT","trackNo":"130","locked":true},{"name":"YOU'VE TRIED THE REST","trackNo":"131","locked":true}]},"MUSIC-LOGO-03":{"name":"FIRM MAFIOSA FAMILIA","locked":true,"tracks":[{"name":"1-900-CUM-FUCK","trackNo":"001","locked":true},{"name":"2015 BONNIE & CLYDE","trackNo":"002","locked":true},{"name":"2016 BONNIE & CLYDE","trackNo":"003","locked":true},{"name":"2026 BONNIE & CLYDE 2015 BONNIE & CLYDE","trackNo":"004","locked":true},{"name":"A CHILD CRIES","trackNo":"005","locked":true},{"name":"A MESSAGE FROM THE FAM’","trackNo":"006","locked":true},{"name":"ALL STAR LINEUP 1","trackNo":"007","locked":true},{"name":"ALL STAR LINEUP 2","trackNo":"008","locked":true},{"name":"ALL STAR LINEUP 3","trackNo":"009","locked":true},{"name":"AVOID THE KARMA","trackNo":"010","locked":true},{"name":"BACK ON THE BLOCK 1","trackNo":"011","locked":true},{"name":"BACK ON THE BLOCK 2","trackNo":"012","locked":true},{"name":"BACK TO THE LAB (Where It All Got Started)","trackNo":"013","locked":true},{"name":"BARZ","trackNo":"014","locked":true},{"name":"BIG MOUTH SPITTERS","trackNo":"015","locked":true},{"name":"BY ANY MEANS NECESSARY","trackNo":"016","locked":true},{"name":"CRANK IT UP","trackNo":"017","locked":true},{"name":"DA’ CYPHA 1","trackNo":"018","locked":true},{"name":"DA’ CYPHA 2","trackNo":"019","locked":true},{"name":"DA’ CYPHA© 3","trackNo":"020","locked":true},{"name":"DEEPER & DEEPER","trackNo":"021","locked":true},{"name":"DEEPER 01  (The Best Of The Best)","trackNo":"022","locked":true},{"name":"DEEPER 02 (The Best Of The Best)","trackNo":"023","locked":true},{"name":"DEEPER 03 (The Best Of The Best)","trackNo":"024","locked":true},{"name":"DEEPER 04 (The Best Of The Best)","trackNo":"025","locked":true},{"name":"DEEPER 05 (The Best of The Best)","trackNo":"026","locked":true},{"name":"DEEPER 06 (The Best Of The Best)","trackNo":"027","locked":true},{"name":"DEEPER 07 (The Best Of The Best)","trackNo":"028","locked":true},{"name":"DEEPER 08 (The Best Of The Best)","trackNo":"029","locked":true},{"name":"DEEPER 09 (The Best Of The Best)","trackNo":"030","locked":true},{"name":"DEEPER 10 (The Best Of The Best)","trackNo":"031","locked":true},{"name":"DIVA ROLL CALL","trackNo":"032","locked":true},{"name":"DIVAS DO IT BEST©","trackNo":"033","locked":true},{"name":"DOLLAR DOLLAR BILL Y'ALL","trackNo":"034","locked":true},{"name":"EATING AT JO'S","trackNo":"035","locked":true},{"name":"EVIL CONTENDERS & FEEBLE PRETENDERS 1","trackNo":"036","locked":true},{"name":"EVIL CONTENDERS & FEEBLE PRETENDERS 2","trackNo":"037","locked":true},{"name":"FIRE & ICE","trackNo":"038","locked":true},{"name":"FIRMAFIOSA FAMILIA 1","trackNo":"039","locked":true},{"name":"FIRMAFIOSA FAMILIA 2","trackNo":"040","locked":true},{"name":"FIRMAFIOSA FAMILIA 3","trackNo":"041","locked":true},{"name":"FREAK NASTY","trackNo":"042","locked":true},{"name":"GAMES PEOPLE PLAY","trackNo":"043","locked":true},{"name":"GET OFF ME","trackNo":"044","locked":true},{"name":"GIVE IT TO ME","trackNo":"045","locked":true},{"name":"GUNS & ROSES 1","trackNo":"046","locked":true},{"name":"GUNS & ROSES 2","trackNo":"047","locked":true},{"name":"GUNS & ROSES 3","trackNo":"048","locked":true},{"name":"GUNS & ROSES 4","trackNo":"049","locked":true},{"name":"GUNS & ROSES 5","trackNo":"050","locked":true},{"name":"GUNS & ROSES 6","trackNo":"051","locked":true},{"name":"GUNS & ROSES 7","trackNo":"052","locked":true},{"name":"GUNS & ROSES 8","trackNo":"053","locked":true},{"name":"HIT 'EM WITH A RHYME©","trackNo":"054","locked":true},{"name":"I AIN’T THE ONE","trackNo":"055","locked":true},{"name":"I LIKE IT LIKE THAT","trackNo":"056","locked":true},{"name":"IF YOU CAN READ IT, YOU CAN WRITE IT","trackNo":"057","locked":true},{"name":"INVISIBLE","trackNo":"058","locked":true},{"name":"IT'S A FAMILY AFFAIR 1","trackNo":"059","locked":true},{"name":"IT'S A FAMILY AFFAIR 2","trackNo":"060","locked":true},{"name":"JUST A DREAM","trackNo":"061","locked":true},{"name":"KING MEETS QUEEN","trackNo":"062","locked":true},{"name":"KNOCK KNOCK, WHO IS IT","trackNo":"063","locked":true},{"name":"MEET THE MONSTROSITY 1","trackNo":"064","locked":true},{"name":"MEET THE MONSTROSITY 2","trackNo":"065","locked":true},{"name":"MICROPHONE FIEND 1 (Lyrical Junkies)","trackNo":"066","locked":true},{"name":"MICROPHONE FIEND 2 (Lyrical Junkies)","trackNo":"067","locked":true},{"name":"MICROPHONE FIEND 3 (Lyrical Junkies)","trackNo":"068","locked":true},{"name":"MICROPHONE FIEND 4 (Lyrical Junkies)","trackNo":"069","locked":true},{"name":"MICROPHONE FIEND 5 (Lyrical Junkies)","trackNo":"070","locked":true},{"name":"MISTAKEN IDENTITY©","trackNo":"071","locked":true},{"name":"NEVER ENDING CYCLE© (Homicidal Cypher)","trackNo":"072","locked":true},{"name":"NO MINUTE MAN","trackNo":"073","locked":true},{"name":"NOW THAT'S REAL©","trackNo":"074","locked":true},{"name":"OUR LAST ENCOUNTER","trackNo":"075","locked":true},{"name":"POINT OF NO RETURN 1","trackNo":"076","locked":true},{"name":"POINT OF NO RETURN 2","trackNo":"077","locked":true},{"name":"PRAYER FOR PEACE© (Message To Jig’)","trackNo":"078","locked":true},{"name":"PRAYING MANTIS 1","trackNo":"079","locked":true},{"name":"PRAYING MANTIS 2","trackNo":"080","locked":true},{"name":"PRAYING MANTIS 3","trackNo":"081","locked":true},{"name":"PUT A STOP TO ‘EM","trackNo":"082","locked":true},{"name":"PUT THE GUNS DOWN 1","trackNo":"083","locked":true},{"name":"PUT THE GUNS DOWN 2","trackNo":"084","locked":true},{"name":"PUT THE GUNS DOWN 3","trackNo":"085","locked":true},{"name":"PUT THE GUNS DOWN 4","trackNo":"086","locked":true},{"name":"PUT THE GUNS DOWN 5","trackNo":"087","locked":true},{"name":"PUT THE GUNS DOWN 6","trackNo":"088","locked":true},{"name":"REACH FOR THE STARS","trackNo":"089","locked":true},{"name":"RUSSIAN ROULETTE 1 (One To The Head)","trackNo":"090","locked":true},{"name":"RUSSIAN ROULETTE 2 (One To The Head)","trackNo":"091","locked":true},{"name":"RUSSIAN ROULETTE 3 (One To The Head)","trackNo":"092","locked":true},{"name":"SEXUAL SENSATIONS©","trackNo":"093","locked":true},{"name":"SHINE THE LIGHT ON THE DARK","trackNo":"094","locked":true},{"name":"SHUT ‘EM DOWN","trackNo":"095","locked":true},{"name":"(No Surrender, No Retreat)","trackNo":"096","locked":true},{"name":"SOLDIERS OF FORTUNE©","trackNo":"097","locked":true},{"name":"SOMETIMES IT BE'S LIKE THAT©","trackNo":"098","locked":true},{"name":"THE ART OF TWO©","trackNo":"099","locked":true},{"name":"THE DEFENDERS 1","trackNo":"100","locked":true},{"name":"THE DEFENDERS 2","trackNo":"101","locked":true},{"name":"THE DEFENDERS 3","trackNo":"102","locked":true},{"name":"THE DEFENDERS 4","trackNo":"103","locked":true},{"name":"THE DEFENDERS 5","trackNo":"104","locked":true},{"name":"THE DEFENDERS 6","trackNo":"105","locked":true},{"name":"THE DEFENDERS 7","trackNo":"106","locked":true},{"name":"THE DEFENDERS 8","trackNo":"107","locked":true},{"name":"THE DEFENDERS 9","trackNo":"108","locked":true},{"name":"THE JUMP OFF FREESTYLE","trackNo":"109","locked":true},{"name":"THE REGULATORS","trackNo":"110","locked":true},{"name":"THE THIRST","trackNo":"111","locked":true},{"name":"THE TRUTH HURTS","trackNo":"112","locked":true},{"name":"THE UNIVERSAL LANGUAGE 1","trackNo":"113","locked":true},{"name":"THE UNIVERSAL LANGUAGE 2","trackNo":"114","locked":true},{"name":"THE UNIVERSAL LANGUAGE 3","trackNo":"115","locked":true},{"name":"THE UNIVERSAL LANGUAGE 4","trackNo":"116","locked":true},{"name":"THE UNTOUCHABLES (LaCoca Nostra)","trackNo":"117","locked":true},{"name":"TRADE ME OFF©","trackNo":"118","locked":true},{"name":"TRAPPED 1 (Dead End, No Surprises)","trackNo":"119","locked":true},{"name":"TRAPPED 2 (Dead End, No Surprises)","trackNo":"120","locked":true},{"name":"TRAPPED 3 (Dead End, No Surprises)","trackNo":"121","locked":true},{"name":"TRAPPED 4 (Dead End, No Surprises)","trackNo":"122","locked":true},{"name":"WAITING ON HIM (WAITING ON HER) 1","trackNo":"123","locked":true},{"name":"WAITING ON HIM (Waiting On Her) 2","trackNo":"124","locked":true},{"name":"WAITING ON HIM (Waiting On Her) 3","trackNo":"125","locked":true},{"name":"WE DON'T DIAL 911","trackNo":"126","locked":true},{"name":"WE RUN THIS SHIT","trackNo":"127","locked":true},{"name":"WE’RE SO DAMN NASTY","trackNo":"128","locked":true},{"name":"WELCOME TO THE SIDESHOW","trackNo":"129","locked":true},{"name":"WHAT ARE YOU LOOKIN’ FOR","trackNo":"130","locked":true},{"name":"WHAT YA’ TRICKIN' FOR 1","trackNo":"131","locked":true},{"name":"WHAT YA’ TRICKIN' FOR 2","trackNo":"132","locked":true},{"name":"WHAT YA’ TRICKIN' FOR 3","trackNo":"133","locked":true},{"name":"WHAT YA’ TRICKIN’ FOR 4","trackNo":"134","locked":true},{"name":"WHAT YA’ TRICKIN’ FOR 5","trackNo":"135","locked":true},{"name":"WHAT YA’ TRICKIN’ FOR 6","trackNo":"136","locked":true},{"name":"WHEN WILL IT END","trackNo":"137","locked":true},{"name":"WHERE ART THOU©","trackNo":"138","locked":true},{"name":"WHERE WE AT NOW","trackNo":"139","locked":true},{"name":"WHO AIN'T RIDIN'©","trackNo":"140","locked":true},{"name":"ZERO TOLERANCE 1","trackNo":"141","locked":true},{"name":"ZERO TOLERANCE 2","trackNo":"142","locked":true}]},"MUSIC-LOGO-04":{"name":"LOVE & ROMANCE","locked":true,"tracks":[{"name":"A CHEAP THRILL CAN KILL","trackNo":"001","locked":true},{"name":"A FLOW TO LET YOU KNOW","trackNo":"002","locked":true},{"name":"A LOVE ONCE LOST","trackNo":"003","locked":true},{"name":"A PICTURE IS...","trackNo":"004","locked":true},{"name":"AIN'T NO LOVE LOST","trackNo":"005","locked":true},{"name":"ALWAYS THINK SMART","trackNo":"006","locked":true},{"name":"AND I WON’T STOP","trackNo":"007","locked":true},{"name":"ARE YOU SERIOUS","trackNo":"008","locked":true},{"name":"ARE YOU STILL THERE","trackNo":"009","locked":true},{"name":"BACKSTABBERS","trackNo":"010","locked":true},{"name":"BROKEN HEART","trackNo":"011","locked":true},{"name":"BROOKLYN’S LOVE","trackNo":"012","locked":true},{"name":"CAN YOU CATCH IT","trackNo":"013","locked":true},{"name":"CAN YOU FEEL ME","trackNo":"014","locked":true},{"name":"CUPID'S ARROW","trackNo":"015","locked":true},{"name":"DEEPER","trackNo":"016","locked":true},{"name":"DOLLAR DOLLAR BILL","trackNo":"017","locked":true},{"name":"DON'T CRY NOW","trackNo":"018","locked":true},{"name":"DON'T HATE","trackNo":"019","locked":true},{"name":"DON'T STEP ON MY TOES","trackNo":"020","locked":true},{"name":"DOWN THE ISLE","trackNo":"021","locked":true},{"name":"DREAMS DO COME TRUE","trackNo":"022","locked":true},{"name":"EXIT-HIGHWAY 180 (TUCK THE 7)","trackNo":"023","locked":true},{"name":"FOR THE LOVE OF OUR CHILDREN","trackNo":"024","locked":true},{"name":"FOR WHOM I LOVE AND WHY","trackNo":"025","locked":true},{"name":"FOREVER AND A DAY","trackNo":"026","locked":true},{"name":"FRAME OF MIND","trackNo":"027","locked":true},{"name":"FUCK THAT NIGGA","trackNo":"028","locked":true},{"name":"FUCK THAT NIGGA","trackNo":"029","locked":true},{"name":"HE’S SO DAMN CRAZY","trackNo":"030","locked":true},{"name":"HEARTBROKEN","trackNo":"031","locked":true},{"name":"HEY YOUNG LADY","trackNo":"032","locked":true},{"name":"HOLD MY HAND","trackNo":"033","locked":true},{"name":"I AM WHO I AM","trackNo":"034","locked":true},{"name":"I DIDN’T MEAN TO MAKE YOU CRY","trackNo":"035","locked":true},{"name":"I NEED THAT","trackNo":"036","locked":true},{"name":"IF YOU COULD SEE ME NOW","trackNo":"037","locked":true},{"name":"IF...   IF...   IF…","trackNo":"038","locked":true},{"name":"IN HER BED 1","trackNo":"039","locked":true},{"name":"IN HER BED 2","trackNo":"040","locked":true},{"name":"IN YOUR BED","trackNo":"041","locked":true},{"name":"IS IT A DREAM","trackNo":"042","locked":true},{"name":"IS IT YOU","trackNo":"043","locked":true},{"name":"IT TAKES TWO","trackNo":"044","locked":true},{"name":"IT WASN'T BROKE BEFORE YOU","trackNo":"045","locked":true},{"name":"IT'S JUST MY IMAGINATION","trackNo":"046","locked":true},{"name":"IT’S NOT WORK ITS ART","trackNo":"047","locked":true},{"name":"JUST A LITTLE LOVE","trackNo":"048","locked":true},{"name":"JUST CAN’T SHAKE IT","trackNo":"049","locked":true},{"name":"LET’S TALK","trackNo":"050","locked":true},{"name":"LOOKING FOR A LOVE©","trackNo":"051","locked":true},{"name":"LOST LOVE","trackNo":"052","locked":true},{"name":"LOVE BOUND","trackNo":"053","locked":true},{"name":"LOVE NEVER ENDS IT'S JUST GIVEN AWAY","trackNo":"054","locked":true},{"name":"LOVE SICK","trackNo":"055","locked":true},{"name":"LOVE-HATE (CRISS CROSS)","trackNo":"056","locked":true},{"name":"LOYALTY, TRUST, HONESTY","trackNo":"057","locked":true},{"name":"MAKE IT LAST FOREVER","trackNo":"058","locked":true},{"name":"MENTALLY, PHYSICALLY & SPIRITUALLY","trackNo":"059","locked":true},{"name":"MUTUAL FEELINGS","trackNo":"060","locked":true},{"name":"MY A TO Z STRING","trackNo":"061","locked":true},{"name":"MY CASH FOR YOUR ASS","trackNo":"062","locked":true},{"name":"MY DEDICATION AND APOLOGIES","trackNo":"063","locked":true},{"name":"MY HOSTAGE FOR LIFE","trackNo":"064","locked":true},{"name":"MY ODE TO YOU","trackNo":"065","locked":true},{"name":"MY POETICAL ART","trackNo":"066","locked":true},{"name":"MY WORLD IS YOURS","trackNo":"067","locked":true},{"name":"NO JAIL TIME","trackNo":"068","locked":true},{"name":"ONE HUNDRED PERCENT","trackNo":"069","locked":true},{"name":"TRUTH","trackNo":"070","locked":true},{"name":"ONE LOVE, OR NOT","trackNo":"071","locked":true},{"name":"OUR LOVE","trackNo":"072","locked":true},{"name":"PRINCE CHARMING IS HERE","trackNo":"073","locked":true},{"name":"QUEEN DREAMS","trackNo":"074","locked":true},{"name":"RANDOM THOUGHTS","trackNo":"075","locked":true},{"name":"REAL LOVE","trackNo":"076","locked":true},{"name":"REST IN PEACE","trackNo":"077","locked":true},{"name":"SATURDAY NIGHT SEX","trackNo":"078","locked":true},{"name":"SET THE DATE","trackNo":"079","locked":true},{"name":"SHE'S GONE","trackNo":"080","locked":true},{"name":"SILENT NIGHT","trackNo":"081","locked":true},{"name":"SLOW DANCE","trackNo":"082","locked":true},{"name":"STILL I RISE","trackNo":"083","locked":true},{"name":"STOOD UP","trackNo":"084","locked":true},{"name":"SUCH CRYBABIES","trackNo":"085","locked":true},{"name":"SWEET DREAMS OF","trackNo":"086","locked":true},{"name":"TALK TO ME MRS. POETRY","trackNo":"087","locked":true},{"name":"THANKS FOR GIVING ME YOU","trackNo":"088","locked":true},{"name":"THAT FOUR LETTER WORD","trackNo":"089","locked":true},{"name":"THE DOG IN ME","trackNo":"090","locked":true},{"name":"THE END TO A POEM","trackNo":"091","locked":true},{"name":"THE FALLEN","trackNo":"092","locked":true},{"name":"THE HANDS OF TIME","trackNo":"093","locked":true},{"name":"THE HOUR IN A GLASS","trackNo":"094","locked":true},{"name":"THE PRIVATE SHOW","trackNo":"095","locked":true},{"name":"THE PURSUIT FOR HAPPINESS","trackNo":"096","locked":true},{"name":"THINGS ARE NOT ALWAYS WHAT THEY SEEM","trackNo":"097","locked":true},{"name":"THIS AIN'T A GAME","trackNo":"098","locked":true},{"name":"THOUGHTS OF YOU","trackNo":"099","locked":true},{"name":"TIL DEATH DO US PART","trackNo":"100","locked":true},{"name":"TO BE, OR... NOT TO BE","trackNo":"101","locked":true},{"name":"UNHAPPINESS","trackNo":"102","locked":true},{"name":"UNLOVED & UNWANTED","trackNo":"103","locked":true},{"name":"WE CAN DO IT AGAIN","trackNo":"104","locked":true},{"name":"WE LEARN TO LOVE","trackNo":"105","locked":true},{"name":"WHAT LOVE IS","trackNo":"106","locked":true},{"name":"WHAT WAS IT WORTH","trackNo":"107","locked":true},{"name":"WWE CAN DO IT AGAIN","trackNo":"108","locked":true},{"name":"WE LEARN TO LOVE","trackNo":"109","locked":true},{"name":"WHAT LOVE IS","trackNo":"110","locked":true},{"name":"WHAT WAS IT WORTH","trackNo":"111","locked":true},{"name":"WHAT'S THE PROBLEM","trackNo":"112","locked":true},{"name":"WHEN I DREAM OF HER","trackNo":"113","locked":true},{"name":"WHAT'S THE PROBLEM","trackNo":"114","locked":true},{"name":"WHEN I DREAM OF HER","trackNo":"115","locked":true},{"name":"WHY DO I","trackNo":"116","locked":true},{"name":"WHY DO WE RUN FROM WHAT WE SEEK","trackNo":"117","locked":true},{"name":"WHY OH WHY","trackNo":"118","locked":true},{"name":"WIFE, LOVER & FRIEND","trackNo":"119","locked":true},{"name":"WISH UPON A STAR","trackNo":"120","locked":true},{"name":"YOU CAN HAVE IT ALL","trackNo":"121","locked":true},{"name":"YOU INSPIRE WHAT I DESIRE","trackNo":"122","locked":true},{"name":"YOU KNOW YOU’RE A QUEEN","trackNo":"123","locked":true},{"name":"YOU'RE A PRINCESS GIRL","trackNo":"124","locked":true},{"name":"YOU’RE FEELING YOURSELF","trackNo":"125","locked":true},{"name":"YOUR MENTAL HOLD ON ME","trackNo":"126","locked":true}]},"MUSIC-LOGO-05":{"name":"THE FIRM PROPHETS","locked":true,"tracks":[{"name":"A DAY WITH THE LORD","trackNo":"001","locked":true},{"name":"ALPHA & OMEGA (7 To Begin AND 7 TO END)","trackNo":"002","locked":true},{"name":"CHRIST IS COMING","trackNo":"003","locked":true},{"name":"COME... FOLLOW ME","trackNo":"004","locked":true},{"name":"COULD IT BE A SIMPLE DREAM","trackNo":"005","locked":true},{"name":"FRIEND OR FOE","trackNo":"006","locked":true},{"name":"GOD BLESS THE CHILD","trackNo":"007","locked":true},{"name":"HE COMMANDS US","trackNo":"008","locked":true},{"name":"I SEE BRIGHT DAYS EVERY DAY","trackNo":"009","locked":true},{"name":"IN GOD I TRUST","trackNo":"010","locked":true},{"name":"IT AIN’T A JOURNEY","trackNo":"011","locked":true},{"name":"LORD FORGIVE ME, FOR I HAVE SINNED","trackNo":"012","locked":true},{"name":"MY FINAL WORDS","trackNo":"013","locked":true},{"name":"MY PRAYER 1","trackNo":"014","locked":true},{"name":"MY PRAYER 2","trackNo":"015","locked":true},{"name":"MY PRAYER 3","trackNo":"016","locked":true},{"name":"ONE DAY... I FOUND GOD","trackNo":"017","locked":true},{"name":"ONE WORLD ORDER","trackNo":"018","locked":true},{"name":"PRAISE HE WHO GIVES LIFE","trackNo":"019","locked":true},{"name":"SEE NO EVIL, HEAR NO EVIL, SPEAK NO EVIL","trackNo":"020","locked":true},{"name":"SICKNESS / TORN","trackNo":"021","locked":true},{"name":"SPEAK TO THEM PROPHET","trackNo":"022","locked":true},{"name":"THE POWERS THAT BE","trackNo":"023","locked":true},{"name":"THE PROPHET","trackNo":"024","locked":true},{"name":"THE REVELATION","trackNo":"025","locked":true},{"name":"THE THINGS I'VE SEEN","trackNo":"026","locked":true},{"name":"TIME FOR CHANGE","trackNo":"027","locked":true},{"name":"TIME IS GETTING SHORTER","trackNo":"028","locked":true},{"name":"WALK IN MY SHOES","trackNo":"029","locked":true},{"name":"WALKING THROUGH LIFE'S PAGES","trackNo":"030","locked":true},{"name":"WE CAN CHANGE","trackNo":"031","locked":true},{"name":"WHEN HE LAYS ME DOWN TO SLEEP","trackNo":"032","locked":true},{"name":"WOE IS ME, BUT HE'LL SET ME FREE","trackNo":"033","locked":true}]},"MUSIC-LOGO-06":{"name":"THE LYRICIST FIRM","locked":true,"tracks":[{"name":"2 GLOCK NINES","trackNo":"001","locked":true},{"name":"3 THE HARD WAY","trackNo":"002","locked":true},{"name":"24 HOURS TO LIVE","trackNo":"003","locked":true},{"name":"A DECK OF CARDS","trackNo":"004","locked":true},{"name":"AHEAD OF THE CLASS","trackNo":"005","locked":true},{"name":"AIN’T NO LOVE LOST","trackNo":"006","locked":true},{"name":"AIN'T NO SHAME, AIN'T NO GAME","trackNo":"007","locked":true},{"name":"ANOTHER PEEP SHOW","trackNo":"008","locked":true},{"name":"BACK TO THE BASICS","trackNo":"009","locked":true},{"name":"BACKSTABBERS","trackNo":"010","locked":true},{"name":"BATTLE SCARS & SCORCHING BARS","trackNo":"011","locked":true},{"name":"BELIEVE ON US","trackNo":"012","locked":true},{"name":"BROOKLYN THAT BOROUGH","trackNo":"013","locked":true},{"name":"BROOKLYN THE KING","trackNo":"014","locked":true},{"name":"BROOKLYN","trackNo":"015","locked":true},{"name":"BULLSHIT PEOPLE","trackNo":"016","locked":true},{"name":"BY ANY MEANS NECESSARY","trackNo":"017","locked":true},{"name":"CALL ME A BITCH AGAIN","trackNo":"018","locked":true},{"name":"CHECK THE STATUS","trackNo":"019","locked":true},{"name":"COME ONE... COME ALL","trackNo":"020","locked":true},{"name":"DA  FUCK","trackNo":"021","locked":true},{"name":"DANCIN’ WITH THE DEVIL","trackNo":"022","locked":true},{"name":"DAPHINE LAMAR SUDLER (04-14-41 – 03-09-96)","trackNo":"023","locked":true},{"name":"DARK POETIC LEGION’S DOOM","trackNo":"024","locked":true},{"name":"DEEP IN THE ABYSS","trackNo":"025","locked":true},{"name":"DIGESTED","trackNo":"026","locked":true},{"name":"DO OR DIE BED-STUY","trackNo":"027","locked":true},{"name":"DON’T HATE THE PLAYER, LEARN THE GAME","trackNo":"028","locked":true},{"name":"DON'T TEST THE SKILLS","trackNo":"029","locked":true},{"name":"DON'T TRY ME","trackNo":"030","locked":true},{"name":"DROP THAT SHIT","trackNo":"031","locked":true},{"name":"ENTER AT YOUR OWN RISK","trackNo":"032","locked":true},{"name":"FENCE RIDERS","trackNo":"033","locked":true},{"name":"FINAL NOTICE","trackNo":"034","locked":true},{"name":"FIRE INK WRITERS","trackNo":"035","locked":true},{"name":"FIRM MAFIOSA FAMILIA","trackNo":"036","locked":true},{"name":"FIST FULL OF DOLLARS","trackNo":"037","locked":true},{"name":"FLAME BARS FOR LAME STARS","trackNo":"038","locked":true},{"name":"FREESTYLE SESSIONS 1","trackNo":"039","locked":true},{"name":"FREESTYLE SESSIONS 2","trackNo":"040","locked":true},{"name":"FREESTYLE SESSIONS 3","trackNo":"041","locked":true},{"name":"FREESTYLE SESSIONS 4","trackNo":"042","locked":true},{"name":"FROM THE ARCHIVES OF 1","trackNo":"043","locked":true},{"name":"FROM THE ARCHIVES OF 2","trackNo":"044","locked":true},{"name":"FROM THE ARCHIVES OF 3","trackNo":"045","locked":true},{"name":"FROM THE ARCHIVES OF 4","trackNo":"046","locked":true},{"name":"GAME ON LOCK","trackNo":"047","locked":true},{"name":"GANGSTA LOVE","trackNo":"048","locked":true},{"name":"GET US HOME","trackNo":"049","locked":true},{"name":"GO WORK IT OUT","trackNo":"050","locked":true},{"name":"GROW A PAIR (Bitchniggas)","trackNo":"051","locked":true},{"name":"GROWN ASS KID","trackNo":"052","locked":true},{"name":"HE’S SO DAMN RUDE","trackNo":"053","locked":true},{"name":"HIP HOP","trackNo":"054","locked":true},{"name":"HOT SHIT","trackNo":"055","locked":true},{"name":"HUNT 'EM DOWN AND SHUT 'EM DOWN","trackNo":"056","locked":true},{"name":"I AM BROOKLYN 1","trackNo":"057","locked":true},{"name":"I AM BROOKLYN 2","trackNo":"058","locked":true},{"name":"I DIDN’T INHERT SHIT","trackNo":"059","locked":true},{"name":"I GOT AN ARSENAL FLOW","trackNo":"060","locked":true},{"name":"I GOT NOTHING LEFT","trackNo":"061","locked":true},{"name":"I KEEP REPEATIN’ MYSELF","trackNo":"062","locked":true},{"name":"I SEE YOU","trackNo":"063","locked":true},{"name":"I SPIT HOT BARS","trackNo":"064","locked":true},{"name":"I WRITE WORDS","trackNo":"065","locked":true},{"name":"I’M FROM THE FIRM","trackNo":"066","locked":true},{"name":"I'M JUST SAYING THO’","trackNo":"067","locked":true},{"name":"IN A DAYS WORK","trackNo":"068","locked":true},{"name":"IT AIN’T WRITTEN (Off The Top)","trackNo":"069","locked":true},{"name":"IT'S A FAMILY AFFAIR","trackNo":"070","locked":true},{"name":"IT’S ALL BUSINESS","trackNo":"071","locked":true},{"name":"JACK THE RIPPER","trackNo":"072","locked":true},{"name":"JEALOUS ONE’S ENVY","trackNo":"073","locked":true},{"name":"KEEP YOUR HANDS HIGH","trackNo":"074","locked":true},{"name":"KICK ROCKS","trackNo":"075","locked":true},{"name":"LAST NIGHT","trackNo":"076","locked":true},{"name":"LAUGH NOW - CRY LATER","trackNo":"077","locked":true},{"name":"LET ME BE THE WRITER","trackNo":"078","locked":true},{"name":"LIFE IS LIKE A BOX OF...","trackNo":"079","locked":true},{"name":"LOTTERY WINNER","trackNo":"080","locked":true},{"name":"LYRICAL KING","trackNo":"081","locked":true},{"name":"LYRICAL WARS","trackNo":"082","locked":true},{"name":"MIC CHECK, ONE... TWO...","trackNo":"083","locked":true},{"name":"MIDDLE FINGER","trackNo":"084","locked":true},{"name":"MILK 'EM LIKE CEREAL","trackNo":"085","locked":true},{"name":"MIND YOUR DAMN BUSINESS","trackNo":"086","locked":true},{"name":"MISTAKEN IDENTITY","trackNo":"087","locked":true},{"name":"MR. TLF4LIFE (THE WRITER)","trackNo":"088","locked":true},{"name":"MY FIRM STATE OF MIND","trackNo":"089","locked":true},{"name":"MY METAMORPHOSIS","trackNo":"090","locked":true},{"name":"MY OWN MAN","trackNo":"091","locked":true},{"name":"MY PARALLEL UNIVERSE","trackNo":"092","locked":true},{"name":"MY WAY","trackNo":"093","locked":true},{"name":"MY WET INK","trackNo":"094","locked":true},{"name":"NO ESCAPE","trackNo":"095","locked":true},{"name":"NON-COMMERCIALIZED","trackNo":"096","locked":true},{"name":"NOT MY CUP OF TEA","trackNo":"097","locked":true},{"name":"NOT SCORN BUT HURT","trackNo":"098","locked":true},{"name":"NOVICE LYRICIST","trackNo":"099","locked":true},{"name":"OCTOBER DIRTY THIRST","trackNo":"100","locked":true},{"name":"ON THE CLOCK","trackNo":"101","locked":true},{"name":"ONE TIME ONLY","trackNo":"102","locked":true},{"name":"ORIGINAL GUN CLAPPER","trackNo":"103","locked":true},{"name":"P’ DUB THE LYRICIST","trackNo":"104","locked":true},{"name":"PAY THE PIPER","trackNo":"105","locked":true},{"name":"POET, PREACHER, LOVER","trackNo":"106","locked":true},{"name":"POETICAL FLOWTACULAR WORDPLAY SPECTACULAR","trackNo":"107","locked":true},{"name":"POETICAL WORD PLAY 1","trackNo":"108","locked":true},{"name":"POETICAL WORD PLAY 2","trackNo":"109","locked":true},{"name":"POETICAL WORD PLAY 3","trackNo":"110","locked":true},{"name":"POETICAL WORD PLAY 4","trackNo":"111","locked":true},{"name":"PUT YOUR HANDS UP, DON’T MOVE","trackNo":"112","locked":true},{"name":"RAP'S MOST LEGENDARY","trackNo":"113","locked":true},{"name":"REMEDIAL QUESTIONS","trackNo":"114","locked":true},{"name":"REVENGE","trackNo":"115","locked":true},{"name":"REVENGE Pt 1","trackNo":"116","locked":true},{"name":"REVENGE Pt 2","trackNo":"117","locked":true},{"name":"RHYTHM & BLUEZ CAFE","trackNo":"118","locked":true},{"name":"RICH MONEY","trackNo":"119","locked":true},{"name":"RUN TELL THAT","trackNo":"120","locked":true},{"name":"SANDBOX RUGRATS","trackNo":"121","locked":true},{"name":"SAY HI TO THE BAD GUY","trackNo":"122","locked":true},{"name":"SHOW SOME LOVE","trackNo":"123","locked":true},{"name":"SLAYIN’ OF A FRIEND","trackNo":"124","locked":true},{"name":"SMOKE A PIECE A SHIT","trackNo":"125","locked":true},{"name":"SNAKES IN THE GRASS","trackNo":"126","locked":true},{"name":"SOLDIERS OF FORTUNE","trackNo":"127","locked":true},{"name":"Soooo, YOU WANNA BATTLE","trackNo":"128","locked":true},{"name":"SPITTIN’ MON-STAR BARZ","trackNo":"129","locked":true},{"name":"STATE OF EMERGENCY","trackNo":"130","locked":true},{"name":"STEP OFF CLOWNS","trackNo":"131","locked":true},{"name":"STICKS AND STONES","trackNo":"132","locked":true},{"name":"STILL COUNTIN’ THE YEARS","trackNo":"133","locked":true},{"name":"STORY OF LIFE AIN'T NO SOAP OPERA","trackNo":"134","locked":true},{"name":"SUCKER MC'S","trackNo":"135","locked":true},{"name":"SUPERBOLD NIGGAS","trackNo":"136","locked":true},{"name":"TAKE 'EM BACK TO THE OLD SCHOOL 1","trackNo":"137","locked":true},{"name":"TAKE 'EM BACK TO THE OLD SCHOOL 2","trackNo":"138","locked":true},{"name":"THAT BOY GOT SKILLZ","trackNo":"139","locked":true},{"name":"THAT’S BROOKLYN","trackNo":"140","locked":true},{"name":"THE ANSWER","trackNo":"141","locked":true},{"name":"THE ART OF WORDS","trackNo":"142","locked":true},{"name":"THE ARTIST FORMALLY OF…","trackNo":"143","locked":true},{"name":"THE BEAST IS BACK","trackNo":"144","locked":true},{"name":"THE BEST OF THE BEST","trackNo":"145","locked":true},{"name":"THE COMIN’ HOME BURIAL","trackNo":"146","locked":true},{"name":"THE FALL OF DARK POETIC LEGION","trackNo":"147","locked":true},{"name":"THE FIRM’S WAY","trackNo":"148","locked":true},{"name":"THE HITMAN 1","trackNo":"149","locked":true},{"name":"THE HITMAN 2","trackNo":"150","locked":true},{"name":"THE HITMAN 3","trackNo":"151","locked":true},{"name":"THE INFERNO©","trackNo":"152","locked":true},{"name":"THE LEGEND HIP-HOP FORGOT","trackNo":"153","locked":true},{"name":"THE P DUB’ ATTACK","trackNo":"154","locked":true},{"name":"THE POETRY PROJECT","trackNo":"155","locked":true},{"name":"THE PROBLEM SOLVER","trackNo":"156","locked":true},{"name":"THE PUSHER","trackNo":"157","locked":true},{"name":"THE WORLD IS MINE","trackNo":"158","locked":true},{"name":"THE WORLD OF WRITERS","trackNo":"159","locked":true},{"name":"THEIR DESTRUCTION","trackNo":"160","locked":true},{"name":"THESE CLOWNS","trackNo":"161","locked":true},{"name":"THIS IS WHY THEY HATE ME","trackNo":"162","locked":true},{"name":"THIS PAGE HAS BEEN","trackNo":"163","locked":true},{"name":"THUGS INCORPORATED","trackNo":"164","locked":true},{"name":"TLF IT AIN'T JUST A FIRM","trackNo":"165","locked":true},{"name":"TLF MONSTARZ","trackNo":"166","locked":true},{"name":"TLF PUBLISHING GROUP","trackNo":"167","locked":true},{"name":"TORN & SCORN","trackNo":"168","locked":true},{"name":"UP IN DA CLUB","trackNo":"169","locked":true},{"name":"VERBAL ASSAULT","trackNo":"170","locked":true},{"name":"WARNING","trackNo":"171","locked":true},{"name":"WE ARE NOT EQUAL","trackNo":"172","locked":true},{"name":"WE THE ARTISTS","trackNo":"173","locked":true},{"name":"WELCOME TO BROOKLYN","trackNo":"174","locked":true},{"name":"WHAT BITCHASSNESS IS","trackNo":"175","locked":true},{"name":"WHAT DID I JUST WRITE","trackNo":"176","locked":true},{"name":"WHERE ART THOU OH WORDS","trackNo":"177","locked":true},{"name":"WHO AIN'T RIDIN'","trackNo":"178","locked":true},{"name":"WHO AM I","trackNo":"179","locked":true},{"name":"WHY YOU HATIN’ ON ME","trackNo":"180","locked":true},{"name":"WRITERS & BITERS","trackNo":"181","locked":true},{"name":"YOU, ME AND THEM","trackNo":"182","locked":true},{"name":"YOUR BITCH CHOSE ME","trackNo":"183","locked":true}]},"MUSIC-LOGO-07":{"name":"FIRM DIVAS","locked":true,"tracks":[{"name":"FIRM DIVAS TRACK 001 - FROM DIVAS FOLDER","trackNo":"001","locked":true},{"name":"FIRM DIVAS TRACK 002 - FROM DIVAS FOLDER","trackNo":"002","locked":true},{"name":"FIRM DIVAS TRACK 003 - FROM DIVAS FOLDER","trackNo":"003","locked":true},{"name":"FIRM DIVAS TRACK 004 - FROM DIVAS FOLDER","trackNo":"004","locked":true},{"name":"FIRM DIVAS TRACK 005 - FROM DIVAS FOLDER","trackNo":"005","locked":true},{"name":"FIRM DIVAS TRACK 006 - FROM DIVAS FOLDER","trackNo":"006","locked":true},{"name":"FIRM DIVAS TRACK 007 - FROM DIVAS FOLDER","trackNo":"007","locked":true},{"name":"FIRM DIVAS TRACK 008 - FROM DIVAS FOLDER","trackNo":"008","locked":true},{"name":"FIRM DIVAS TRACK 009 - FROM DIVAS FOLDER","trackNo":"009","locked":true},{"name":"FIRM DIVAS TRACK 010 - FROM DIVAS FOLDER","trackNo":"010","locked":true},{"name":"FIRM DIVAS TRACK 011 - FROM DIVAS FOLDER","trackNo":"011","locked":true},{"name":"FIRM DIVAS TRACK 012 - FROM DIVAS FOLDER","trackNo":"012","locked":true},{"name":"FIRM DIVAS TRACK 013 - FROM DIVAS FOLDER","trackNo":"013","locked":true},{"name":"FIRM DIVAS TRACK 014 - FROM DIVAS FOLDER","trackNo":"014","locked":true},{"name":"FIRM DIVAS TRACK 015 - FROM DIVAS FOLDER","trackNo":"015","locked":true},{"name":"FIRM DIVAS TRACK 016 - FROM DIVAS FOLDER","trackNo":"016","locked":true},{"name":"FIRM DIVAS TRACK 017 - FROM DIVAS FOLDER","trackNo":"017","locked":true},{"name":"FIRM DIVAS TRACK 018 - FROM DIVAS FOLDER","trackNo":"018","locked":true},{"name":"FIRM DIVAS TRACK 019 - FROM DIVAS FOLDER","trackNo":"019","locked":true},{"name":"FIRM DIVAS TRACK 020 - FROM DIVAS FOLDER","trackNo":"020","locked":true},{"name":"FIRM DIVAS TRACK 021 - FROM DIVAS FOLDER","trackNo":"021","locked":true},{"name":"FIRM DIVAS TRACK 022 - FROM DIVAS FOLDER","trackNo":"022","locked":true},{"name":"FIRM DIVAS TRACK 023 - FROM DIVAS FOLDER","trackNo":"023","locked":true},{"name":"FIRM DIVAS TRACK 024 - FROM DIVAS FOLDER","trackNo":"024","locked":true},{"name":"FIRM DIVAS TRACK 025 - FROM DIVAS FOLDER","trackNo":"025","locked":true},{"name":"FIRM DIVAS TRACK 026 - FROM DIVAS FOLDER","trackNo":"026","locked":true},{"name":"FIRM DIVAS TRACK 027 - FROM DIVAS FOLDER","trackNo":"027","locked":true},{"name":"FIRM DIVAS TRACK 028 - FROM DIVAS FOLDER","trackNo":"028","locked":true},{"name":"FIRM DIVAS TRACK 029 - FROM DIVAS FOLDER","trackNo":"029","locked":true},{"name":"FIRM DIVAS TRACK 030 - FROM DIVAS FOLDER","trackNo":"030","locked":true},{"name":"FIRM DIVAS TRACK 031 - FROM DIVAS FOLDER","trackNo":"031","locked":true},{"name":"FIRM DIVAS TRACK 032 - FROM DIVAS FOLDER","trackNo":"032","locked":true},{"name":"FIRM DIVAS TRACK 033 - FROM DIVAS FOLDER","trackNo":"033","locked":true},{"name":"FIRM DIVAS TRACK 034 - FROM DIVAS FOLDER","trackNo":"034","locked":true},{"name":"FIRM DIVAS TRACK 035 - FROM DIVAS FOLDER","trackNo":"035","locked":true},{"name":"FIRM DIVAS TRACK 036 - FROM DIVAS FOLDER","trackNo":"036","locked":true},{"name":"FIRM DIVAS TRACK 037 - FROM DIVAS FOLDER","trackNo":"037","locked":true},{"name":"FIRM DIVAS TRACK 038 - FROM DIVAS FOLDER","trackNo":"038","locked":true},{"name":"FIRM DIVAS TRACK 039 - FROM DIVAS FOLDER","trackNo":"039","locked":true},{"name":"FIRM DIVAS TRACK 040 - FROM DIVAS FOLDER","trackNo":"040","locked":true},{"name":"FIRM DIVAS TRACK 041 - FROM DIVAS FOLDER","trackNo":"041","locked":true},{"name":"FIRM DIVAS TRACK 042 - FROM DIVAS FOLDER","trackNo":"042","locked":true},{"name":"FIRM DIVAS TRACK 043 - FROM DIVAS FOLDER","trackNo":"043","locked":true},{"name":"FIRM DIVAS TRACK 044 - FROM DIVAS FOLDER","trackNo":"044","locked":true},{"name":"FIRM DIVAS TRACK 045 - FROM DIVAS FOLDER","trackNo":"045","locked":true},{"name":"FIRM DIVAS TRACK 046 - FROM DIVAS FOLDER","trackNo":"046","locked":true},{"name":"FIRM DIVAS TRACK 047 - FROM DIVAS FOLDER","trackNo":"047","locked":true},{"name":"FIRM DIVAS TRACK 048 - FROM DIVAS FOLDER","trackNo":"048","locked":true},{"name":"FIRM DIVAS TRACK 049 - FROM DIVAS FOLDER","trackNo":"049","locked":true},{"name":"FIRM DIVAS TRACK 050 - FROM DIVAS FOLDER","trackNo":"050","locked":true},{"name":"FIRM DIVAS TRACK 051 - FROM DIVAS FOLDER","trackNo":"051","locked":true},{"name":"FIRM DIVAS TRACK 052 - FROM DIVAS FOLDER","trackNo":"052","locked":true},{"name":"FIRM DIVAS TRACK 053 - FROM DIVAS FOLDER","trackNo":"053","locked":true}]},"MUSIC-LOGO-08":{"name":"BLACK LIVES MATTER","locked":true,"tracks":[{"name":"9-1-1 WHAT'S THE EMERGENCY","trackNo":"001","locked":true},{"name":"40 ACRES BUT NO MULE 1","trackNo":"002","locked":true},{"name":"40 ACRES BUT NO MULE 2","trackNo":"003","locked":true},{"name":"101 ADVANCED CLASS","trackNo":"004","locked":true},{"name":"101 CLASS","trackNo":"005","locked":true},{"name":"A BAD THING GONE GOOD","trackNo":"006","locked":true},{"name":"A BROKEN SYSTEM","trackNo":"007","locked":true},{"name":"A DAY AND A WAKE UP","trackNo":"008","locked":true},{"name":"A DIVIDED NATION","trackNo":"009","locked":true},{"name":"A MEANS TO NO END","trackNo":"010","locked":true},{"name":"A MESSAGE TO OUR YOUTH","trackNo":"011","locked":true},{"name":"A NATION OF THUGS","trackNo":"012","locked":true},{"name":"A ONE STOP SHOP","trackNo":"013","locked":true},{"name":"A PACKAGE DEAL","trackNo":"014","locked":true},{"name":"A REVELATION","trackNo":"015","locked":true},{"name":"A TALE OF WAR","trackNo":"016","locked":true},{"name":"A WORLD IN TROUBLE","trackNo":"017","locked":true},{"name":"A WRETCHED LIFE","trackNo":"018","locked":true},{"name":"AM I MY BROTHER'S KEEPER","trackNo":"019","locked":true},{"name":"AMERICA HATES ME","trackNo":"020","locked":true},{"name":"AMERICAN GAMES","trackNo":"021","locked":true},{"name":"B'MORE (IT'S REAL)","trackNo":"022","locked":true},{"name":"BEING FREE IN POETRY","trackNo":"023","locked":true},{"name":"BIG BUSINESS IS","trackNo":"024","locked":true},{"name":"BLACK LIVES MATTER 1","trackNo":"025","locked":true},{"name":"BLACK LIVES MATTER 2","trackNo":"026","locked":true},{"name":"BLACK LIVES MATTER 3","trackNo":"027","locked":true},{"name":"BLACK LIVES MATTER 4","trackNo":"028","locked":true},{"name":"BLACK MAN KILLER","trackNo":"029","locked":true},{"name":"BLACK ON BLACK CRIME","trackNo":"030","locked":true},{"name":"BLACK PEOPLE","trackNo":"031","locked":true},{"name":"BLACKMEN NEEDED","trackNo":"032","locked":true},{"name":"BLUE THUNDER","trackNo":"033","locked":true},{"name":"CENSORED","trackNo":"034","locked":true},{"name":"CHOOSE YOUR FATE WISELY","trackNo":"035","locked":true},{"name":"CLIMBING THE LADDER","trackNo":"036","locked":true},{"name":"CRIMINAL PROFILING","trackNo":"037","locked":true},{"name":"DAWN OF THE NEW AGE","trackNo":"038","locked":true},{"name":"DAY AND NIGHT","trackNo":"039","locked":true},{"name":"DAYS OF TIMES PAST","trackNo":"040","locked":true},{"name":"DEAD END","trackNo":"041","locked":true},{"name":"DIVIDED STATES/AMERIKKKA","trackNo":"042","locked":true},{"name":"DO NOT BELIEVE THE HYPE","trackNo":"043","locked":true},{"name":"DON'T OPEN, DEAD INSIDE","trackNo":"044","locked":true},{"name":"DON'T TAKE THIS FOR GRANTED","trackNo":"045","locked":true},{"name":"DOWN THAT ROAD","trackNo":"046","locked":true},{"name":"WHEN JUSTICE FAILS","trackNo":"047","locked":true},{"name":"EXCUSE MY IGNORANCE","trackNo":"048","locked":true},{"name":"FAKE FRIENDS","trackNo":"049","locked":true},{"name":"FALLING","trackNo":"050","locked":true},{"name":"FAMILY BACKBONE","trackNo":"051","locked":true},{"name":"FIGHT FOR YOUR RIGHT","trackNo":"052","locked":true},{"name":"FREE WILL OR DICTATORSHIP","trackNo":"053","locked":true},{"name":"FREEDOM OF SPEECH","trackNo":"054","locked":true},{"name":"FREEDOM VS. PRISON","trackNo":"055","locked":true},{"name":"GEN - X TO GEN -Z Pt.1","trackNo":"056","locked":true},{"name":"GEN-X TO GEN-Z Pt.2","trackNo":"057","locked":true},{"name":"GONNA MAKE IT ONE DAY","trackNo":"058","locked":true},{"name":"GUILTY BY ASSOCIATION OF WORDS","trackNo":"059","locked":true},{"name":"I BLEED POETRY","trackNo":"060","locked":true},{"name":"I HAD A DREAM THAT ONE DAY","trackNo":"061","locked":true},{"name":"I'M STILL HERE","trackNo":"062","locked":true},{"name":"ILLEGAL INJUSTICE","trackNo":"063","locked":true},{"name":"IN GOD WE TRUST","trackNo":"064","locked":true},{"name":"IN THE BEGINNING WAS THE WORD","trackNo":"065","locked":true},{"name":"IN THE GHETTO 1","trackNo":"066","locked":true},{"name":"IN THE GHETTO 2","trackNo":"067","locked":true},{"name":"IN THE YEAR ????","trackNo":"068","locked":true},{"name":"IT'S HARD TO EXPLAIN","trackNo":"069","locked":true},{"name":"JUST MY THOUGHTS (Straight Out Of Brooklyn)","trackNo":"070","locked":true},{"name":"JUSTICE","trackNo":"071","locked":true},{"name":"LAND OF THE FREE","trackNo":"072","locked":true},{"name":"LIFE IS LIKE A BOX OF…","trackNo":"073","locked":true},{"name":"LITTLE BOYS AND GIRLS","trackNo":"074","locked":true},{"name":"LOOKING FOR THE SNIPER","trackNo":"075","locked":true},{"name":"MIRROR MIRROR OFF THE WALL","trackNo":"076","locked":true},{"name":"MIRROR MIRROR ON THE WALL","trackNo":"077","locked":true},{"name":"MISSING PERSONS","trackNo":"078","locked":true},{"name":"MOST HATED","trackNo":"079","locked":true},{"name":"MY POETICAL VIEW","trackNo":"080","locked":true},{"name":"NEW WORLD ORDER","trackNo":"081","locked":true},{"name":"NO AMERICAN JUSTICE","trackNo":"082","locked":true},{"name":"NO JUSTICE - NO PEACE","trackNo":"083","locked":true},{"name":"ON THIS DAY IN HISTORY","trackNo":"084","locked":true},{"name":"ON THIS DAY THE POOR WILL","trackNo":"085","locked":true},{"name":"ONE PEOPLE, ONE VOICE","trackNo":"086","locked":true},{"name":"ONE VICTIM IS","trackNo":"087","locked":true},{"name":"PLAYAZ AIN'T KOOL","trackNo":"088","locked":true},{"name":"POPULATION CONTROL","trackNo":"089","locked":true},{"name":"PROUD TO BE AMERICAN","trackNo":"090","locked":true},{"name":"PUT THE GUNS DOWN","trackNo":"091","locked":true},{"name":"RED, WHITE & BLUE","trackNo":"092","locked":true},{"name":"REPEATING THE CYCLE","trackNo":"093","locked":true},{"name":"RESPECT THE LADIES","trackNo":"094","locked":true},{"name":"RIDE WITH ME","trackNo":"095","locked":true},{"name":"ROAD TO RE-COVER-ME","trackNo":"096","locked":true},{"name":"SAME SHIT DIFFERENT DAY","trackNo":"097","locked":true},{"name":"SHE WAS JUST A CHILD","trackNo":"098","locked":true},{"name":"SHEDDING DAILY TEARS","trackNo":"099","locked":true},{"name":"SLAVE & MASTER","trackNo":"100","locked":true},{"name":"SLEEPING BEAUTY","trackNo":"101","locked":true},{"name":"SOCIAL MEDIA (TRUTHS Or LIES)","trackNo":"102","locked":true},{"name":"SORRY I DIDN'T GET THAT MANUAL","trackNo":"103","locked":true},{"name":"SPEAK ON IT","trackNo":"104","locked":true},{"name":"STATE OF CONFUSION","trackNo":"105","locked":true},{"name":"STOP KILLING EACH OTHER","trackNo":"106","locked":true},{"name":"STOP KILLING EACH OTHER","trackNo":"107","locked":true},{"name":"STOP THE VIOLENCE","trackNo":"108","locked":true},{"name":"STRAIGHT OUTTA MONEY","trackNo":"109","locked":true},{"name":"STRANGERS IN THE NIGHT","trackNo":"110","locked":true},{"name":"STREET KNOWLEDGE","trackNo":"111","locked":true},{"name":"STREET LIFE","trackNo":"112","locked":true},{"name":"SUICIDE.ORG","trackNo":"113","locked":true},{"name":"SWEET MISERY","trackNo":"114","locked":true},{"name":"TEARS OF A VISIONARY","trackNo":"115","locked":true},{"name":"TEARS OF FEARS","trackNo":"116","locked":true},{"name":"TECHNOLOGICAL SLAVE","trackNo":"117","locked":true},{"name":"THE AGE OF MASS INCARCERATION","trackNo":"118","locked":true},{"name":"THE BLACK MOVEMENT","trackNo":"119","locked":true},{"name":"THE BLACKMAN MOVEMENT","trackNo":"120","locked":true},{"name":"THE COUNT DOWN BEGINS","trackNo":"121","locked":true},{"name":"THE HOME WRECKER","trackNo":"122","locked":true},{"name":"THE MARK OF THE BEAST 1","trackNo":"123","locked":true},{"name":"THE MARK OF THE BEAST 2","trackNo":"124","locked":true},{"name":"THE MAZE OF LIFE","trackNo":"125","locked":true},{"name":"THE MEEK SHALL INHERIT","trackNo":"126","locked":true},{"name":"THE MIND PROJECT 1","trackNo":"127","locked":true},{"name":"THE MIND PROJECT 2","trackNo":"128","locked":true},{"name":"THE MIND PROJECT 3","trackNo":"129","locked":true},{"name":"THE POOR - THE RICH","trackNo":"130","locked":true},{"name":"THE REVOLUTION WON'T BE TELEVISED","trackNo":"131","locked":true},{"name":"THE STORY OF OFFICER FRIENDLY","trackNo":"132","locked":true},{"name":"THE STRUGGLE IS REAL","trackNo":"133","locked":true},{"name":"THE SUN WILL COME OUT","trackNo":"134","locked":true},{"name":"THE SYSTEM IS BROKEN©","trackNo":"135","locked":true},{"name":"THE VISION BECOMES CLEAR","trackNo":"136","locked":true},{"name":"THIS WAS ME","trackNo":"137","locked":true},{"name":"TIL DEATH I PART","trackNo":"138","locked":true},{"name":"TO MY BABY BOY JOE","trackNo":"139","locked":true},{"name":"TRAPPED IN THE SYSTEM","trackNo":"140","locked":true},{"name":"TRICKS ARE FOR KIDS","trackNo":"141","locked":true},{"name":"TRUTH COVERED WITH LIES","trackNo":"142","locked":true},{"name":"TRUTH HURTS","trackNo":"143","locked":true},{"name":"UNITED STATES OF AMERIKKKA","trackNo":"144","locked":true},{"name":"WAKE UP 1","trackNo":"145","locked":true},{"name":"WAKE UP 2","trackNo":"146","locked":true},{"name":"WE ARE NOT DEFEATED","trackNo":"147","locked":true},{"name":"WE HAVE RIGHTS 1","trackNo":"148","locked":true},{"name":"WE HAVE RIGHTS 2","trackNo":"149","locked":true},{"name":"WE NEED PEACE 1","trackNo":"150","locked":true},{"name":"WE NEED PEACE 2","trackNo":"151","locked":true},{"name":"WE SHALL OVERCOME","trackNo":"152","locked":true},{"name":"WHAT ABOUT YOUR KIDS","trackNo":"153","locked":true},{"name":"WHAT DOESN'T KILL YOU","trackNo":"154","locked":true},{"name":"WHAT'S THE PRICE TAG","trackNo":"155","locked":true},{"name":"WHEN A MAN CRIES","trackNo":"156","locked":true},{"name":"WHEN WILL IT END","trackNo":"157","locked":true},{"name":"WHEN WILL THE PEOPLE WAKE UP","trackNo":"158","locked":true},{"name":"WHERE THEY GETTIN’ THE GUNS","trackNo":"159","locked":true},{"name":"WHO GOVERNS THE PEOPLE","trackNo":"160","locked":true},{"name":"WHO'S PAYING THE PRICE","trackNo":"161","locked":true},{"name":"WHY KILL US 1","trackNo":"162","locked":true},{"name":"WHY KILL US 2","trackNo":"163","locked":true},{"name":"YOU DON'T DESERVE THIS","trackNo":"164","locked":true}]}};
+
+function applyLockedMusicCatalog(){
+  Object.entries(LOCKED_MUSIC_CATALOG).forEach(([key,seed])=>{
+    const old=db[key]||{};
+    const oldTracks=Array.isArray(old.tracks)?old.tracks:[];
+    const tracks=seed.tracks.map((fixed,idx)=>{
+      const prior=oldTracks[idx]||{};
+      return {...prior,...fixed,name:fixed.name,trackNo:fixed.trackNo,locked:true};
+    });
+    db[key]={...old,...seed,name:seed.name,tracks,locked:true};
+  });
+}
+
+/* HTML-escape user-supplied strings before inserting into innerHTML */
+function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+
+/* ── DB ── */
+async function loadDB(){
+  const base={};
+  await Promise.all(['home','books','music','movies','more'].map(async f=>{
+    try{ const r=await fetch('data/'+f+'.json'); if(r.ok){ const j=await r.json(); Object.assign(base,j); } else { console.warn('TLF data: could not load data/'+f+'.json ('+r.status+')'); } }catch(e){ console.warn('TLF data: fetch error for data/'+f+'.json',e); }
+  }));
+  let stored={};
+  try{ stored=JSON.parse(localStorage.getItem('tlf_master_db')||'{}'); }catch(e){}
+  db={...base,...stored};
+  applyLockedMusicCatalog();
+  let seededYT=false;
+  if(!db['YT-movies']){ db['YT-movies']='https://youtu.be/ZTdc3W2ZdMw?is=n_MasjrRKAnyiDwW'; seededYT=true; }
+  if(seededYT) try{ localStorage.setItem('tlf_master_db', JSON.stringify(db)); }catch(e){}
+  if(Object.keys(stored).length>0) markUnsaved();
+  fillAll(); loadHome(); loadMore(); loadYT();
+}
+let hasUnsaved=false;
+function markUnsaved(){ hasUnsaved=true; const b=document.getElementById('unsaved-banner'); if(b) b.classList.add('visible'); }
+function clearUnsaved(){ hasUnsaved=false; const b=document.getElementById('unsaved-banner'); if(b) b.classList.remove('visible'); }
+let statusTimer=null;
+function showStatus(msg,type='info'){
+  const b=document.getElementById('status-banner'); if(!b) return;
+  b.textContent=msg;
+  b.className='';
+  b.classList.add('visible',type);
+  if(statusTimer) clearTimeout(statusTimer);
+  statusTimer=setTimeout(()=>{ b.className=''; b.textContent=''; },5000);
+}
+function saveDB(){ try{ localStorage.setItem('tlf_master_db', JSON.stringify(db)); markUnsaved(); }catch(e){ if(e.name==='QuotaExceededError'||e.code===22){ alert('Storage full! Some images may not have been saved. Try exporting and removing large images.'); } } updateSize(); }
+function updateSize(){ try{ const s=new Blob([JSON.stringify(db)]).size; document.querySelectorAll('[id^=storageSize]').forEach(el=>el.textContent=(s/1024).toFixed(1)+' KB'); }catch(e){} }
+
+
+/* ── APP ENTRY ── */
+function enterApp(){
+  document.getElementById('landing').style.display='none';
+  document.getElementById('app').style.display='flex';
+  isAdmin=true;
+  document.getElementById('admin-more-edit').style.display='block';
+  const videosPlayerAdmin=document.getElementById('videos-player-admin'); if(videosPlayerAdmin) videosPlayerAdmin.style.display='block';
+  const moviesPlayerAdmin=document.getElementById('movies-player-admin'); if(moviesPlayerAdmin) moviesPlayerAdmin.style.display='block';
+  document.querySelectorAll('[id^=edit-]').forEach(el=>el.style.display='block');
+  fillAll();
+}
+function showLanding(){ document.getElementById('app').style.display='none'; document.getElementById('landing').style.display='flex'; }
+function openTab(name){
+  // reset the Music category list when switching tabs
+  showMusicGrid();
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  document.querySelectorAll('nav.bottom button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('btn-'+name).classList.add('active');
+}
+
+/* ── GRIDS ── */
+function fillAll(){
+  const gt=document.getElementById('grid-tlf'); if(gt){ gt.innerHTML=''; for(let i=1;i<=30;i++) gt.appendChild(makeTile('TLF',i)); }
+  const gd=document.getElementById('grid-divas'); if(gd){ gd.innerHTML=''; for(let i=1;i<=18;i++) gd.appendChild(makeTile('DIVAS',i)); }
+  const ga=document.getElementById('grid-assoc'); if(ga){ ga.innerHTML=''; for(let i=1;i<=35;i++) ga.appendChild(makeTile('ASSOC',i)); }
+  const gml=document.getElementById('grid-music-logos'); if(gml){ gml.innerHTML=''; for(let i=1;i<=8;i++) gml.appendChild(makeLogo('MUSIC-LOGO',i,'music')); }
+  const gm=document.getElementById('grid-movies'); if(gm){ gm.innerHTML=''; for(let i=1;i<=10;i++) gm.appendChild(makeMovie(i)); }
+  const gb=document.getElementById('book-grid-real'); if(gb){ gb.innerHTML=''; for(let i=1;i<=18;i++){ const key='BOOK-'+String(i).padStart(2,'0'); const data=db[key]; const b=document.createElement('div'); b.className='book'; if(data&&data.image){ b.innerHTML='<img src="'+data.image+'" loading="lazy"/>'; } else { b.innerHTML='<span style="font-size:10px;color:#C9A86A">#'+String(i).padStart(2,'0')+'</span>'; } b.onclick=()=>openArtist('BOOK',i); gb.appendChild(b); } }
+  try{ document.getElementById('count-tlf').textContent=Object.keys(db).filter(k=>k.startsWith('TLF-')).length+'/30'; document.getElementById('count-divas').textContent=Object.keys(db).filter(k=>k.startsWith('DIVAS-')).length+'/18'; document.getElementById('count-assoc').textContent=Object.keys(db).filter(k=>k.startsWith('ASSOC-')).length+'/35'; document.getElementById('count-music').textContent=(Object.keys(db).filter(k=>k.startsWith('TLF-')||k.startsWith('DIVAS-')||k.startsWith('ASSOC-')).length)+'/83'; }catch(e){}
+  updateSize();
+}
+
+/* artist tile */
+function makeTile(prefix,i){
+  const key=prefix+'-'+String(i).padStart(2,'0'); const d=db[key];
+  const div=document.createElement('div'); div.className='box';
+  if(d&&d.image){ div.innerHTML='<img src="'+d.image+'" loading="lazy"/><span class="num-badge">'+String(i).padStart(2,'0')+'</span>'; }
+  else { div.innerHTML='<span style="font-size:10px;color:#C9A86A;text-align:center;padding:4px">'+prefix+'<br>'+String(i).padStart(2,'0')+'</span><span class="num-badge">'+String(i).padStart(2,'0')+'</span>'; }
+  div.onclick=()=>openArtist(prefix,i); return div;
+}
+
+/* category logo tile */
+function makeLogo(prefix,i,type){
+  const key=prefix+'-'+String(i).padStart(2,'0'); const d=db[key];
+  const div=document.createElement('div'); div.className='logo-box';
+  if(d&&d.image){ div.innerHTML='<img src="'+d.image+'" loading="lazy"/>'; }
+  else { div.innerHTML='<span style="font-size:10px;color:#C9A86A;text-align:center;padding:4px">'+esc(d&&d.name?d.name:prefix+' '+i)+'</span>'; }
+  div.onclick=()=>openCategory(key,type); return div;
+}
+
+function makeMovie(i){ const key='MOVIE-'+String(i).padStart(2,'0'); const d=db[key]; const div=document.createElement('div'); div.className='movie'; const badge=document.createElement('span'); badge.className='num-badge'; badge.textContent=String(i).padStart(2,'0'); if(d&&d.image){ div.innerHTML='<img src="'+d.image+'" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block"/>'; } else { div.innerHTML='<span style="font-size:10px;color:#C9A86A;padding:12px">MOVIE '+String(i).padStart(2,'0')+'</span>'; } div.appendChild(badge); div.onclick=()=>openArtist('MOVIE',i); return div; }
+
+/* ── ARTIST MODAL ── */
+function openArtist(p,i){
+  current=p+'-'+String(i).padStart(2,'0');
+  const d=db[current]||{};
+  document.getElementById('modalTitle').textContent=d.name||current;
+  document.getElementById('artistName').value=d.name||'';
+  document.getElementById('artistBio').value=d.bio||'';
+  document.getElementById('artistStatus').value=d.status||'';
+  document.getElementById('artistLink').value=d.link||'';
+  const prev=document.getElementById('mainPreview');
+  prev.innerHTML=d.image?'<img src="'+d.image+'" style="width:100%;height:100%;object-fit:cover;border-radius:12px">':'<span style="font-size:28px">+</span>';
+  document.getElementById('adminArtistControls').style.display=isAdmin?'flex':'none';
+  document.getElementById('adminSaveArtist').style.display=isAdmin?'flex':'none';
+  document.getElementById('adminDeleteArtist').style.display=isAdmin?'inline-flex':'none';
+  // make fields read-only for non-admin
+  ['artistName','artistBio','artistStatus'].forEach(id=>{ document.getElementById(id).readOnly=!isAdmin; });
+  document.getElementById('artistModal').classList.add('active');
+}
+function closeModal(){ document.getElementById('artistModal').classList.remove('active'); current=null; document.getElementById('artistImageInput').value=''; }
+function clearArtistImage(){ document.getElementById('mainPreview').innerHTML='<span style="font-size:28px">+</span>'; if(current&&db[current]){ delete db[current].image; saveDB(); fillAll(); } }
+function handleArtistImage(input){
+  const file=input.files[0]; if(!file) return;
+  if(file.size>5*1024*1024){ alert('Image too large. Please use an image under 5MB.'); input.value=''; return; }
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const b64=e.target.result;
+    document.getElementById('mainPreview').innerHTML='<img src="'+b64+'" style="width:100%;height:100%;object-fit:cover;border-radius:12px">';
+    if(!db[current]) db[current]={};
+    db[current].image=b64;
+    saveDB(); fillAll();
+    input.value='';
+  };
+  reader.readAsDataURL(file);
+}
+function saveArtist(){
+  if(!current) return;
+  if(!db[current]) db[current]={};
+  db[current].name=document.getElementById('artistName').value;
+  db[current].bio=document.getElementById('artistBio').value;
+  db[current].status=document.getElementById('artistStatus').value;
+  db[current].link=document.getElementById('artistLink').value;
+  saveDB(); fillAll(); closeModal();
+}
+function deleteArtist(){
+  if(!current) return;
+  if(!confirm('Delete '+current+'? This cannot be undone.')) return;
+  delete db[current]; saveDB(); fillAll(); closeModal();
+}
+
+/* ── CATEGORY / LIST VIEW ── */
+function openCategory(key, type){
+  openMusicCategory(key);
+}
+
+/* --- Music category list --- */
+function showMusicGrid(){ const g=document.getElementById('music-grid-view'),l=document.getElementById('music-list-view'); if(g) g.style.display=''; if(l) l.style.display='none'; }
+function openMusicCategory(key){
+  const d=db[key]||{name:key,tracks:[]};
+  const g=document.getElementById('music-grid-view'); const l=document.getElementById('music-list-view');
+  if(g) g.style.display='none'; if(!l) return; l.style.display='';
+  renderMusicList(key);
+}
+function renderMusicList(key){
+  const l=document.getElementById('music-list-view'); if(!l) return;
+  const d=db[key]||{name:key,tracks:[]};
+  const tracks=d.tracks||[];
+  const eKey=esc(key);
+  let html='<div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap">'
+    +'<button class="btn-outline" onclick="showMusicGrid()">← Back</button>'
+    +'<h3 class="gold" style="flex:1">'+esc(d.name||key)+'</h3>';
+  if(isAdmin) html+='<button class="btn-outline" style="font-size:10px" onclick="openCategoryImageUpload(\''+eKey+'\',\'music\')">📷 Category Cover</button>';
+  html+='</div>';
+  if(isAdmin) html+='<input type="file" id="catImg-'+eKey+'" accept="image/*" style="display:none" onchange="handleCategoryImage(this,\''+eKey+'\',\'music\')">';
+  if(d.image) html+='<div style="width:100%;max-width:200px;aspect-ratio:1/1;border-radius:12px;overflow:hidden;margin-bottom:12px"><img src="'+esc(d.image)+'" style="width:100%;height:100%;object-fit:cover"/></div>';
+  html+='<div style="margin-bottom:14px"><div class="gold" style="font-size:13px;font-weight:700">'+esc(d.name||key)+'</div><div style="font-size:10px;opacity:.55;margin-top:3px">Locked catalog · '+tracks.length+' tracks · cover artwork can be added or replaced independently.</div></div>';
+  html+='<h4 class="gold" style="margin-bottom:10px;font-size:13px">TRACKS ('+tracks.length+')</h4>';
+
+  tracks.forEach((t,idx)=>{
+    const audioUrl=t.audioUrl||t.audio||t.mp3Url||'';
+    const videoUrl=t.videoUrl||t.youtubeUrl||t.video||'';
+    const mp3Url=t.mp3Url||t.audioUrl||t.audio||'';
+    const movUrl=t.movUrl||t.downloadMov||'';
+    const coverId='track-cover-'+eKey+'-'+idx;
+    const number=esc(t.trackNo||String(idx+1).padStart(3,'0'));
+    html+='<div class="track-row">'
+      +'<div class="track-main">'
+      +'<div id="'+coverId+'" class="track-cover '+(isAdmin?'admin-cover':'')+'" '+(isAdmin?'onclick="uploadTrackCover(\''+eKey+'\','+idx+')"':'')+'>'
+      +'<div class="track-cover-placeholder">♪<small>'+(isAdmin?'TAP TO ADD COVER':'COVER ART')+'</small></div><span class="track-number">'+number+'</span></div>'
+      +'<div class="track-copy"><div style="font-size:13px;font-weight:700;color:#fff;line-height:1.25">'+esc(t.name||'Untitled')+'</div>'
+      +'<div style="font-size:11px;color:#C9A86A;margin-top:4px">'+esc(t.artist||'')+(t.duration?' · '+esc(t.duration):'')+'</div>';
+    if(isAdmin) html+='<div class="track-cover-admin"><button class="badge" onclick="uploadTrackCover(\''+eKey+'\','+idx+')" style="font-size:9px">Cover</button>'
+      +'<button class="badge" onclick="editTrack(\''+eKey+'\','+idx+')" style="font-size:9px">Media</button>'
+      +'<button class="badge" onclick="removeTrackCover(\''+eKey+'\','+idx+')" style="font-size:9px">Clear Cover</button></div>';
+    html+='</div></div>';
+
+    if(audioUrl){
+      html+='<audio controls preload="none" style="width:100%;margin-top:10px;height:38px" src="'+esc(audioUrl)+'"></audio>';
+    }else{
+      html+='<div style="font-size:10px;opacity:.5;margin-top:9px">Media not assigned yet.</div>';
+    }
+    html+='<div class="track-actions">'
+      +'<button class="btn-gold" style="font-size:10px;padding:8px 12px" '+(audioUrl?'onclick="playTrack(\''+eKey+'\','+idx+')"':'disabled')+'>▶ Play Track</button>'
+      +'<button class="btn-outline" style="font-size:10px;padding:8px 12px" '+(videoUrl?'onclick="streamTrackVideo(\''+eKey+'\','+idx+')"':'disabled')+'>▶ Stream Video</button>'
+      +'<button class="btn-outline" style="font-size:10px;padding:8px 12px" '+(mp3Url?'onclick="downloadTrackFile(\''+eKey+'\','+idx+',\'mp3\')"':'disabled')+'>↓ Download MP3</button>'
+      +'<button class="btn-outline" style="font-size:10px;padding:8px 12px" '+(movUrl?'onclick="downloadTrackFile(\''+eKey+'\','+idx+',\'mov\')"':'disabled')+'>↓ Download MOV</button>'
+      +'</div></div>';
+  });
+  l.innerHTML=html;
+  hydrateTrackCovers(key);
+}
+
+/* Track-cover artwork is stored in IndexedDB so hundreds of covers do not fill localStorage. */
+const TRACK_COVER_DB='tlf_track_cover_art';
+const TRACK_COVER_STORE='covers';
+let trackCoverDBPromise=null;
+function openTrackCoverDB(){
+  if(trackCoverDBPromise) return trackCoverDBPromise;
+  trackCoverDBPromise=new Promise((resolve,reject)=>{
+    const req=indexedDB.open(TRACK_COVER_DB,1);
+    req.onupgradeneeded=()=>{ const idb=req.result; if(!idb.objectStoreNames.contains(TRACK_COVER_STORE)) idb.createObjectStore(TRACK_COVER_STORE); };
+    req.onsuccess=()=>resolve(req.result); req.onerror=()=>reject(req.error);
+  });
+  return trackCoverDBPromise;
+}
+function trackCoverKey(key,idx){ return key+'::'+String(idx).padStart(3,'0'); }
+async function getTrackCover(key,idx){ const idb=await openTrackCoverDB(); return new Promise((resolve,reject)=>{ const r=idb.transaction(TRACK_COVER_STORE,'readonly').objectStore(TRACK_COVER_STORE).get(trackCoverKey(key,idx)); r.onsuccess=()=>resolve(r.result||null); r.onerror=()=>reject(r.error); }); }
+async function setTrackCover(key,idx,file){ const idb=await openTrackCoverDB(); return new Promise((resolve,reject)=>{ const r=idb.transaction(TRACK_COVER_STORE,'readwrite').objectStore(TRACK_COVER_STORE).put(file,trackCoverKey(key,idx)); r.onsuccess=()=>resolve(); r.onerror=()=>reject(r.error); }); }
+async function deleteTrackCover(key,idx){ const idb=await openTrackCoverDB(); return new Promise((resolve,reject)=>{ const r=idb.transaction(TRACK_COVER_STORE,'readwrite').objectStore(TRACK_COVER_STORE).delete(trackCoverKey(key,idx)); r.onsuccess=()=>resolve(); r.onerror=()=>reject(r.error); }); }
+async function hydrateTrackCovers(key){
+  const d=db[key]||{}; const tracks=d.tracks||[];
+  tracks.forEach(async (t,idx)=>{
+    try{
+      const file=await getTrackCover(key,idx); if(!file) return;
+      const el=document.getElementById('track-cover-'+key+'-'+idx); if(!el) return;
+      const old=el.dataset.objectUrl; if(old) URL.revokeObjectURL(old);
+      const url=URL.createObjectURL(file); el.dataset.objectUrl=url;
+      const number=esc(t.trackNo||String(idx+1).padStart(3,'0'));
+      el.innerHTML='<img src="'+url+'" alt="'+esc(t.name||'Track')+' cover art"><span class="track-number">'+number+'</span>';
+    }catch(e){ console.warn('Cover load failed',e); }
+  });
+}
+let pendingTrackCover=null;
+function uploadTrackCover(key,idx){
+  if(!isAdmin) return;
+  pendingTrackCover={key,idx};
+  const input=document.getElementById('trackCoverInput');
+  if(!input){ showStatus('Cover picker is unavailable. Reload the app and try again.','error'); return; }
+  input.value='';
+  input.click();
+}
+async function handleTrackCoverInput(input){
+  const target=pendingTrackCover;
+  pendingTrackCover=null;
+  const file=input.files&&input.files[0];
+  if(!target||!file) return;
+  if(!file.type || !file.type.startsWith('image/')){ showStatus('Please choose an image file.','error'); return; }
+  try{
+    await setTrackCover(target.key,target.idx,file);
+    showStatus('Cover artwork saved for '+(getMusicTrack(target.key,target.idx).name||'track')+'.','success');
+    renderMusicList(target.key);
+  }catch(e){
+    console.error(e);
+    showStatus('Could not save this cover image in Safari.','error');
+  }finally{
+    input.value='';
+  }
+}
+async function removeTrackCover(key,idx){
+  if(!isAdmin) return;
+  try{ await deleteTrackCover(key,idx); showStatus('Track cover cleared.','success'); renderMusicList(key); }
+  catch(e){ showStatus('Could not clear this cover.','error'); }
+}
+
+function getMusicTrack(key,idx){
+  return (db[key]&&db[key].tracks&&db[key].tracks[idx])||{};
+}
+function playTrack(key,idx){
+  const t=getMusicTrack(key,idx);
+  const url=t.audioUrl||t.audio||t.mp3Url||'';
+  if(!url){ showStatus('This track does not have an audio file yet.','error'); return; }
+  const existing=document.querySelectorAll('#music-list-view audio');
+  existing.forEach(a=>{ try{a.pause();}catch(e){} });
+  let player=document.getElementById('tlf-active-audio');
+  if(!player){
+    player=document.createElement('audio');
+    player.id='tlf-active-audio';
+    player.controls=true;
+    player.style.display='none';
+    document.body.appendChild(player);
+  }
+  player.src=url;
+  player.play().catch(()=>{});
+  showStatus('Playing: '+(t.name||'Untitled'),'success');
+}
+function streamTrackVideo(key,idx){
+  const t=getMusicTrack(key,idx);
+  const url=t.videoUrl||t.youtubeUrl||t.video||'';
+  if(!url){ showStatus('This track does not have a video link yet.','error'); return; }
+  const embed=ytEmbed(url);
+  if(embed){
+    const w=window.open(embed,'_blank');
+    if(!w) window.location.href=embed;
+  }else{
+    const w=window.open(url,'_blank');
+    if(!w) window.location.href=url;
+  }
+}
+function downloadTrackFile(key,idx,type){
+  const t=getMusicTrack(key,idx);
+  const url=type==='mov'
+    ? (t.movUrl||t.downloadMov||'')
+    : (t.mp3Url||t.audioUrl||t.audio||'');
+  if(!url){ showStatus('No '+type.toUpperCase()+' download file is assigned to this track yet.','error'); return; }
+  const a=document.createElement('a');
+  a.href=url;
+  a.download='';
+  a.target='_blank';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+
+function addTrack(key){ showStatus('This category is locked to the approved catalog.','error'); }
+function editTrack(key,idx){
+  const t=(db[key]&&db[key].tracks&&db[key].tracks[idx])||{};
+  const artist=prompt('Artist / performer (optional):',t.artist||''); if(artist===null) return;
+  const duration=prompt('Duration (optional):',t.duration||''); if(duration===null) return;
+  const audioUrl=prompt('Audio / MP3 URL:',t.audioUrl||t.audio||t.mp3Url||''); if(audioUrl===null) return;
+  const videoUrl=prompt('Stream Video URL:',t.videoUrl||t.youtubeUrl||t.video||''); if(videoUrl===null) return;
+  const mp3Url=prompt('Download MP3 URL:',t.mp3Url||t.audioUrl||t.audio||''); if(mp3Url===null) return;
+  const movUrl=prompt('Download MOV URL:',t.movUrl||t.downloadMov||''); if(movUrl===null) return;
+  db[key].tracks[idx]={...t,artist,duration,audioUrl,videoUrl,mp3Url,movUrl,name:t.name,trackNo:t.trackNo,locked:true};
+  saveDB(); renderMusicList(key);
+}
+function deleteTrack(key,idx){ showStatus('Track placement is locked in this catalog.','error'); }
+
+/* ── YOUTUBE ── */
+
+function updateYT(type, url){ try{ let id=''; if(url.includes('youtu.be/')){ id=url.split('youtu.be/')[1].split('?')[0]; } else if(url.includes('v=')){ id=url.split('v=')[1].split('&')[0]; } else if(url.length==11){ id=url; } if(id){ const el=document.getElementById('yt-'+type); if(el) el.src='https://www.youtube.com/embed/'+id; } }catch(e){} }
+function saveYT(type){ const input=document.getElementById('yt-'+type+'-input'); if(!input) return; const url=input.value; updateYT(type, url); db['YT-'+type]=url; saveDB(); alert('Saved YouTube player '+type); }
+function loadYT(){ if(db['YT-movies']){ updateYT('movies', db['YT-movies']); const inp=document.getElementById('yt-movies-input'); if(inp) inp.value=db['YT-movies']; } }
+
+/* ── HOME ── */
+function saveHome(){ db['HOME-ABOUT']=document.getElementById('home-about').value; db['HOME-VISION']=document.getElementById('home-vision').value; db['HOME-MISSION']=document.getElementById('home-mission').value; saveDB(); alert('Saved Home - export HOME JSON'); }
+function loadHome(){ const a=document.getElementById('home-about'); if(a) a.value=db['HOME-ABOUT']||'One Family, One Love - TLF Publishing Group LLC'; const v=document.getElementById('home-vision'); if(v) v.value=db['HOME-VISION']||'Empowering artists worldwide'; const m=document.getElementById('home-mission'); if(m) m.value=db['HOME-MISSION']||'Build legacy catalogs'; }
+
+/* ── MORE ── */
+function saveMore(){
+  db['MORE-ABOUT_US']=document.getElementById('input-about').value;
+  db['MORE-CAREERS']=document.getElementById('input-careers').value;
+  db['MORE-TERMS']=document.getElementById('input-terms').value;
+  db['MORE-CONDITIONS']=document.getElementById('input-conditions').value;
+  db['MORE-PRIVACY']=document.getElementById('input-privacy').value;
+  db['MORE-POLICY']=document.getElementById('input-policy').value;
+  saveDB(); loadMore(); alert('Saved More - export MORE JSON for official lock');
+}
+function loadMore(){
+  const defaults={
+    ABOUT_US:"TLF Publishing Group LLC - One Family, One Love. Founded in 2010, TLF Publishing Group LLC is an independent publishing, music, and film collective dedicated to empowering creators to own their legacy. We publish books, music, videos, and movies that inspire, educate, and elevate the culture.",
+    CAREERS:"Join the Firm. We're always looking for writers, editors, producers, designers, marketers, and visionaries who believe in One Family, One Love. Email careers@tlfpublishing.com with your portfolio.",
+    TERMS:"By accessing TLF Publishing Group LLC digital properties, you agree to use content for personal, non-commercial use only. All books, music, videos, and films are protected by copyright. Unauthorized reproduction is prohibited.",
+    CONDITIONS:"All sales final. Digital content delivered as-is. User accounts may be suspended for violation of community guidelines. We reserve the right to update these conditions at any time.",
+    PRIVACY:"We respect your privacy. We collect only what we need to operate the app: email for sign-in, preferences for personalization. We never sell your data. LocalStorage is used for offline JSON restoration. You can request deletion at privacy@tlfpublishing.com.",
+    POLICY:"TLF Publishing Group LLC is committed to safe, respectful, and empowering content. Hate, harassment, and exploitation are prohibited. All submissions are reviewed. Policy violations may result in removal and account termination."
+  };
+  document.getElementById('text-about').textContent=db['MORE-ABOUT_US']||defaults.ABOUT_US;
+  document.getElementById('text-careers').textContent=db['MORE-CAREERS']||defaults.CAREERS;
+  document.getElementById('text-terms').textContent=db['MORE-TERMS']||defaults.TERMS;
+  document.getElementById('text-conditions').textContent=db['MORE-CONDITIONS']||defaults.CONDITIONS;
+  document.getElementById('text-privacy').textContent=db['MORE-PRIVACY']||defaults.PRIVACY;
+  document.getElementById('text-policy').textContent=db['MORE-POLICY']||defaults.POLICY;
+  document.getElementById('input-about').value=db['MORE-ABOUT_US']||defaults.ABOUT_US;
+  document.getElementById('input-careers').value=db['MORE-CAREERS']||defaults.CAREERS;
+  document.getElementById('input-terms').value=db['MORE-TERMS']||defaults.TERMS;
+  document.getElementById('input-conditions').value=db['MORE-CONDITIONS']||defaults.CONDITIONS;
+  document.getElementById('input-privacy').value=db['MORE-PRIVACY']||defaults.PRIVACY;
+  document.getElementById('input-policy').value=db['MORE-POLICY']||defaults.POLICY;
+}
+
+/* ── EXPORT / IMPORT ── */
+function isIOSSafari(){
+  const ua=navigator.userAgent||'';
+  const isiOS=/iP(ad|hone|od)/.test(ua) || (navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  const isSafari=/Safari/.test(ua)&&!/CriOS|FxiOS|EdgiOS|OPiOS|DuckDuckGo/.test(ua);
+  return isiOS&&isSafari;
+}
+async function downloadBackupJson(blob,filename){
+  if(navigator.msSaveBlob){ navigator.msSaveBlob(blob,filename); return 'download'; }
+  if(typeof File==='function'&&navigator.canShare&&navigator.share){
+    try{
+      const file=new File([blob],filename,{type:'application/json'});
+      if(navigator.canShare({files:[file]})){ await navigator.share({title:filename,text:'TLF JSON backup',files:[file]}); return 'share'; }
+    }catch(e){ if(e&&e.name==='AbortError') return 'cancelled'; console.warn('TLF export: share failed, falling back to direct download',e); }
+  }
+  if(isIOSSafari()){
+    const dataUrl=await new Promise((resolve,reject)=>{
+      const r=new FileReader();
+      r.onload=()=>resolve(r.result);
+      r.onerror=()=>reject(new Error('Could not create iPhone Safari fallback file.'));
+      r.readAsDataURL(blob);
+    });
+    const a=document.createElement('a');
+    a.href=dataUrl; a.download=filename; a.style.display='none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(()=>{ try{ document.body.removeChild(a); }catch(e){} },200);
+    return 'download';
+  }
+  const url=URL.createObjectURL(blob);
+  const clickLink=(href)=>{
+    const a=document.createElement('a');
+    a.href=href; a.download=filename; a.style.display='none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(()=>{ try{ document.body.removeChild(a); }catch(e){} },200);
+  };
+  try{ clickLink(url); setTimeout(()=>URL.revokeObjectURL(url),1200); return 'download'; }
+  catch(err){
+    const popup=window.open(url,'_blank');
+    if(popup){ setTimeout(()=>URL.revokeObjectURL(url),15000); return 'open'; }
+    setTimeout(()=>URL.revokeObjectURL(url),1200);
+    throw new Error('Browser blocked the file download. Please allow pop-ups/downloads and export again.');
+  }
+}
+function normalizeImportedData(imported){
+  const normalized={...imported};
+  Object.keys(MORE_IMPORT_MAP).forEach(k=>{
+    if(imported[k]&&typeof imported[k]==='object'&&typeof imported[k].content==='string'){ normalized[MORE_IMPORT_MAP[k]]=imported[k].content; delete normalized[k]; }
+    else if(typeof imported[k]==='string'){ normalized[MORE_IMPORT_MAP[k]]=imported[k]; delete normalized[k]; }
+  });
+  return normalized;
+}
+async function exportTab(){
+  try{
+    const payload=JSON.parse(JSON.stringify(db||{}));
+    const keyCount=Object.keys(payload).length;
+    const json=JSON.stringify(payload,null,2);
+    const blob=new Blob([json],{type:'application/json'});
+    const filename='TLF-ALL-TABS-BACKUP-'+new Date().toISOString().slice(0,10)+'.json';
+    const mode=await downloadBackupJson(blob,filename);
+    if(mode==='cancelled'){ showStatus('Export cancelled. Unsaved local edits are still present.','info'); return; }
+    clearUnsaved();
+    if(mode==='share') showStatus('Export ready in iPhone share sheet: '+filename+' ('+keyCount+' items).','success');
+    else showStatus('Export complete: '+keyCount+' items saved to '+filename+'.','success');
+  }catch(err){
+    showStatus('Export failed: '+err.message,'error');
+    alert('Export failed: '+err.message+'\nTry reducing image sizes or exporting again.');
+  }
+}
+function importAll(input){
+  const file=input.files[0]; if(!file) return; const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const imported=JSON.parse(e.target.result);
+      if(!imported||typeof imported!=='object'||Array.isArray(imported)){ showStatus('Import failed: file is not a valid JSON object.','error'); alert('Import failed: file does not contain a valid JSON object.\nPlease use a file previously exported from this app.'); input.value=''; return; }
+      if(confirm('Merge '+Object.keys(imported).length+' items? If JSON tampered, pages get out of whack')){
+        const normalized=normalizeImportedData(imported);
+        db={...db,...normalized}; saveDB(); fillAll(); loadHome(); loadMore(); clearUnsaved();
+        const importedCount=Object.keys(normalized).length;
+        showStatus('Import complete: '+importedCount+' items restored across all tabs.','success');
+        alert('Imported — '+importedCount+' items restored successfully across all tabs.');
+      }
+    }catch(err){ showStatus('Import failed: '+err.message,'error'); alert('Import failed: the selected file could not be parsed.\nError: '+err.message+'\nMake sure you are selecting an exported JSON file from this app.'); }
+    input.value='';
+  };
+  reader.onerror=()=>{ showStatus('Import failed: could not read the file.','error'); alert('Import failed: could not read the file. Please try again.'); input.value=''; };
+  reader.readAsText(file);
+}
+
+document.getElementById('adminBtn').addEventListener('click', enterApp);
+document.getElementById('signupBtn').addEventListener('click', enterApp);
+document.getElementById('loginBtn').addEventListener('click', enterApp);
+loadDB();
+</script>
+<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body></html>
